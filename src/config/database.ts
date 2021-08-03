@@ -1,3 +1,8 @@
+import dotenv from "dotenv";
+dotenv.config({
+  path: `${__dirname}/../../.env`,
+});
+
 export const esmad = {
   server: process.env.DB_ESMAD_SERVER as string,
   database: process.env.DB_ESMAD_NAME as string,
