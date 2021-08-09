@@ -1,6 +1,6 @@
 import { ConnectionPool } from "mssql";
-import * as config from "../config/database";
+import { esmad, kactus, seguridadAut } from "../config/database";
 
-export const mssqlEsmad = new ConnectionPool(config.esmad).connect();
-export const mssqlAuth = new ConnectionPool(config.seguridadAut).connect();
-export const mssqlKactus = new ConnectionPool(config.kactus).connect();
+export const mssqlEsmad = new ConnectionPool(esmad).connect();
+export const mssqlAuth = new ConnectionPool(seguridadAut).connect();
+export const mssqlKactus = new ConnectionPool(kactus).connect();
