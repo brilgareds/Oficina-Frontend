@@ -8,6 +8,7 @@ export const esmad = {
   database: process.env.DB_ESMAD_NAME as string,
   user: process.env.DB_ESMAD_USER as string,
   password: process.env.DB_ESMAD_PASS as string,
+  //  port: parseFloat(process.env.DB_ESMAD_PORT as string),
   options: {
     enableArithAbort: true,
     encrypt: false,
@@ -20,6 +21,7 @@ export const seguridadAut = {
   database: process.env.DB_AUT_NAME as string,
   user: process.env.DB_AUT_USER as string,
   password: process.env.DB_AUT_PASS as string,
+  //  port: parseFloat(process.env.DB_AUT_PORT as string),
   options: {
     enableArithAbort: true,
     encrypt: false,
@@ -32,6 +34,7 @@ export const kactus = {
   database: process.env.DB_KACTUS_NAME as string,
   user: process.env.DB_KACTUS_USER as string,
   password: process.env.DB_KACTUS_PASS as string,
+  //  port: parseFloat(process.env.DB_KACTUS_PORT as string),
   options: {
     enableArithAbort: true,
     encrypt: false,
