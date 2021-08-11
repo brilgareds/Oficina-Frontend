@@ -22,9 +22,10 @@ export const verifyJwt = (
     ) as JwtUserPayload;
 
     req.user = {
-      id: user.id,
-      user: user.user,
+      name: user.name,
+      last_name: user.last_name,
       identification: user.identification,
+      status: user.status,
     };
 
     next();
@@ -51,9 +52,10 @@ export const verifyRefreshToken = (
     ) as JwtUserPayload;
 
     req.user = {
-      id: user.id,
-      user: user.user,
+      name: user.name,
+      last_name: user.last_name,
       identification: user.identification,
+      status: user.status,
     };
 
     next();

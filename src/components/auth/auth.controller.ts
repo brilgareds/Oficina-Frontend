@@ -29,15 +29,11 @@ export class AuthController {
    *          schema:
    *            type: object
    *            properties:
-   *              username:
-   *                type: string
-   *                description: usuario
-   *              password:
-   *                type: string
-   *                description: contraseña
+   *              identification:
+   *                type: integer
+   *                description: identificación del usuario
    *            required:
-   *              - username
-   *              - password
+   *              - identification
    *    responses:
    *      200:
    *        description: Creación del token para acceder a la aplicación
@@ -78,7 +74,7 @@ export class AuthController {
   @before([verifyRefreshToken])
   public async refresh(req: RequestWithUser, res: Response) {
     try {
-      const user = req.user as JwtUserPayload;
+      const user: JwtUserPayload = req.user;
 
       const login = await this.authService.refreshToken(user);
 
@@ -107,7 +103,7 @@ export class AuthController {
   @before([verifyJwt])
   public async me(req: RequestWithUser, res: Response) {
     try {
-      const user = req.user as JwtUserPayload;
+      const user: JwtUserPayload = req.user;
       const userInformation = await this.authService.userInformation(user);
 
       res.status(200).json(userInformation);
