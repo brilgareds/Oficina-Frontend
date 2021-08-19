@@ -7,6 +7,10 @@ import { CategoryMSSQLRepository } from "./components/category/repositories/impl
 import { AuthService } from "./components/auth/auth.service";
 import { NavigatorService } from "./components/navigator/navigator.service";
 import { RrhhService } from "./components/rrhh/rrhh.service";
+import { DocumentTypeMSSQLRepository } from "./components/documentType/repositories/impl/mssql/documentType.repository";
+import { DocumentTypeService } from "./components/documentType/documentType.service";
+import { EpsMSSQLRepository } from "./components/eps/repositories/impl/mssql/eps.repository";
+import { EpsService } from "./components/eps/eps.service";
 
 export default (app: express.Application): void => {
   const container = createContainer({
@@ -18,11 +22,15 @@ export default (app: express.Application): void => {
     authRepository: asClass(AuthMSSQLRepository).scoped(),
     navigatorRepository: asClass(NavigatorMSSQLRepository).scoped(),
     categoryRepository: asClass(CategoryMSSQLRepository).scoped(),
+    documentTypeRepository: asClass(DocumentTypeMSSQLRepository).scoped(),
+    epsRepository: asClass(EpsMSSQLRepository).scoped(),
 
     // services
     authService: asClass(AuthService).scoped(),
     navigatorService: asClass(NavigatorService).scoped(),
     rrhhService: asClass(RrhhService).scoped(),
+    documentTypeService: asClass(DocumentTypeService).scoped(),
+    epsService: asClass(EpsService).scoped(),
   });
 
   app.use(scopePerRequest(container));
