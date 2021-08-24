@@ -11,6 +11,8 @@ import { DocumentTypeMSSQLRepository } from "./components/documentType/repositor
 import { DocumentTypeService } from "./components/documentType/documentType.service";
 import { EpsMSSQLRepository } from "./components/eps/repositories/impl/mssql/eps.repository";
 import { EpsService } from "./components/eps/eps.service";
+import { MenuOVMSSQLRepository } from "./components/menuOV/repositories/impl/mssql/menuOV.repository";
+import { MenuOVService } from "./components/menuOV/menuOV.service";
 
 export default (app: express.Application): void => {
   const container = createContainer({
@@ -24,6 +26,7 @@ export default (app: express.Application): void => {
     categoryRepository: asClass(CategoryMSSQLRepository).scoped(),
     documentTypeRepository: asClass(DocumentTypeMSSQLRepository).scoped(),
     epsRepository: asClass(EpsMSSQLRepository).scoped(),
+    menuOVRepository: asClass(MenuOVMSSQLRepository).scoped(),
 
     // services
     authService: asClass(AuthService).scoped(),
@@ -31,6 +34,7 @@ export default (app: express.Application): void => {
     rrhhService: asClass(RrhhService).scoped(),
     documentTypeService: asClass(DocumentTypeService).scoped(),
     epsService: asClass(EpsService).scoped(),
+    menuOVService: asClass(MenuOVService).scoped(),
   });
 
   app.use(scopePerRequest(container));
