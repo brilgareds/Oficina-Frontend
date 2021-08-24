@@ -13,6 +13,7 @@ import { EpsMSSQLRepository } from "./components/eps/repositories/impl/mssql/eps
 import { EpsService } from "./components/eps/eps.service";
 import { MenuOVMSSQLRepository } from "./components/menuOV/repositories/impl/mssql/menuOV.repository";
 import { MenuOVService } from "./components/menuOV/menuOV.service";
+import { RrhhMSSQLRepository } from "./components/rrhh/repositories/impl/mssql/rrhh.repository";
 
 export default (app: express.Application): void => {
   const container = createContainer({
@@ -27,6 +28,7 @@ export default (app: express.Application): void => {
     documentTypeRepository: asClass(DocumentTypeMSSQLRepository).scoped(),
     epsRepository: asClass(EpsMSSQLRepository).scoped(),
     menuOVRepository: asClass(MenuOVMSSQLRepository).scoped(),
+    rrhhRepository: asClass(RrhhMSSQLRepository).scoped(),
 
     // services
     authService: asClass(AuthService).scoped(),
