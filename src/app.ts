@@ -24,7 +24,7 @@ export async function startServer() {
 
   loadContainer(app);
   app.use(
-    loadControllers("./components/**/*.controller.ts", { cwd: __dirname })
+    loadControllers("./components/**/*.controller.{ts,js}", { cwd: __dirname })
   );
 
   return app;

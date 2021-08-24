@@ -1,11 +1,16 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, Max } from "class-validator";
 
 export class LoginDto {
   @IsNotEmpty()
-  @IsString()
-  readonly username: string;
+  @IsNumber()
+  @Max(9999999999)
+  readonly identification: number;
 
-  @IsNotEmpty()
-  @IsString()
-  readonly password: string;
+  // @IsNotEmpty()
+  // @IsString()
+  // readonly username: string;
+
+  // @IsNotEmpty()
+  // @IsString()
+  // readonly password: string;
 }

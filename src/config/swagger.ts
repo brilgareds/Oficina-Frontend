@@ -27,5 +27,5 @@ export const options = {
       jwt: [],
     },
   ],
-  apis: ["./src/components/**/*.controller.ts"],
+  apis: ["./src/components/**/*.controller.{ts,js}"],
 };
