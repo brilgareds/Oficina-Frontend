@@ -1,11 +1,12 @@
 import { CategoryParamsDto } from "../category/dto/category.params";
 import { CategoryRepository } from "../category/repositories/category.repository";
+import { SendAlertEmailRepository } from "../sendAlertEmail/repositories/sendAlertEmail.repository";
 import { RrhhRepository } from "./repositories/rrhh.repository";
 
 export class RrhhService {
   constructor(
     private readonly categoryRepository: CategoryRepository,
-    private readonly rrhhRepository: RrhhRepository
+    private readonly rrhhRepository: RrhhRepository,
   ) { }
 
   public async getWeAreForYouCategories() {

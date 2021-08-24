@@ -14,6 +14,7 @@ import { EpsService } from "./components/eps/eps.service";
 import { MenuOVMSSQLRepository } from "./components/menuOV/repositories/impl/mssql/menuOV.repository";
 import { MenuOVService } from "./components/menuOV/menuOV.service";
 import { RrhhMSSQLRepository } from "./components/rrhh/repositories/impl/mssql/rrhh.repository";
+import { SendAlertEmailMSSQLRepository } from "./components/sendAlertEmail/repositories/impl/mssql/sendAlertEmail.repository";
 
 export default (app: express.Application): void => {
   const container = createContainer({
@@ -29,6 +30,7 @@ export default (app: express.Application): void => {
     epsRepository: asClass(EpsMSSQLRepository).scoped(),
     menuOVRepository: asClass(MenuOVMSSQLRepository).scoped(),
     rrhhRepository: asClass(RrhhMSSQLRepository).scoped(),
+    sendAlertEmailRepository: asClass(SendAlertEmailMSSQLRepository).scoped(),
 
     // services
     authService: asClass(AuthService).scoped(),
