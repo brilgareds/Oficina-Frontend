@@ -1,0 +1,167 @@
+import { mssqlEsmad } from "../../../../../services/mssql";
+import { InformacionBasicaRepository } from "../../informacionBasica.repository";
+
+export class InformacionBasicaMSSQLRepository implements InformacionBasicaRepository {
+  public async buscarDatos(cedula: number, empresa: number): Promise<any> {
+    const pool = await mssqlEsmad;
+    const result = await pool.query`
+    SELECT
+        ESMAD_INFORMACION_BASICA.MENU_CODIGO,
+        ESMAD_INFORMACION_BASICA.TIP_CODIGO_DOCUMENTO,
+        CASE
+          WHEN ESMAD_INFORMACION_BASICA.NRO_DOCUMENTO IS NOT NULL
+            THEN ESMAD_INFORMACION_BASICA.NRO_DOCUMENTO
+          ELSE nm_contr.cod_empl
+        END AS NRO_DOCUMENTO,
+        CASE
+          WHEN ESMAD_INFORMACION_BASICA.NOMBRES IS NOT NULL
+            THEN ESMAD_INFORMACION_BASICA.NOMBRES
+          ELSE RTRIM(LTRIM(bi_emple.nom_empl))
+        END AS NOMBRES,
+        CASE
+          WHEN ESMAD_INFORMACION_BASICA.APELLIDOS IS NOT NULL
+            THEN ESMAD_INFORMACION_BASICA.APELLIDOS
+          ELSE RTRIM(LTRIM(bi_emple.ape_empl))
+        END AS APELLIDOS,
+        CASE
+          WHEN ESMAD_INFORMACION_BASICA.SEXO IS NOT NULL
+            THEN ESMAD_INFORMACION_BASICA.SEXO
+          ELSE bi_emple.sex_empl
+        END AS SEXO,
+        CASE
+          WHEN ESMAD_INFORMACION_BASICA.FECHA_NACIMIENTO IS NOT NULL
+            THEN convert(varchar, ESMAD_INFORMACION_BASICA.FECHA_NACIMIENTO, 110)
+          ELSE convert(varchar, bi_emple.fec_naci, 23)
+        END AS FECHA_NACIMIENTO,
+        CASE
+          WHEN ESMAD_INFORMACION_BASICA.ESTADO_CIVIL IS NOT NULL
+            THEN ESMAD_INFORMACION_BASICA.ESTADO_CIVIL
+          ELSE bi_emple.est_civi
+        END AS ESTADO_CIVIL,
+        CASE
+          WHEN ESMAD_INFORMACION_BASICA.DEPARTAMENTO_RESIDENCIA IS NOT NULL
+            THEN ESMAD_INFORMACION_BASICA.DEPARTAMENTO_RESIDENCIA
+          ELSE bi_emple.dto_resi
+        END AS DEPARTAMENTO_RESIDENCIA,
+        RTRIM(LTRIM(departamento.nom_mpio)) as nom_mpio,
+        CASE
+          WHEN ESMAD_INFORMACION_BASICA.CIUDAD_RESIDENCIA IS NOT NULL
+            THEN ESMAD_INFORMACION_BASICA.CIUDAD_RESIDENCIA
+          ELSE bi_emple.mpi_resi
+        END AS CIUDAD_RESIDENCIA,
+        RTRIM(LTRIM(Nivel3.nom_nive)) nomCiudad,
+        CASE
+          WHEN ESMAD_INFORMACION_BASICA.BARRIO_RESIDENCIA IS NOT NULL
+            THEN ESMAD_INFORMACION_BASICA.BARRIO_RESIDENCIA
+          ELSE RTRIM(LTRIM(bi_emple.bar_resi))
+        END AS BARRIO_RESIDENCIA,
+        ESMAD_INFORMACION_BASICA.LOCALIDAD_RESIDENCIA,
+        CASE
+          WHEN ESMAD_INFORMACION_BASICA.DIRECCION_COMPLETA IS NOT NULL
+            THEN ESMAD_INFORMACION_BASICA.DIRECCION_COMPLETA
+          ELSE RTRIM(LTRIM(bi_emple.dir_resi))
+        END AS DIRECCION_COMPLETA,
+        CASE
+          WHEN ESMAD_INFORMACION_BASICA.EMAIL_PERSONAL IS NOT NULL
+            THEN ESMAD_INFORMACION_BASICA.EMAIL_PERSONAL
+          ELSE RTRIM(LTRIM(bi_emple.eee_mail))
+        END AS EMAIL_PERSONAL,
+        CASE
+          WHEN ESMAD_INFORMACION_BASICA.EMAIL_CORPORATIVO IS NOT NULL
+            THEN ESMAD_INFORMACION_BASICA.EMAIL_CORPORATIVO
+          ELSE RTRIM(LTRIM(bi_emple.box_mail))
+        END AS EMAIL_CORPORATIVO,
+        CASE
+          WHEN ESMAD_INFORMACION_BASICA.CELULAR_CONTACTO IS NOT NULL
+            THEN ESMAD_INFORMACION_BASICA.CELULAR_CONTACTO
+          ELSE RTRIM(LTRIM(bi_emple.tel_movi))
+        END AS CELULAR_CONTACTO,
+        CASE
+          WHEN ESMAD_INFORMACION_BASICA.CELULAR_CORPORATIVO IS NOT NULL
+            THEN ESMAD_INFORMACION_BASICA.CELULAR_CORPORATIVO
+          ELSE RTRIM(LTRIM(bi_emple.tel_trab))
+        END AS CELULAR_CORPORATIVO,
+        CASE
+          WHEN ESMAD_INFORMACION_BASICA.NIVEL2 IS NOT NULL
+            THEN ESMAD_INFORMACION_BASICA.NIVEL2
+          ELSE RTRIM(LTRIM(nm_contr.cod_niv2))
+        END AS NIVEL2,
+        RTRIM(LTRIM(Nivel2.nom_nive)) AS nomNivel2,
+        CASE
+          WHEN ESMAD_INFORMACION_BASICA.NIVEL4 IS NOT NULL
+            THEN ESMAD_INFORMACION_BASICA.NIVEL4
+          ELSE RTRIM(LTRIM(nm_contr.cod_niv4))
+        END AS NIVEL4,
+        RTRIM(LTRIM(Nivel4.nom_nive)) AS nomNivel4,
+        CASE
+          WHEN ESMAD_INFORMACION_BASICA.NIVEL5 IS NOT NULL
+            THEN ESMAD_INFORMACION_BASICA.NIVEL5
+          ELSE RTRIM(LTRIM(nm_contr.cod_niv5))
+        END AS NIVEL5,
+        RTRIM(LTRIM(Nivel5.nom_nive)) AS nomNivel5,
+        CASE
+          WHEN ESMAD_INFORMACION_BASICA.CARGO_ACTUAL IS NOT NULL
+            THEN ESMAD_INFORMACION_BASICA.CARGO_ACTUAL
+          ELSE nm_contr.cod_carg
+        END AS CARGO_ACTUAL,
+        RTRIM(LTRIM(bi_cargo.nom_carg)) AS nom_carg,
+        ESMAD_INFORMACION_BASICA.ANTIGUEDAD_EMPRESA,
+        ESMAD_INFORMACION_BASICA.PLAN_CARRERA,
+        ESMAD_INFORMACION_BASICA.NRO_CARGOS
+    FROM
+        SERVCLO09.kactus.dbo.nm_contr
+        INNER JOIN SERVCLO09.kactus.dbo.bi_emple
+          ON nm_contr.cod_empl = bi_emple.cod_empl
+             AND nm_contr.cod_empr = bi_emple.cod_empr
+        INNER JOIN SERVCLO09.kactus.dbo.gn_nivel AS Nivel2
+          ON nm_contr.cod_empr = Nivel2.cod_empr
+             AND nm_contr.cod_niv2 = Nivel2.cod_nive
+             AND Nivel2.num_nive = 2
+             AND Nivel2.ide_arbo = 'BI'
+        INNER JOIN SERVCLO09.kactus.dbo.gn_nivel AS Nivel3
+          ON nm_contr.cod_empr = Nivel3.cod_empr
+             AND bi_emple.mpi_resi = Nivel3.cod_nive
+             AND Nivel3.num_nive = 3
+             AND Nivel3.ide_arbo = 'BI'
+        INNER JOIN SERVCLO09.kactus.dbo.gn_nivel AS Nivel4
+          ON nm_contr.cod_empr = Nivel4.cod_empr
+             AND nm_contr.cod_niv4 = Nivel4.cod_nive
+             AND Nivel4.num_nive = 4
+             AND Nivel4.ide_arbo = 'BI'
+        LEFT JOIN SERVCLO09.kactus.dbo.gn_nivel AS Nivel5
+          ON nm_contr.cod_empr = Nivel5.cod_empr
+             AND nm_contr.cod_niv5 = Nivel5.cod_nive
+             AND Nivel5.num_nive = 5
+             AND Nivel5.ide_arbo = 'BI'
+        INNER JOIN SERVCLO09.kactus.dbo.bi_cargo
+          ON nm_contr.cod_carg = bi_cargo.cod_carg
+             AND nm_contr.cod_empr = bi_cargo.cod_empr
+             AND bi_cargo.ind_acti = 'A'
+        LEFT JOIN dbo.ESMAD_INFORMACION_BASICA
+          ON nm_contr.cod_empl = ESMAD_INFORMACION_BASICA.NRO_DOCUMENTO
+             AND ESMAD_INFORMACION_BASICA.MENU_CODIGO = 1
+        LEFT JOIN dbo.ESMAD_TIPO
+          ON ESMAD_INFORMACION_BASICA.TIP_CODIGO_DOCUMENTO = ESMAD_TIPO.TIP_CODIGO
+        LEFT JOIN (SELECT
+                          gn_paise.cod_pais,
+                          gn_paise.nom_pais,
+                          Departamento.cod_dpto,
+                          Departamento.nom_mpio
+                  FROM
+                          SERVCLO09.kactus.dbo.gn_divip Departamento
+                          INNER JOIN SERVCLO09.kactus.dbo.gn_paise
+                                  ON Departamento.cod_pais = gn_paise.cod_pais
+                  WHERE
+                          Departamento.COD_LOCA = 0
+                          AND Departamento.cod_mpio = 0) AS departamento
+        ON bi_emple.pai_resi = departamento.cod_pais
+           AND bi_emple.dto_resi = departamento.cod_dpto
+    WHERE
+        nm_contr.cod_empl = ${cedula}
+        AND nm_contr.cod_empr = ${empresa}
+        AND nm_contr.ind_acti = 'A'
+    `;
+    
+    return result.recordset;
+  }
+}
