@@ -9,6 +9,8 @@ import { NavigatorService } from "./components/navigator/navigator.service";
 import { RrhhService } from "./components/rrhh/rrhh.service";
 import { MenuOVMSSQLRepository } from "./components/menuOV/repositories/impl/mssql/menuOV.repository";
 import { MenuOVService } from "./components/menuOV/menuOV.service";
+import { InformacionBasicaMSSQLRepository } from "./components/informacionBasica/repositories/impl/mssql/informacionBasica.repository";
+import { InformacionBasicaService } from "./components/informacionBasica/informacionBasica.service";
 
 export default (app: express.Application): void => {
   const container = createContainer({
@@ -21,12 +23,14 @@ export default (app: express.Application): void => {
     navigatorRepository: asClass(NavigatorMSSQLRepository).scoped(),
     categoryRepository: asClass(CategoryMSSQLRepository).scoped(),
     menuOVRepository: asClass(MenuOVMSSQLRepository).scoped(),
+    informacionBasicaRepository: asClass(InformacionBasicaMSSQLRepository).scoped(),
 
     // services
     authService: asClass(AuthService).scoped(),
     navigatorService: asClass(NavigatorService).scoped(),
     rrhhService: asClass(RrhhService).scoped(),
     menuOVService: asClass(MenuOVService).scoped(),
+    informacionBasicaService: asClass(InformacionBasicaService).scoped(),
   });
 
   app.use(scopePerRequest(container));
