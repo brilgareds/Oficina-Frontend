@@ -10,7 +10,7 @@ export class NavigatorController {
   @GET()
   public async navigator(req: Request, res: Response) {
     try {
-      const menu = await this.navigatorService.navigator(req.body);
+      const menu = await this.navigatorService.navigator();
 
       res.status(200).json(menu);
     } catch (e) {
