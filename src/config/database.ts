@@ -41,3 +41,16 @@ export const kactus = {
     trustServerCertificate: false,
   },
 };
+
+export const biplus = {
+  server: process.env.DB_BIPLUS_SERVER as string,
+  database: process.env.DB_BIPLUS_NAME as string,
+  user: process.env.DB_BIPLUS_USER as string,
+  password: process.env.DB_BIPLUS_PASS as string,
+  //  port: parseFloat(process.env.DB_BIPLUS_PORT as string),
+  options: {
+    enableArithAbort: true,
+    encrypt: false,
+    trustServerCertificate: false,
+  },
+};
