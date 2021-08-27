@@ -1,4 +1,4 @@
-import { mssqlEsmad } from "../../../../../services/mssql";
+import { mssqlEsmad, mssqlKactus } from "../../../../../services/mssql";
 import { InformacionBasicaRepository } from "../../informacionBasica.repository";
 
 export class InformacionBasicaMSSQLRepository implements InformacionBasicaRepository {
@@ -107,7 +107,8 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
         RTRIM(LTRIM(bi_cargo.nom_carg)) AS nom_carg,
         ESMAD_INFORMACION_BASICA.ANTIGUEDAD_EMPRESA,
         ESMAD_INFORMACION_BASICA.PLAN_CARRERA,
-        ESMAD_INFORMACION_BASICA.NRO_CARGOS
+        ESMAD_INFORMACION_BASICA.NRO_CARGOS,
+        ESMAD_INFORMACION_BASICA.CARGOS_OCUPADOS
     FROM
         SERVCLO09.kactus.dbo.nm_contr
         INNER JOIN SERVCLO09.kactus.dbo.bi_emple
@@ -164,4 +165,146 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
     
     return result.recordset;
   }
+
+  public async consultarPaises(): Promise<any> {
+    const pool = await mssqlKactus;
+    const result = await pool.query`
+    SELECT DISTINCT
+        gn_paise.cod_pais,
+        gn_paise.nom_pais
+    FROM
+        dbo.gn_divip Departamento
+        INNER JOIN
+        dbo.gn_paise
+                ON Departamento.cod_pais = dbo.gn_paise.cod_pais
+    WHERE
+        Departamento.COD_LOCA = 0
+        AND Departamento.cod_mpio = 0
+        AND gn_paise.cod_pais <> 0
+    ORDER BY gn_paise.nom_pais
+    `;
+    
+    return result.recordset;
+  }
+
+  public async consultarDepartamentos(codPais: number): Promise<any> {
+    const pool = await mssqlKactus;
+    const result = await pool.query`
+    SELECT
+        Departamento.cod_dpto,
+        Departamento.nom_mpio
+    FROM
+        dbo.gn_divip Departamento
+        INNER JOIN dbo.gn_paise
+          ON Departamento.cod_pais = dbo.gn_paise.cod_pais
+             AND Departamento.cod_pais = ${codPais}
+    WHERE
+        Departamento.COD_LOCA = 0
+        AND Departamento.cod_mpio = 0
+    ORDER BY Departamento.nom_mpio
+    `;
+    
+    return result.recordset;
+  }
+
+  public async consultarNomenclatura(): Promise<any> {
+    const pool = await mssqlKactus;
+    const result = await pool.query`
+      SELECT
+        GN_NOMEN.COD_NOME,
+        RTRIM(LTRIM(GN_NOMEN.NOM_NOME)) as NOM_NOME
+      FROM
+        dbo.GN_NOMEN
+    `;
+    
+    return result.recordset;
+  }
+
+  public async existeRegistro(cedula: number): Promise<any> {
+    const pool = await mssqlEsmad;
+    const result = await pool.query`
+    SELECT
+      ESMAD_INFORMACION_BASICA.INFORMACION_BASICA_CODIGO
+    FROM
+      dbo.ESMAD_INFORMACION_BASICA
+    WHERE
+      ESMAD_INFORMACION_BASICA.NRO_DOCUMENTO = ${cedula}
+    `;
+    
+    return result.recordset[0];
+  }
+
+  public async crearRegistro(
+    TIP_CODIGO_DOCUMENTO: string,
+    NRO_DOCUMENTO: string,
+    NOMBRES: string,
+    APELLIDOS: string,
+    SEXO: string,
+    FECHA_NACIMIENTO: string,
+    ESTADO_CIVIL: string,
+    DEPARTAMENTO_RESIDENCIA: string,
+    CIUDAD_RESIDENCIA: string,
+    BARRIO_RESIDENCIA: string,
+    LOCALIDAD_RESIDENCIA: string,
+    DIRECCION_COMPLETA: string,
+    EMAIL_PERSONAL: string,
+    EMAIL_CORPORATIVO: string,
+    CELULAR_CONTACTO: string,
+    CELULAR_CORPORATIVO: string,
+    ANTIGUEDAD_EMPRESA: string,
+    PLAN_CARRERA: string,
+    NRO_CARGOS: string,
+    CARGOS_OCUPADOS: string): Promise<any> {
+    const pool = await mssqlEsmad;
+    const result = await pool.query`
+      INSERT INTO dbo.INFORMACION_BASICA_CODIGO (
+        INFORMACION_BASICA_CODIGO.MENU_CODIGO,
+        INFORMACION_BASICA_CODIGO.TIP_CODIGO_DOCUMENTO,
+        INFORMACION_BASICA_CODIGO.NRO_DOCUMENTO,
+        INFORMACION_BASICA_CODIGO.NOMBRES,
+        INFORMACION_BASICA_CODIGO.APELLIDOS,
+        INFORMACION_BASICA_CODIGO.SEXO,
+        INFORMACION_BASICA_CODIGO.FECHA_NACIMIENTO,
+        INFORMACION_BASICA_CODIGO.ESTADO_CIVIL,
+        INFORMACION_BASICA_CODIGO.DEPARTAMENTO_RESIDENCIA,
+        INFORMACION_BASICA_CODIGO.CIUDAD_RESIDENCIA,
+        INFORMACION_BASICA_CODIGO.BARRIO_RESIDENCIA,
+        INFORMACION_BASICA_CODIGO.LOCALIDAD_RESIDENCIA,
+        INFORMACION_BASICA_CODIGO.DIRECCION_COMPLETA,
+        INFORMACION_BASICA_CODIGO.EMAIL_PERSONAL,
+        INFORMACION_BASICA_CODIGO.EMAIL_CORPORATIVO,
+        INFORMACION_BASICA_CODIGO.CELULAR_CONTACTO,
+        INFORMACION_BASICA_CODIGO.CELULAR_CORPORATIVO,
+        INFORMACION_BASICA_CODIGO.ANTIGUEDAD_EMPRESA,
+        INFORMACION_BASICA_CODIGO.PLAN_CARRERA,
+        INFORMACION_BASICA_CODIGO.NRO_CARGOS,
+        INFORMACION_BASICA_CODIGO.CARGOS_OCUPADOS
+    ) VALUES (
+        2,
+        ${TIP_CODIGO_DOCUMENTO},
+        ${NRO_DOCUMENTO},
+        ${NOMBRES},
+        ${APELLIDOS},
+        ${SEXO},
+        ${FECHA_NACIMIENTO},
+        ${ESTADO_CIVIL},
+        ${DEPARTAMENTO_RESIDENCIA},
+        ${CIUDAD_RESIDENCIA},
+        ${BARRIO_RESIDENCIA},
+        ${LOCALIDAD_RESIDENCIA},
+        ${DIRECCION_COMPLETA},
+        ${EMAIL_PERSONAL},
+        ${EMAIL_CORPORATIVO},
+        ${CELULAR_CONTACTO},
+        ${CELULAR_CORPORATIVO},
+        ${ANTIGUEDAD_EMPRESA},
+        ${PLAN_CARRERA},
+        ${NRO_CARGOS},
+        ${CARGOS_OCUPADOS}
+    )
+    `;
+    
+    return result.recordset;
+  }
+
 }
