@@ -24,6 +24,10 @@ export class ActualizarInformacionBasicaDto {
 
   @IsNotEmpty()
   @IsNumber()
+  INFORMACION_BASICA_CODIGO: number;
+
+  @IsNotEmpty()
+  @IsNumber()
   TIP_CODIGO_DOCUMENTO: number;
 
   @IsNotEmpty()
