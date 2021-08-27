@@ -150,22 +150,58 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
     return result.recordset;
   }
 
+  public async consultarTipDocumento(): Promise<any> {
+    const pool = await mssqlEsmad;
+    const result = await pool.query`
+      SELECT
+          ESMAD_TIPO.TIP_CODIGO,
+          ESMAD_TIPO.TIP_NOMBRE
+      FROM
+          dbo.ESMAD_CLASE_TIPO
+          INNER JOIN dbo.ESMAD_TIPO
+                  ON ESMAD_CLASE_TIPO.CLT_CODIGO = ESMAD_TIPO.CLT_CODIGO
+      WHERE
+          ESMAD_CLASE_TIPO.CLT_CODIGO = 40
+      ORDER BY ESMAD_TIPO.TIP_NOMBRE
+    `;
+    
+    return result.recordset;
+  }
+
+  public async consultarEstadoCivil(): Promise<any> {
+    const pool = await mssqlEsmad;
+    const result = await pool.query`
+      SELECT
+          ESMAD_TIPO.TIP_CODIGO,
+          ESMAD_TIPO.TIP_NOMBRE
+      FROM
+          dbo.ESMAD_CLASE_TIPO
+          INNER JOIN dbo.ESMAD_TIPO
+                  ON ESMAD_CLASE_TIPO.CLT_CODIGO = ESMAD_TIPO.CLT_CODIGO
+      WHERE
+          ESMAD_CLASE_TIPO.CLT_CODIGO = 41
+      ORDER BY ESMAD_TIPO.TIP_NOMBRE
+    `;
+    
+    return result.recordset;
+  }
+
   public async consultarPaises(): Promise<any> {
     const pool = await mssqlKactus;
     const result = await pool.query`
-    SELECT DISTINCT
-        gn_paise.cod_pais,
-        gn_paise.nom_pais
-    FROM
-        dbo.gn_divip Departamento
-        INNER JOIN
-        dbo.gn_paise
-                ON Departamento.cod_pais = dbo.gn_paise.cod_pais
-    WHERE
-        Departamento.COD_LOCA = 0
-        AND Departamento.cod_mpio = 0
-        AND gn_paise.cod_pais <> 0
-    ORDER BY gn_paise.nom_pais
+      SELECT * FROM (SELECT DISTINCT
+                        gn_paise.cod_pais,
+                        RTRIM(LTRIM(gn_paise.nom_pais)) as nom_pais
+                      FROM
+                          dbo.gn_divip Departamento
+                          INNER JOIN
+                          dbo.gn_paise
+                                  ON Departamento.cod_pais = dbo.gn_paise.cod_pais
+                      WHERE
+                          Departamento.COD_LOCA = 0
+                          AND Departamento.cod_mpio = 0
+                          AND gn_paise.cod_pais <> 0) as listaPaises
+      ORDER BY listaPaises.nom_pais
     `;
     
     return result.recordset;
@@ -174,18 +210,45 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
   public async consultarDepartamentos(codPais: number): Promise<any> {
     const pool = await mssqlKactus;
     const result = await pool.query`
-    SELECT
-        Departamento.cod_dpto,
-        Departamento.nom_mpio
-    FROM
-        dbo.gn_divip Departamento
-        INNER JOIN dbo.gn_paise
-          ON Departamento.cod_pais = dbo.gn_paise.cod_pais
-             AND Departamento.cod_pais = ${codPais}
-    WHERE
-        Departamento.COD_LOCA = 0
-        AND Departamento.cod_mpio = 0
-    ORDER BY Departamento.nom_mpio
+    SELECT * FROM (SELECT DISTINCT
+                        Departamento.cod_dpto,
+                        RTRIM(LTRIM(Departamento.nom_mpio)) as nom_mpio
+                    FROM
+                        dbo.gn_divip Departamento
+                        INNER JOIN dbo.gn_paise
+                          ON Departamento.cod_pais = dbo.gn_paise.cod_pais
+                             AND Departamento.cod_pais = ${codPais}
+                    WHERE
+                        Departamento.COD_LOCA = 0
+                        AND Departamento.cod_mpio = 0) AS listaDepartamentos
+    ORDER BY listaDepartamentos.nom_mpio
+    `;
+    
+    return result.recordset;
+  }
+
+  public async consultarMunicipios(codDepartamento: number): Promise<any> {
+    const pool = await mssqlKactus;
+    const result = await pool.query`
+      SELECT * FROM (SELECT DISTINCT
+                          Municipio.cod_mpio,
+                          RTRIM(LTRIM(Municipio.nom_mpio)) as nom_mpio
+                      FROM
+                              dbo.gn_divip Departamento
+                      INNER JOIN
+                              dbo.gn_paise
+                              ON (Departamento.cod_pais = dbo.gn_paise.cod_pais)
+                              INNER JOIN
+                              dbo.gn_divip Municipio
+                              ON (Departamento.cod_pais = Municipio.cod_pais)
+                                  AND (Departamento.cod_dpto = Municipio.cod_dpto)
+                                  AND Departamento.cod_dpto = ${codDepartamento}
+                      WHERE
+                              Municipio.COD_LOCA = 0
+                              AND Municipio.ind_mpio <> 0
+                              AND Departamento.COD_LOCA = 0
+                              AND Departamento.cod_mpio = 0) AS listaMunicipios
+      ORDER BY listaMunicipios.nom_mpio
     `;
     
     return result.recordset;
@@ -199,6 +262,43 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
         RTRIM(LTRIM(GN_NOMEN.NOM_NOME)) as NOM_NOME
       FROM
         dbo.GN_NOMEN
+    `;
+    
+    return result.recordset;
+  }
+
+  public async consultarAntiguedad(): Promise<any> {
+    const pool = await mssqlEsmad;
+    const result = await pool.query`
+      SELECT
+          ESMAD_TIPO.TIP_CODIGO,
+          ESMAD_TIPO.TIP_NOMBRE
+      FROM
+          dbo.ESMAD_CLASE_TIPO
+          INNER JOIN dbo.ESMAD_TIPO
+                  ON ESMAD_CLASE_TIPO.CLT_CODIGO = ESMAD_TIPO.CLT_CODIGO
+      WHERE
+          ESMAD_CLASE_TIPO.CLT_CODIGO = 42
+      ORDER BY ESMAD_TIPO.TIP_NOMBRE
+    `;
+    
+    return result.recordset;
+  }
+
+  public async consultarTalla(): Promise<any> {
+    const pool = await mssqlEsmad;
+    const result = await pool.query`
+      SELECT
+          ESMAD_TIPO.TIP_CODIGO,
+          ESMAD_TIPO.TIP_NOMBRE,
+          ESMAD_TIPO.TIP_CODIGO2
+      FROM
+          dbo.ESMAD_CLASE_TIPO
+          INNER JOIN dbo.ESMAD_TIPO
+                  ON ESMAD_CLASE_TIPO.CLT_CODIGO = ESMAD_TIPO.CLT_CODIGO
+      WHERE
+          ESMAD_CLASE_TIPO.CLT_CODIGO = 43
+      ORDER BY ESMAD_TIPO.TIP_NOMBRE
     `;
     
     return result.recordset;
@@ -339,52 +439,6 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
           CARGOS_OCUPADOS = ${INFORMACION_BASICA_CODIGO}
       WHERE 
         INFORMACION_BASICA_CODIGO = ${INFORMACION_BASICA_CODIGO}
-
-      INSERT INTO dbo.INFORMACION_BASICA_CODIGO (
-        INFORMACION_BASICA_CODIGO.MENU_CODIGO,
-        INFORMACION_BASICA_CODIGO.TIP_CODIGO_DOCUMENTO,
-        INFORMACION_BASICA_CODIGO.NRO_DOCUMENTO,
-        INFORMACION_BASICA_CODIGO.NOMBRES,
-        INFORMACION_BASICA_CODIGO.APELLIDOS,
-        INFORMACION_BASICA_CODIGO.SEXO,
-        INFORMACION_BASICA_CODIGO.FECHA_NACIMIENTO,
-        INFORMACION_BASICA_CODIGO.ESTADO_CIVIL,
-        INFORMACION_BASICA_CODIGO.DEPARTAMENTO_RESIDENCIA,
-        INFORMACION_BASICA_CODIGO.CIUDAD_RESIDENCIA,
-        INFORMACION_BASICA_CODIGO.BARRIO_RESIDENCIA,
-        INFORMACION_BASICA_CODIGO.LOCALIDAD_RESIDENCIA,
-        INFORMACION_BASICA_CODIGO.DIRECCION_COMPLETA,
-        INFORMACION_BASICA_CODIGO.EMAIL_PERSONAL,
-        INFORMACION_BASICA_CODIGO.EMAIL_CORPORATIVO,
-        INFORMACION_BASICA_CODIGO.CELULAR_CONTACTO,
-        INFORMACION_BASICA_CODIGO.CELULAR_CORPORATIVO,
-        INFORMACION_BASICA_CODIGO.ANTIGUEDAD_EMPRESA,
-        INFORMACION_BASICA_CODIGO.PLAN_CARRERA,
-        INFORMACION_BASICA_CODIGO.NRO_CARGOS,
-        INFORMACION_BASICA_CODIGO.CARGOS_OCUPADOS
-    ) VALUES (
-        2,
-        ${TIP_CODIGO_DOCUMENTO},
-        ${NRO_DOCUMENTO},
-        ${NOMBRES},
-        ${APELLIDOS},
-        ${SEXO},
-        ${FECHA_NACIMIENTO},
-        ${ESTADO_CIVIL},
-        ${DEPARTAMENTO_RESIDENCIA},
-        ${CIUDAD_RESIDENCIA},
-        ${BARRIO_RESIDENCIA},
-        ${LOCALIDAD_RESIDENCIA},
-        ${DIRECCION_COMPLETA},
-        ${EMAIL_PERSONAL},
-        ${EMAIL_CORPORATIVO},
-        ${CELULAR_CONTACTO},
-        ${CELULAR_CORPORATIVO},
-        ${ANTIGUEDAD_EMPRESA},
-        ${PLAN_CARRERA},
-        ${NRO_CARGOS},
-        ${CARGOS_OCUPADOS}
-    )
     `;
     
     return result.recordset;

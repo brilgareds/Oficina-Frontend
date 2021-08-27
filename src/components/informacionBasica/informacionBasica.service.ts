@@ -1,4 +1,4 @@
-import { InformacionBasicaDto, DepartamentosDto, ActualizarInformacionBasicaDto } from "./dto/informacionBasica.dto";
+import { InformacionBasicaDto, DepartamentosDto, CiudadesDto, ActualizarInformacionBasicaDto } from "./dto/informacionBasica.dto";
 import { InformacionBasicaRepository } from "./repositories/informacionBasica.repository";
 
 export class InformacionBasicaService {
@@ -9,6 +9,32 @@ export class InformacionBasicaService {
       const buscarDatos = await this.informacionBasicaRepository.buscarDatos(cedula, empresa);
 
       return buscarDatos;
+
+    } catch (error) {
+
+      throw new Error(error.message);
+
+    }
+  }
+
+  public async consultarTipDocumento() {
+    try {
+      const buscarTipDocumento = await this.informacionBasicaRepository.consultarTipDocumento();
+
+      return buscarTipDocumento;
+
+    } catch (error) {
+
+      throw new Error(error.message);
+
+    }
+  }
+
+  public async consultarEstadoCivil() {
+    try {
+      const buscarEstadoCivil = await this.informacionBasicaRepository.consultarEstadoCivil();
+
+      return buscarEstadoCivil;
 
     } catch (error) {
 
@@ -135,11 +161,68 @@ export class InformacionBasicaService {
     }
   }
 
+  public async consultarAntiguedad() {
+    try {
+      const buscarEstadoCivil = await this.informacionBasicaRepository.consultarAntiguedad();
+
+      return buscarEstadoCivil;
+
+    } catch (error) {
+
+      throw new Error(error.message);
+
+    }
+  }
+
   public async consultarDepartamentos({ codPais }: DepartamentosDto) {
     try {
       const buscarDepartamento = await this.informacionBasicaRepository.consultarDepartamentos(codPais);
 
       return buscarDepartamento;
+
+    } catch (error) {
+
+      throw new Error(error.message);
+
+    }
+  }
+
+  public async consultarMunicipios({ codDepartamento }: CiudadesDto) {
+    try {
+      const buscarMunicipios = await this.informacionBasicaRepository.consultarMunicipios(codDepartamento);
+
+      return buscarMunicipios;
+
+    } catch (error) {
+
+      throw new Error(error.message);
+
+    }
+  }
+
+  public async consultarTalla() {
+    try {
+      const buscarTallaUniformes = await this.informacionBasicaRepository.consultarTalla();
+      let arrayCamisa = new Array();
+      let arrayPantalonMujer = new Array();
+      let arrayPantalonHombre = new Array();
+      let arrayCalzado = new Array();
+      for(const tallaUniforme of buscarTallaUniformes){
+
+        if(tallaUniforme.TIP_CODIGO2 == 1319){
+          arrayCamisa.push(tallaUniforme);
+        }else if(tallaUniforme.TIP_CODIGO2 == 1327){
+          arrayPantalonMujer.push(tallaUniforme);
+        }else if(tallaUniforme.TIP_CODIGO2 == 1328){
+          arrayPantalonHombre.push(tallaUniforme);
+        }else if(tallaUniforme.TIP_CODIGO2 == 1354){
+          arrayCalzado.push(tallaUniforme);
+        }
+
+      }
+
+      return {'tallaCamisa': arrayCamisa, 'tallaPantalonMujer': arrayPantalonMujer, 
+              'tallaPantalonHombre':arrayPantalonHombre,'tallaCalzado':arrayCalzado};
 
     } catch (error) {
 
