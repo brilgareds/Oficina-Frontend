@@ -7,7 +7,11 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
     const result = await pool.query`
     SELECT
         ESMAD_INFORMACION_BASICA.MENU_CODIGO,
-        ESMAD_INFORMACION_BASICA.TIP_CODIGO_DOCUMENTO,
+        CASE
+          WHEN ESMAD_INFORMACION_BASICA.TIP_CODIGO_DOCUMENTO IS NOT NULL
+            THEN ESMAD_INFORMACION_BASICA.TIP_CODIGO_DOCUMENTO
+          ELSE bi_emple.tip_docu
+        END AS TIP_CODIGO_DOCUMENTO,
         CASE
           WHEN ESMAD_INFORMACION_BASICA.NRO_DOCUMENTO IS NOT NULL
             THEN ESMAD_INFORMACION_BASICA.NRO_DOCUMENTO
@@ -154,7 +158,7 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
     const pool = await mssqlEsmad;
     const result = await pool.query`
       SELECT
-          ESMAD_TIPO.TIP_CODIGO,
+          ESMAD_TIPO.TIP_ATRIBUTO1,
           ESMAD_TIPO.TIP_NOMBRE
       FROM
           dbo.ESMAD_CLASE_TIPO
@@ -172,7 +176,7 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
     const pool = await mssqlEsmad;
     const result = await pool.query`
       SELECT
-          ESMAD_TIPO.TIP_CODIGO,
+          ESMAD_TIPO.TIP_ATRIBUTO1,
           ESMAD_TIPO.TIP_NOMBRE
       FROM
           dbo.ESMAD_CLASE_TIPO
