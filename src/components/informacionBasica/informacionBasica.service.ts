@@ -149,6 +149,7 @@ export class InformacionBasicaService {
   }
 
   public async actualizacionDatos({ 
+    INFORMACION_BASICA_CODIGO,
     TIP_CODIGO_DOCUMENTO,
     NRO_DOCUMENTO,
     NOMBRES,
@@ -178,28 +179,28 @@ export class InformacionBasicaService {
 
       let operacionActualizarDatos = await this.informacionBasicaRepository.existeRegistro(NRO_DOCUMENTO);
 
-      if (operacionActualizarDatos) {
+      const TIP_CODIGO_DOCUMENTO_string: string = (TIP_CODIGO_DOCUMENTO)?TIP_CODIGO_DOCUMENTO+"":"(null)";
+      const NRO_DOCUMENTO_string: string = (NRO_DOCUMENTO)?NRO_DOCUMENTO+"":"(null)";
+      const NOMBRES_string: string = (NOMBRES)?"'"+NOMBRES+"'":"(null)";
+      const APELLIDOS_string: string = (APELLIDOS)?"'"+APELLIDOS+"'":"(null)";
+      const SEXO_string: string = (SEXO)?"'"+SEXO+"'":"(null)";
+      const FECHA_NACIMIENTO_string: string = (FECHA_NACIMIENTO)?"'"+FECHA_NACIMIENTO+"'":"(null)";
+      const ESTADO_CIVIL_string: string = (ESTADO_CIVIL)?ESTADO_CIVIL+"":"(null)";
+      const DEPARTAMENTO_RESIDENCIA_string: string = (DEPARTAMENTO_RESIDENCIA)?DEPARTAMENTO_RESIDENCIA+"":"(null)";
+      const CIUDAD_RESIDENCIA_string: string = (CIUDAD_RESIDENCIA)?CIUDAD_RESIDENCIA+"":"(null)";
+      const BARRIO_RESIDENCIA_string: string = (BARRIO_RESIDENCIA)?"'"+BARRIO_RESIDENCIA+"'":"(null)";
+      const LOCALIDAD_RESIDENCIA_string: string = (LOCALIDAD_RESIDENCIA)?"'"+LOCALIDAD_RESIDENCIA+"'":"(null)";
+      const DIRECCION_COMPLETA_string: string = (DIRECCION_COMPLETA)?"'"+DIRECCION_COMPLETA+"'":"(null)";
+      const EMAIL_PERSONAL_string: string = (EMAIL_PERSONAL)?"'"+EMAIL_PERSONAL+"'":"(null)";
+      const EMAIL_CORPORATIVO_string: string = (EMAIL_CORPORATIVO)?"'"+EMAIL_CORPORATIVO+"'":"(null)";
+      const CELULAR_CONTACTO_string: string = (CELULAR_CONTACTO)?CELULAR_CONTACTO+"":"(null)";
+      const CELULAR_CORPORATIVO_string: string = (CELULAR_CORPORATIVO)?CELULAR_CORPORATIVO+"":"(null)";
+      const ANTIGUEDAD_EMPRESA_string: string = (ANTIGUEDAD_EMPRESA)?"'"+ANTIGUEDAD_EMPRESA+"'":"(null)";
+      const PLAN_CARRERA_string: string = (PLAN_CARRERA)?PLAN_CARRERA+"":"(null)";
+      const NRO_CARGOS_string: string = (NRO_CARGOS)?NRO_CARGOS+"":"(null)";
+      const CARGOS_OCUPADOS_string: string = (CARGOS_OCUPADOS)?"'"+CARGOS_OCUPADOS+"'":"(null)";
 
-        const TIP_CODIGO_DOCUMENTO_string: string = (TIP_CODIGO_DOCUMENTO)?TIP_CODIGO_DOCUMENTO+"":"(null)";
-        const NRO_DOCUMENTO_string: string = (NRO_DOCUMENTO)?NRO_DOCUMENTO+"":"(null)";
-        const NOMBRES_string: string = (NOMBRES)?"'"+NOMBRES+"'":"(null)";
-        const APELLIDOS_string: string = (APELLIDOS)?"'"+APELLIDOS+"'":"(null)";
-        const SEXO_string: string = (SEXO)?"'"+SEXO+"'":"(null)";
-        const FECHA_NACIMIENTO_string: string = (FECHA_NACIMIENTO)?"'"+FECHA_NACIMIENTO+"'":"(null)";
-        const ESTADO_CIVIL_string: string = (ESTADO_CIVIL)?ESTADO_CIVIL+"":"(null)";
-        const DEPARTAMENTO_RESIDENCIA_string: string = (DEPARTAMENTO_RESIDENCIA)?DEPARTAMENTO_RESIDENCIA+"":"(null)";
-        const CIUDAD_RESIDENCIA_string: string = (CIUDAD_RESIDENCIA)?CIUDAD_RESIDENCIA+"":"(null)";
-        const BARRIO_RESIDENCIA_string: string = (BARRIO_RESIDENCIA)?"'"+BARRIO_RESIDENCIA+"'":"(null)";
-        const LOCALIDAD_RESIDENCIA_string: string = (LOCALIDAD_RESIDENCIA)?"'"+LOCALIDAD_RESIDENCIA+"'":"(null)";
-        const DIRECCION_COMPLETA_string: string = (DIRECCION_COMPLETA)?"'"+DIRECCION_COMPLETA+"'":"(null)";
-        const EMAIL_PERSONAL_string: string = (EMAIL_PERSONAL)?"'"+EMAIL_PERSONAL+"'":"(null)";
-        const EMAIL_CORPORATIVO_string: string = (EMAIL_CORPORATIVO)?"'"+EMAIL_CORPORATIVO+"'":"(null)";
-        const CELULAR_CONTACTO_string: string = (CELULAR_CONTACTO)?CELULAR_CONTACTO+"":"(null)";
-        const CELULAR_CORPORATIVO_string: string = (CELULAR_CORPORATIVO)?CELULAR_CORPORATIVO+"":"(null)";
-        const ANTIGUEDAD_EMPRESA_string: string = (ANTIGUEDAD_EMPRESA)?"'"+ANTIGUEDAD_EMPRESA+"'":"(null)";
-        const PLAN_CARRERA_string: string = (PLAN_CARRERA)?PLAN_CARRERA+"":"(null)";
-        const NRO_CARGOS_string: string = (NRO_CARGOS)?NRO_CARGOS+"":"(null)";
-        const CARGOS_OCUPADOS_string: string = (CARGOS_OCUPADOS)?"'"+CARGOS_OCUPADOS+"'":"(null)";
+      if (operacionActualizarDatos) {
 
         operacionActualizarDatos = await this.informacionBasicaRepository.crearRegistro(
           TIP_CODIGO_DOCUMENTO_string,
@@ -225,7 +226,28 @@ export class InformacionBasicaService {
 
       }else{
 
-
+        operacionActualizarDatos = await this.informacionBasicaRepository.actualizacionRegistro(
+          INFORMACION_BASICA_CODIGO,
+          TIP_CODIGO_DOCUMENTO_string,
+          NRO_DOCUMENTO_string,
+          NOMBRES_string,
+          APELLIDOS_string,
+          SEXO_string,
+          FECHA_NACIMIENTO_string,
+          ESTADO_CIVIL_string,
+          DEPARTAMENTO_RESIDENCIA_string,
+          CIUDAD_RESIDENCIA_string,
+          BARRIO_RESIDENCIA_string,
+          LOCALIDAD_RESIDENCIA_string,
+          DIRECCION_COMPLETA_string,
+          EMAIL_PERSONAL_string,
+          EMAIL_CORPORATIVO_string,
+          CELULAR_CONTACTO_string,
+          CELULAR_CORPORATIVO_string,
+          ANTIGUEDAD_EMPRESA_string,
+          PLAN_CARRERA_string,
+          NRO_CARGOS_string,
+          CARGOS_OCUPADOS_string);
 
       }
 
