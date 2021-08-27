@@ -7,7 +7,7 @@ export class InformacionBasicaService {
   public async buscarMenu({ cedula,empresa }: InformacionBasicaDto) {
     try {
       const buscarDatos = await this.informacionBasicaRepository.buscarDatos(cedula, empresa);
-      
+
       return buscarDatos;
 
     } catch (error) {
@@ -196,10 +196,6 @@ export class InformacionBasicaService {
         const EMAIL_CORPORATIVO_string: string = (EMAIL_CORPORATIVO)?"'"+EMAIL_CORPORATIVO+"'":"(null)";
         const CELULAR_CONTACTO_string: string = (CELULAR_CONTACTO)?CELULAR_CONTACTO+"":"(null)";
         const CELULAR_CORPORATIVO_string: string = (CELULAR_CORPORATIVO)?CELULAR_CORPORATIVO+"":"(null)";
-        const NIVEL2_string: string = (NIVEL2)?NIVEL2+"":"(null)";
-        const NUVEL4_string: string = (NUVEL4)?NUVEL4+"":"(null)";
-        const NIVEL5_string: string = (NIVEL5)?NIVEL5+"":"(null)";
-        const CARGO_ACTUAL_string: string = (CARGO_ACTUAL)?"'"+CARGO_ACTUAL+"'":"(null)";
         const ANTIGUEDAD_EMPRESA_string: string = (ANTIGUEDAD_EMPRESA)?"'"+ANTIGUEDAD_EMPRESA+"'":"(null)";
         const PLAN_CARRERA_string: string = (PLAN_CARRERA)?PLAN_CARRERA+"":"(null)";
         const NRO_CARGOS_string: string = (NRO_CARGOS)?NRO_CARGOS+"":"(null)";
@@ -222,10 +218,6 @@ export class InformacionBasicaService {
           EMAIL_CORPORATIVO_string,
           CELULAR_CONTACTO_string,
           CELULAR_CORPORATIVO_string,
-          NIVEL2_string,
-          NUVEL4_string,
-          NIVEL5_string,
-          CARGO_ACTUAL_string,
           ANTIGUEDAD_EMPRESA_string,
           PLAN_CARRERA_string,
           NRO_CARGOS_string,
