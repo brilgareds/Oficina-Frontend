@@ -20,6 +20,14 @@ export class DepartamentosDto {
 
 }
 
+export class CiudadesDto {
+  
+  @IsNotEmpty()
+  @IsNumber()
+  codDepartamento: number;
+
+}
+
 export class ActualizarInformacionBasicaDto {
 
   @IsNotEmpty()

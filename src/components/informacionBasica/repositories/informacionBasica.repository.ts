@@ -1,8 +1,13 @@
 export interface InformacionBasicaRepository {
   buscarDatos(cedula: number, empresa: number): Promise<any>;
+  consultarTipDocumento(): Promise<any>;
+  consultarEstadoCivil(): Promise<any>;
   consultarPaises(): Promise<any>;
   consultarDepartamentos(codPais: number): Promise<any>;
+  consultarMunicipios(codDepartamento: number): Promise<any>;
   consultarNomenclatura(): Promise<any>;
+  consultarAntiguedad(): Promise<any>;
+  consultarTalla(): Promise<any>;
   existeRegistro(cedula: number): Promise<any>;
   crearRegistro(TIP_CODIGO_DOCUMENTO: string,
                 NRO_DOCUMENTO: string,
