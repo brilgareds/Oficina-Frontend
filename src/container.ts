@@ -7,8 +7,14 @@ import { CategoryMSSQLRepository } from "./components/category/repositories/impl
 import { AuthService } from "./components/auth/auth.service";
 import { NavigatorService } from "./components/navigator/navigator.service";
 import { RrhhService } from "./components/rrhh/rrhh.service";
+import { DocumentTypeMSSQLRepository } from "./components/documentType/repositories/impl/mssql/documentType.repository";
+import { DocumentTypeService } from "./components/documentType/documentType.service";
+import { EpsMSSQLRepository } from "./components/eps/repositories/impl/mssql/eps.repository";
+import { EpsService } from "./components/eps/eps.service";
 import { MenuOVMSSQLRepository } from "./components/menuOV/repositories/impl/mssql/menuOV.repository";
 import { MenuOVService } from "./components/menuOV/menuOV.service";
+import { RrhhMSSQLRepository } from "./components/rrhh/repositories/impl/mssql/rrhh.repository";
+import { SendAlertEmailMSSQLRepository } from "./components/sendAlertEmail/repositories/impl/mssql/sendAlertEmail.repository";
 import { InformacionBasicaMSSQLRepository } from "./components/informacionBasica/repositories/impl/mssql/informacionBasica.repository";
 import { InformacionBasicaService } from "./components/informacionBasica/informacionBasica.service";
 
@@ -22,13 +28,19 @@ export default (app: express.Application): void => {
     authRepository: asClass(AuthMSSQLRepository).scoped(),
     navigatorRepository: asClass(NavigatorMSSQLRepository).scoped(),
     categoryRepository: asClass(CategoryMSSQLRepository).scoped(),
+    documentTypeRepository: asClass(DocumentTypeMSSQLRepository).scoped(),
+    epsRepository: asClass(EpsMSSQLRepository).scoped(),
     menuOVRepository: asClass(MenuOVMSSQLRepository).scoped(),
+    rrhhRepository: asClass(RrhhMSSQLRepository).scoped(),
+    sendAlertEmailRepository: asClass(SendAlertEmailMSSQLRepository).scoped(),
     informacionBasicaRepository: asClass(InformacionBasicaMSSQLRepository).scoped(),
 
     // services
     authService: asClass(AuthService).scoped(),
     navigatorService: asClass(NavigatorService).scoped(),
     rrhhService: asClass(RrhhService).scoped(),
+    documentTypeService: asClass(DocumentTypeService).scoped(),
+    epsService: asClass(EpsService).scoped(),
     menuOVService: asClass(MenuOVService).scoped(),
     informacionBasicaService: asClass(InformacionBasicaService).scoped(),
   });
