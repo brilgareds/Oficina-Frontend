@@ -51,4 +51,15 @@ export interface InformacionBasicaRepository {
                 PLAN_CARRERA: string,
                 NRO_CARGOS: string,
                 CARGOS_OCUPADOS: string): Promise<any>;
+  actualizacionBi_emple(EMP_CODIGO: number,
+                        NRO_DOCUMENTO_string: string,
+                        ESTADO_CIVIL: string,
+                        DEPARTAMENTO_RESIDENCIA: string,
+                        CIUDAD_RESIDENCIA: string,
+                        BARRIO_RESIDENCIA: string,
+                        DIRECCION_COMPLETA: string,
+                        EMAIL_PERSONAL: string,
+                        EMAIL_CORPORATIVO: string,
+                        CELULAR_CONTACTO: string,
+                        CELULAR_CORPORATIVO: string): Promise<any>;
 }
