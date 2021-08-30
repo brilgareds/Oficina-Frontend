@@ -31,12 +31,12 @@ export class CiudadesDto {
 export class ActualizarInformacionBasicaDto {
 
   @IsNotEmpty()
-  @IsNumber()
-  INFORMACION_BASICA_CODIGO: number;
+  @IsString()
+  TIP_CODIGO_DOCUMENTO: string;
 
   @IsNotEmpty()
   @IsNumber()
-  TIP_CODIGO_DOCUMENTO: number;
+  EMP_CODIGO: number;
 
   @IsNotEmpty()
   @IsNumber()
@@ -58,8 +58,8 @@ export class ActualizarInformacionBasicaDto {
   @IsString()
   FECHA_NACIMIENTO: string
 
-  @IsNumber()
-  ESTADO_CIVIL: number;
+  @IsString()
+  ESTADO_CIVIL: string;
 
   @IsNumber()
   DEPARTAMENTO_RESIDENCIA: number;
@@ -87,22 +87,6 @@ export class ActualizarInformacionBasicaDto {
 
   @IsNumber()
   CELULAR_CORPORATIVO:number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  NIVEL2: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  NUVEL4: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  NIVEL5: number;
-
-  @IsNotEmpty()
-  @IsString()
-  CARGO_ACTUAL: string;
 
   @IsNumber()
   ANTIGUEDAD_EMPRESA: number;
