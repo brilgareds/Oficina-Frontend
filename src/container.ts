@@ -17,8 +17,13 @@ import { RrhhMSSQLRepository } from "./components/rrhh/repositories/impl/mssql/r
 import { SendAlertEmailMSSQLRepository } from "./components/sendAlertEmail/repositories/impl/mssql/sendAlertEmail.repository";
 import { InformacionBasicaMSSQLRepository } from "./components/informacionBasica/repositories/impl/mssql/informacionBasica.repository";
 import { InformacionBasicaService } from "./components/informacionBasica/informacionBasica.service";
+<<<<<<< Updated upstream
 import { HelpService } from "./components/help/help.service";
 import { HelpMSSQLRepository } from "./components/help/repositories/impl/mssql/help.repository";
+=======
+import { ViviendaMSSQLRepository } from "./components/vivienda/repositories/impl/mssql/vivienda.repository";
+import { ViviendaService } from "./components/vivienda/vivienda.service";
+>>>>>>> Stashed changes
 
 export default (app: express.Application): void => {
   const container = createContainer({
@@ -36,7 +41,11 @@ export default (app: express.Application): void => {
     rrhhRepository: asClass(RrhhMSSQLRepository).scoped(),
     sendAlertEmailRepository: asClass(SendAlertEmailMSSQLRepository).scoped(),
     informacionBasicaRepository: asClass(InformacionBasicaMSSQLRepository).scoped(),
+<<<<<<< Updated upstream
     helpRepository: asClass(HelpMSSQLRepository).scoped(),
+=======
+    viviendaRepository: asClass(ViviendaMSSQLRepository).scoped(),
+>>>>>>> Stashed changes
 
     // services
     authService: asClass(AuthService).scoped(),
@@ -46,7 +55,11 @@ export default (app: express.Application): void => {
     epsService: asClass(EpsService).scoped(),
     menuOVService: asClass(MenuOVService).scoped(),
     informacionBasicaService: asClass(InformacionBasicaService).scoped(),
+<<<<<<< Updated upstream
     helpService: asClass(HelpService).scoped(),
+=======
+    viviendaService: asClass(ViviendaService).scoped(),
+>>>>>>> Stashed changes
   });
 
   app.use(scopePerRequest(container));
