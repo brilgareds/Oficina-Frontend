@@ -7,6 +7,7 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
     const result = await pool.query`
     SELECT
         ESMAD_INFORMACION_BASICA.MENU_CODIGO,
+        bi_emple.pai_resi AS PAI_RESI,
         CASE
           WHEN ESMAD_INFORMACION_BASICA.TIP_CODIGO_DOCUMENTO IS NOT NULL
             THEN ESMAD_INFORMACION_BASICA.TIP_CODIGO_DOCUMENTO
