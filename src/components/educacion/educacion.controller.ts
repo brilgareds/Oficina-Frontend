@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { route, GET, POST, before } from "awilix-express";
 import validationMiddleware from "../common/middlewares/validation";
 
-import { EducacionCrearDto } from "./dto/educacion.dto";
 import { EducacionService } from "./educacion.service";
 
 /**
@@ -89,6 +88,42 @@ import { EducacionService } from "./educacion.service";
      res.status(401).json({ message: e.message });  
     }  
   }
+  
+
+  /**
+   * @swagger
+   * /api/v1/educacion/consultarDatosEstudio:
+   *  post:
+   *    summary: Informacion de estudio de los usuarios
+   *    tags: [Educacion]
+   *    requestBody:
+   *      required: true
+   *      content:
+   *        application/json:
+   *          schema:
+   *            type: object
+   *            properties:
+   *              cedula:
+   *                type: integer
+   *                description: identificación del usuario
+   *            required:
+   *              - cedula
+   *    responses:
+   *      200:
+   *        description: Consulta exitosa de la informacion de estudio del usuario
+   *      401:
+   *        description: Error en consultar informacion basica del usuario
+   */
+   @route("/consultarDatosEstudio")
+   @POST()
+   public async consultarDatosEstudio(req: Request, res: Response){
+     try {
+       const consultarDatosEstudio = await this.educacionService.consultarDatosEstudios(req.body);
+       res.status(200).json(consultarDatosEstudio);
+     } catch (error) {
+      res.status(401).json({ message: error.message });  
+     } 
+   }
 
    /**
    * @swagger

@@ -1,4 +1,4 @@
-import { EducacionCrearDto } from "./dto/educacion.dto";
+import { EducacionCrearDto, ConsultarDatosEstudio } from "./dto/educacion.dto";
 import { EducacionRepository } from "./repositories/educacion.repository";
 
 export class EducacionService {
@@ -26,6 +26,17 @@ export class EducacionService {
     try {
       const consultarModalidadEstudio = await this.educacionRepository.consultarModalidadEstudio();
       return consultarModalidadEstudio;  
+    } catch (error) {
+      throw new Error(error.message);  
+    }
+  }
+
+  public async consultarDatosEstudios({cedula}:ConsultarDatosEstudio){
+    try {
+      const consultarDatosEstudio = await this.educacionRepository.consultarDatosEstudio(cedula);
+      //console.log(consultarDatosEstudio);
+      
+      return consultarDatosEstudio;
     } catch (error) {
       throw new Error(error.message);  
     }

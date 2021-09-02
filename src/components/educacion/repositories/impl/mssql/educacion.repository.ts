@@ -27,6 +27,15 @@ export class EducacionMssqlRepository implements EducacionRepository {
     return result.recordset;
   }
 
+  public async consultarDatosEstudio(cedula: number): Promise<any>{
+    const pool = await mssqlEsmad;
+    const result = await pool.query`SELECT EDUCACION_CODIGO, INFORMACION_BASICA_CODIGO, NIVEL_ESTUDIO, TITULO, INSTITUCION, 
+                                      CIUDAD, ESTADO_ESTUDIO, FECHA_INICIO, FECHA_FINALIZACION, FECHA_GRADO_TENTATIVO, MODALIDAD_ESTUDIO, PROMEDIO 
+                                    FROM ESMAD_EDUCACION
+                                    WHERE INFORMACION_BASICA_CODIGO = ${cedula}`;  
+    return result.recordset;  
+  }
+
   public async crearRegistro(MENU_CODIGO: number, 
                              INFORMACION_BASICA_CODIGO: number,
                              NIVEL_ESTUDIO: number,
