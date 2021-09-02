@@ -20,7 +20,7 @@ import { InformacionBasicaService } from "./components/informacionBasica/informa
 import { HelpService } from "./components/help/help.service";
 import { HelpMSSQLRepository } from "./components/help/repositories/impl/mssql/help.repository";
 import { EducacionMssqlRepository } from "./components/educacion/repositories/impl/mssql/educacion.repository";
-import { EducacionService } from "./components/educacion/educacion.service
+import { EducacionService } from "./components/educacion/educacion.service";
 import { ViviendaMSSQLRepository } from "./components/vivienda/repositories/impl/mssql/vivienda.repository";
 import { ViviendaService } from "./components/vivienda/vivienda.service";
 
