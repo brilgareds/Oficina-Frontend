@@ -47,3 +47,10 @@ export class EducacionCrearDto {
   @IsString()
   PROMEDIO: string;
 }
+
+export class ConsultarDatosEstudio {
+  
+  @IsNotEmpty()
+  @IsNumber()
+  cedula: number;
+}
