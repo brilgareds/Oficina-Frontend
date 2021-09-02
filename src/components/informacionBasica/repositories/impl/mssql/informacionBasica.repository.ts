@@ -7,6 +7,7 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
     const result = await pool.query`
     SELECT
         ESMAD_INFORMACION_BASICA.MENU_CODIGO,
+        bi_emple.pai_resi AS PAI_RESI,
         CASE
           WHEN ESMAD_INFORMACION_BASICA.TIP_CODIGO_DOCUMENTO IS NOT NULL
             THEN ESMAD_INFORMACION_BASICA.TIP_CODIGO_DOCUMENTO
@@ -319,7 +320,7 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
       ESMAD_INFORMACION_BASICA.NRO_DOCUMENTO = ${cedula}
     `;
     
-    return result.recordset[0];
+    return result.recordset;
   }
 
   public async crearRegistro(
@@ -344,29 +345,29 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
     NRO_CARGOS: string,
     CARGOS_OCUPADOS: string): Promise<any> {
     const pool = await mssqlEsmad;
-    const result = await pool.query`
-      INSERT INTO dbo.INFORMACION_BASICA_CODIGO (
-        INFORMACION_BASICA_CODIGO.MENU_CODIGO,
-        INFORMACION_BASICA_CODIGO.TIP_CODIGO_DOCUMENTO,
-        INFORMACION_BASICA_CODIGO.NRO_DOCUMENTO,
-        INFORMACION_BASICA_CODIGO.NOMBRES,
-        INFORMACION_BASICA_CODIGO.APELLIDOS,
-        INFORMACION_BASICA_CODIGO.SEXO,
-        INFORMACION_BASICA_CODIGO.FECHA_NACIMIENTO,
-        INFORMACION_BASICA_CODIGO.ESTADO_CIVIL,
-        INFORMACION_BASICA_CODIGO.DEPARTAMENTO_RESIDENCIA,
-        INFORMACION_BASICA_CODIGO.CIUDAD_RESIDENCIA,
-        INFORMACION_BASICA_CODIGO.BARRIO_RESIDENCIA,
-        INFORMACION_BASICA_CODIGO.LOCALIDAD_RESIDENCIA,
-        INFORMACION_BASICA_CODIGO.DIRECCION_COMPLETA,
-        INFORMACION_BASICA_CODIGO.EMAIL_PERSONAL,
-        INFORMACION_BASICA_CODIGO.EMAIL_CORPORATIVO,
-        INFORMACION_BASICA_CODIGO.CELULAR_CONTACTO,
-        INFORMACION_BASICA_CODIGO.CELULAR_CORPORATIVO,
-        INFORMACION_BASICA_CODIGO.ANTIGUEDAD_EMPRESA,
-        INFORMACION_BASICA_CODIGO.PLAN_CARRERA,
-        INFORMACION_BASICA_CODIGO.NRO_CARGOS,
-        INFORMACION_BASICA_CODIGO.CARGOS_OCUPADOS
+    const sql = `
+      INSERT INTO dbo.ESMAD_INFORMACION_BASICA (
+        MENU_CODIGO,
+        TIP_CODIGO_DOCUMENTO,
+        NRO_DOCUMENTO,
+        NOMBRES,
+        APELLIDOS,
+        SEXO,
+        FECHA_NACIMIENTO,
+        ESTADO_CIVIL,
+        DEPARTAMENTO_RESIDENCIA,
+        CIUDAD_RESIDENCIA,
+        BARRIO_RESIDENCIA,
+        LOCALIDAD_RESIDENCIA,
+        DIRECCION_COMPLETA,
+        EMAIL_PERSONAL,
+        EMAIL_CORPORATIVO,
+        CELULAR_CONTACTO,
+        CELULAR_CORPORATIVO,
+        ANTIGUEDAD_EMPRESA,
+        PLAN_CARRERA,
+        NRO_CARGOS,
+        CARGOS_OCUPADOS
     ) VALUES (
         2,
         ${TIP_CODIGO_DOCUMENTO},
@@ -391,8 +392,10 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
         ${CARGOS_OCUPADOS}
     )
     `;
-    
+
+    const result = await pool.query(sql);
     return result.recordset;
+
   }
 
   public async actualizacionRegistro(
@@ -418,31 +421,106 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
     NRO_CARGOS: string,
     CARGOS_OCUPADOS: string): Promise<any> {
     const pool = await mssqlEsmad;
+    console.log(`
+    UPDATE dbo.ESMAD_INFORMACION_BASICA 
+      SET 
+        TIP_CODIGO_DOCUMENTO = ${TIP_CODIGO_DOCUMENTO},
+        NRO_DOCUMENTO = ${NRO_DOCUMENTO},
+        NOMBRES = ${NOMBRES},
+        APELLIDOS = ${APELLIDOS},
+        SEXO = ${SEXO},
+        FECHA_NACIMIENTO = ${FECHA_NACIMIENTO},
+        ESTADO_CIVIL = ${ESTADO_CIVIL},
+        DEPARTAMENTO_RESIDENCIA = ${DEPARTAMENTO_RESIDENCIA},
+        CIUDAD_RESIDENCIA = ${CIUDAD_RESIDENCIA},
+        BARRIO_RESIDENCIA = ${BARRIO_RESIDENCIA},
+        LOCALIDAD_RESIDENCIA = ${LOCALIDAD_RESIDENCIA},
+        DIRECCION_COMPLETA = ${DIRECCION_COMPLETA},
+        EMAIL_PERSONAL = ${EMAIL_PERSONAL},
+        EMAIL_CORPORATIVO = ${EMAIL_CORPORATIVO},
+        CELULAR_CONTACTO = ${CELULAR_CONTACTO},
+        CELULAR_CORPORATIVO = ${CELULAR_CORPORATIVO},
+        ANTIGUEDAD_EMPRESA = ${ANTIGUEDAD_EMPRESA},
+        PLAN_CARRERA = ${PLAN_CARRERA},
+        NRO_CARGOS = ${NRO_CARGOS},
+        CARGOS_OCUPADOS = ${CARGOS_OCUPADOS}
+    WHERE 
+      INFORMACION_BASICA_CODIGO = ${INFORMACION_BASICA_CODIGO}
+  `);
     const result = await pool.query`
       UPDATE dbo.ESMAD_INFORMACION_BASICA 
         SET 
-          TIP_CODIGO_DOCUMENTO = ${INFORMACION_BASICA_CODIGO},
-          NRO_DOCUMENTO = ${INFORMACION_BASICA_CODIGO},
-          NOMBRES = ${INFORMACION_BASICA_CODIGO},
-          APELLIDOS = ${INFORMACION_BASICA_CODIGO},
-          SEXO = ${INFORMACION_BASICA_CODIGO},
-          FECHA_NACIMIENTO = ${INFORMACION_BASICA_CODIGO},
-          ESTADO_CIVIL = ${INFORMACION_BASICA_CODIGO},
-          DEPARTAMENTO_RESIDENCIA = ${INFORMACION_BASICA_CODIGO},
-          CIUDAD_RESIDENCIA = ${INFORMACION_BASICA_CODIGO},
-          BARRIO_RESIDENCIA = ${INFORMACION_BASICA_CODIGO},
-          LOCALIDAD_RESIDENCIA = ${INFORMACION_BASICA_CODIGO},
-          DIRECCION_COMPLETA = ${INFORMACION_BASICA_CODIGO},
-          EMAIL_PERSONAL = ${INFORMACION_BASICA_CODIGO},
-          EMAIL_CORPORATIVO = ${INFORMACION_BASICA_CODIGO},
-          CELULAR_CONTACTO = ${INFORMACION_BASICA_CODIGO},
-          CELULAR_CORPORATIVO = ${INFORMACION_BASICA_CODIGO},
-          ANTIGUEDAD_EMPRESA = ${INFORMACION_BASICA_CODIGO},
-          PLAN_CARRERA = ${INFORMACION_BASICA_CODIGO},
-          NRO_CARGOS = ${INFORMACION_BASICA_CODIGO},
-          CARGOS_OCUPADOS = ${INFORMACION_BASICA_CODIGO}
+          TIP_CODIGO_DOCUMENTO = ${TIP_CODIGO_DOCUMENTO},
+          NRO_DOCUMENTO = ${NRO_DOCUMENTO},
+          NOMBRES = ${NOMBRES},
+          APELLIDOS = ${APELLIDOS},
+          SEXO = ${SEXO},
+          FECHA_NACIMIENTO = ${FECHA_NACIMIENTO},
+          ESTADO_CIVIL = ${ESTADO_CIVIL},
+          DEPARTAMENTO_RESIDENCIA = ${DEPARTAMENTO_RESIDENCIA},
+          CIUDAD_RESIDENCIA = ${CIUDAD_RESIDENCIA},
+          BARRIO_RESIDENCIA = ${BARRIO_RESIDENCIA},
+          LOCALIDAD_RESIDENCIA = ${LOCALIDAD_RESIDENCIA},
+          DIRECCION_COMPLETA = ${DIRECCION_COMPLETA},
+          EMAIL_PERSONAL = ${EMAIL_PERSONAL},
+          EMAIL_CORPORATIVO = ${EMAIL_CORPORATIVO},
+          CELULAR_CONTACTO = ${CELULAR_CONTACTO},
+          CELULAR_CORPORATIVO = ${CELULAR_CORPORATIVO},
+          ANTIGUEDAD_EMPRESA = ${ANTIGUEDAD_EMPRESA},
+          PLAN_CARRERA = ${PLAN_CARRERA},
+          NRO_CARGOS = ${NRO_CARGOS},
+          CARGOS_OCUPADOS = ${CARGOS_OCUPADOS}
       WHERE 
         INFORMACION_BASICA_CODIGO = ${INFORMACION_BASICA_CODIGO}
+    `;
+    
+    return result.recordset;
+  }
+
+  public async actualizacionBi_emple(
+    EMP_CODIGO: number,
+    NRO_DOCUMENTO_string: string,
+    ESTADO_CIVIL: string,
+    DEPARTAMENTO_RESIDENCIA: string,
+    CIUDAD_RESIDENCIA: string,
+    BARRIO_RESIDENCIA: string,
+    DIRECCION_COMPLETA: string,
+    EMAIL_PERSONAL: string,
+    EMAIL_CORPORATIVO: string,
+    CELULAR_CONTACTO: string,
+    CELULAR_CORPORATIVO: string): Promise<any> {
+    const pool = await mssqlKactus;
+    console.log(`
+                  UPDATE dbo.bi_emple 
+                    SET 
+                      est_civi = ${ESTADO_CIVIL},
+                      dto_resi = ${DEPARTAMENTO_RESIDENCIA},
+                      mpi_resi = ${CIUDAD_RESIDENCIA},
+                      bar_resi = ${BARRIO_RESIDENCIA},
+                      dir_resi = ${DIRECCION_COMPLETA},
+                      eee_mail = ${EMAIL_PERSONAL},
+                      box_mail = ${EMAIL_CORPORATIVO},
+                      tel_movi = ${CELULAR_CONTACTO},
+                      tel_trab = ${CELULAR_CORPORATIVO}
+                  WHERE 
+                    cod_empr = ${EMP_CODIGO}
+                    AND cod_empl = ${NRO_DOCUMENTO_string}
+                `);
+    const result = await pool.query`
+      UPDATE dbo.bi_emple 
+        SET 
+          est_civi = ${ESTADO_CIVIL},
+          dto_resi = ${DEPARTAMENTO_RESIDENCIA},
+          mpi_resi = ${CIUDAD_RESIDENCIA},
+          bar_resi = ${BARRIO_RESIDENCIA},
+          dir_resi = ${DIRECCION_COMPLETA},
+          eee_mail = ${EMAIL_PERSONAL},
+          box_mail = ${EMAIL_CORPORATIVO},
+          tel_movi = ${CELULAR_CONTACTO},
+          tel_trab = ${CELULAR_CORPORATIVO}
+      WHERE 
+        cod_empr = ${EMP_CODIGO}
+        AND cod_empl = ${NRO_DOCUMENTO_string}
     `;
     
     return result.recordset;

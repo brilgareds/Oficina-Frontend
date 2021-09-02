@@ -231,9 +231,9 @@ export class InformacionBasicaService {
     }
   }
 
-  public async actualizacionDatos({ 
-    INFORMACION_BASICA_CODIGO,
+  public async actualizacionDatos({
     TIP_CODIGO_DOCUMENTO,
+    EMP_CODIGO,
     NRO_DOCUMENTO,
     NOMBRES,
     APELLIDOS,
@@ -249,10 +249,6 @@ export class InformacionBasicaService {
     EMAIL_CORPORATIVO,
     CELULAR_CONTACTO,
     CELULAR_CORPORATIVO,
-    NIVEL2,
-    NUVEL4,
-    NIVEL5,
-    CARGO_ACTUAL,
     ANTIGUEDAD_EMPRESA,
     PLAN_CARRERA,
     NRO_CARGOS,
@@ -260,15 +256,16 @@ export class InformacionBasicaService {
   }: ActualizarInformacionBasicaDto) {
     try {
 
+      
       let operacionActualizarDatos = await this.informacionBasicaRepository.existeRegistro(NRO_DOCUMENTO);
-
-      const TIP_CODIGO_DOCUMENTO_string: string = (TIP_CODIGO_DOCUMENTO)?TIP_CODIGO_DOCUMENTO+"":"(null)";
+      
+      const TIP_CODIGO_DOCUMENTO_string: string = (TIP_CODIGO_DOCUMENTO)?"'"+TIP_CODIGO_DOCUMENTO+"'":"(null)";
       const NRO_DOCUMENTO_string: string = (NRO_DOCUMENTO)?NRO_DOCUMENTO+"":"(null)";
       const NOMBRES_string: string = (NOMBRES)?"'"+NOMBRES+"'":"(null)";
       const APELLIDOS_string: string = (APELLIDOS)?"'"+APELLIDOS+"'":"(null)";
       const SEXO_string: string = (SEXO)?"'"+SEXO+"'":"(null)";
       const FECHA_NACIMIENTO_string: string = (FECHA_NACIMIENTO)?"'"+FECHA_NACIMIENTO+"'":"(null)";
-      const ESTADO_CIVIL_string: string = (ESTADO_CIVIL)?ESTADO_CIVIL+"":"(null)";
+      const ESTADO_CIVIL_string: string = (ESTADO_CIVIL)?"'"+ESTADO_CIVIL+"'":"(null)";
       const DEPARTAMENTO_RESIDENCIA_string: string = (DEPARTAMENTO_RESIDENCIA)?DEPARTAMENTO_RESIDENCIA+"":"(null)";
       const CIUDAD_RESIDENCIA_string: string = (CIUDAD_RESIDENCIA)?CIUDAD_RESIDENCIA+"":"(null)";
       const BARRIO_RESIDENCIA_string: string = (BARRIO_RESIDENCIA)?"'"+BARRIO_RESIDENCIA+"'":"(null)";
@@ -279,11 +276,11 @@ export class InformacionBasicaService {
       const CELULAR_CONTACTO_string: string = (CELULAR_CONTACTO)?CELULAR_CONTACTO+"":"(null)";
       const CELULAR_CORPORATIVO_string: string = (CELULAR_CORPORATIVO)?CELULAR_CORPORATIVO+"":"(null)";
       const ANTIGUEDAD_EMPRESA_string: string = (ANTIGUEDAD_EMPRESA)?"'"+ANTIGUEDAD_EMPRESA+"'":"(null)";
-      const PLAN_CARRERA_string: string = (PLAN_CARRERA)?PLAN_CARRERA+"":"(null)";
+      const PLAN_CARRERA_string: string = PLAN_CARRERA+"";
       const NRO_CARGOS_string: string = (NRO_CARGOS)?NRO_CARGOS+"":"(null)";
       const CARGOS_OCUPADOS_string: string = (CARGOS_OCUPADOS)?"'"+CARGOS_OCUPADOS+"'":"(null)";
 
-      if (operacionActualizarDatos) {
+      if (operacionActualizarDatos == "") {
 
         operacionActualizarDatos = await this.informacionBasicaRepository.crearRegistro(
           TIP_CODIGO_DOCUMENTO_string,
@@ -309,8 +306,8 @@ export class InformacionBasicaService {
 
       }else{
 
-        operacionActualizarDatos = await this.informacionBasicaRepository.actualizacionRegistro(
-          INFORMACION_BASICA_CODIGO,
+        /*operacionActualizarDatos = await this.informacionBasicaRepository.actualizacionRegistro(
+          operacionActualizarDatos[0]['INFORMACION_BASICA_CODIGO'],
           TIP_CODIGO_DOCUMENTO_string,
           NRO_DOCUMENTO_string,
           NOMBRES_string,
@@ -330,9 +327,23 @@ export class InformacionBasicaService {
           ANTIGUEDAD_EMPRESA_string,
           PLAN_CARRERA_string,
           NRO_CARGOS_string,
-          CARGOS_OCUPADOS_string);
+          CARGOS_OCUPADOS_string);*/
 
       }
+
+      /*operacionActualizarDatos = await this.informacionBasicaRepository.actualizacionBi_emple(
+        EMP_CODIGO,
+        NRO_DOCUMENTO_string,
+        ESTADO_CIVIL_string,
+        DEPARTAMENTO_RESIDENCIA_string,
+        CIUDAD_RESIDENCIA_string,
+        BARRIO_RESIDENCIA_string,
+        DIRECCION_COMPLETA_string,
+        EMAIL_PERSONAL_string,
+        EMAIL_CORPORATIVO_string,
+        CELULAR_CONTACTO_string,
+        CELULAR_CORPORATIVO_string
+      );*/
 
       return operacionActualizarDatos;
 

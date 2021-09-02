@@ -285,11 +285,81 @@ export class InformacionBasicaController {
    *          schema:
    *            type: object
    *            properties:
-   *              codPais:
+   *              INFORMACION_BASICA_CODIGO:
    *                type: integer
-   *                description: numero del pais del departamento
+   *                description: codigo del registro de informacion basica
+   *              TIP_CODIGO_DOCUMENTO:
+   *                type: integer
+   *                description: codigo del tipo de documento
+   *              EMP_CODIGO:
+   *                type: integer
+   *                description: codigo de la empresa
+   *              NRO_DOCUMENTO:
+   *                type: integer
+   *                description: numero del documento
+   *              NOMBRES:
+   *                type: string
+   *                description: nombre del usuario
+   *              APELLIDOS:
+   *                type: string
+   *                description: apellido del usuario
+   *              SEXO:
+   *                type: string
+   *                description: sigla del sexo
+   *              FECHA_NACIMIENTO:
+   *                type: string
+   *                description: fecha de nacimiento
+   *              ESTADO_CIVIL:
+   *                type: string
+   *                description: sigla del estado civil
+   *              DEPARTAMENTO_RESIDENCIA:
+   *                type: integer
+   *                description: codigo del departamento de residencia
+   *              CIUDAD_RESIDENCIA:
+   *                type: integer
+   *                description: codigo de la ciudad de residencia
+   *              BARRIO_RESIDENCIA:
+   *                type: string
+   *                description: nombre del barrio de residencia
+   *              LOCALIDAD_RESIDENCIA:
+   *                type: string
+   *                description: nombre de la localidad de residencia
+   *              DIRECCION_COMPLETA:
+   *                type: string
+   *                description: direccion de residencia
+   *              EMAIL_PERSONAL:
+   *                type: string
+   *                description: email personal
+   *              EMAIL_CORPORATIVO:
+   *                type: string
+   *                description: email corporativo
+   *              CELULAR_CONTACTO:
+   *                type: integer
+   *                description: celular de contacto
+   *              CELULAR_CORPORATIVO:
+   *                type: integer
+   *                description: celular corporativo
+   *              ANTIGUEDAD_EMPRESA:
+   *                type: integer
+   *                description: codigo de tipo antiguedad
+   *              PLAN_CARRERA:
+   *                type: integer
+   *                description: 1 o 0 si posee plan carrera
+   *              NRO_CARGOS:
+   *                type: integer
+   *                description: cantidad de cargos
+   *              CARGOS_OCUPADOS:
+   *                type: string
+   *                description: cargos que se han ocupado
    *            required:
-   *              - codPais
+   *              - INFORMACION_BASICA_CODIGO
+   *              - TIP_CODIGO_DOCUMENTO
+   *              - EMP_CODIGO
+   *              - NRO_DOCUMENTO
+   *              - NOMBRES
+   *              - APELLIDOS
+   *              - SEXO
+   *              - FECHA_NACIMIENTO
    *    responses:
    *      200:
    *        description: Datos de los departamentos
