@@ -72,6 +72,7 @@ export class AuthController {
   @before([verifyRefreshToken])
   public async refresh(req: Request, res: Response) {
     try {
+      const login = await this.authService.refreshToken(req.user!);
 
       res.status(200).json(login);
     } catch (e) {
