@@ -4,6 +4,7 @@ import { scopePerRequest } from "awilix-express";
 import { AuthMSSQLRepository } from "./components/auth/repositories/impl/mssql/auth.repository";
 import { NavigatorMSSQLRepository } from "./components/navigator/repositories/impl/mssql/navigator.repository";
 import { CategoryMSSQLRepository } from "./components/category/repositories/impl/mssql/category.repository";
+import { SurveyMSSQLRepository } from "./components/survey/repositories/impl/mssql/survey.repository";
 import { AuthService } from "./components/auth/auth.service";
 import { NavigatorService } from "./components/navigator/navigator.service";
 import { RrhhService } from "./components/rrhh/rrhh.service";
@@ -21,6 +22,7 @@ import { HelpService } from "./components/help/help.service";
 import { HelpMSSQLRepository } from "./components/help/repositories/impl/mssql/help.repository";
 import { ViviendaMSSQLRepository } from "./components/vivienda/repositories/impl/mssql/vivienda.repository";
 import { ViviendaService } from "./components/vivienda/vivienda.service";
+import { SurveyService } from "./components/survey/survey.service";
 
 export default (app: express.Application): void => {
   const container = createContainer({
@@ -40,6 +42,7 @@ export default (app: express.Application): void => {
     informacionBasicaRepository: asClass(InformacionBasicaMSSQLRepository).scoped(),
     helpRepository: asClass(HelpMSSQLRepository).scoped(),
     viviendaRepository: asClass(ViviendaMSSQLRepository).scoped(),
+    surveyRepository: asClass(SurveyMSSQLRepository).scoped(),
 
     // services
     authService: asClass(AuthService).scoped(),
@@ -51,6 +54,7 @@ export default (app: express.Application): void => {
     informacionBasicaService: asClass(InformacionBasicaService).scoped(),
     helpService: asClass(HelpService).scoped(),
     viviendaService: asClass(ViviendaService).scoped(),
+    surveyService: asClass(SurveyService).scoped(),
   });
 
   app.use(scopePerRequest(container));
