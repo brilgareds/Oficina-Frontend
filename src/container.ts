@@ -7,7 +7,6 @@ import { CategoryMSSQLRepository } from "./components/category/repositories/impl
 import { SurveyMSSQLRepository } from "./components/survey/repositories/impl/mssql/survey.repository";
 import { AuthService } from "./components/auth/auth.service";
 import { NavigatorService } from "./components/navigator/navigator.service";
-import { RrhhService } from "./components/rrhh/rrhh.service";
 import { SurveyService } from "./components/survey/survey.service";
 
 export default (app: express.Application): void => {
@@ -25,7 +24,6 @@ export default (app: express.Application): void => {
     // services
     authService: asClass(AuthService).scoped(),
     navigatorService: asClass(NavigatorService).scoped(),
-    rrhhService: asClass(RrhhService).scoped(),
     surveyService: asClass(SurveyService).scoped(),
   });
 
