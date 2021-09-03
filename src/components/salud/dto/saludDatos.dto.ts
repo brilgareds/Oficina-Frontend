@@ -1,14 +1,14 @@
 import { IsNotEmpty, IsNumber, Max } from "class-validator";
 
-export class ViviendaDto {
-
-  @IsNotEmpty()
-  @IsNumber()
-  EMP_CODIGO: number;
+export class SaludDatosDto {
 
   @IsNotEmpty()
   @IsNumber()
   @Max(9999999999)
-  NRO_DOCUMENTO: number;
+  cedula: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  empresa: number;
 
 }

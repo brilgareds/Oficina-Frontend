@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { route, GET, POST, before } from "awilix-express";
 import validationMiddleware from "../common/middlewares/validation";
-import { ViviendaDto, CrearViviendaDto } from "./dto/vivienda.dto";
+import { ViviendaDto } from "./dto/vivienda.dto";
+import { CrearViviendaDto } from "./dto/crearVivienda.dto";
 import { ViviendaService } from "./vivienda.service";
 
 /**
@@ -26,9 +27,6 @@ export class ViviendaController {
    *          schema:
    *            type: object
    *            properties:
-   *              informacionBasica_codigo:
-   *                type: integer
-   *                description: codigo de la informacion basica
    *              EMP_CODIGO:
    *                type: integer
    *                description: numero de empresa del usuario
@@ -131,17 +129,60 @@ export class ViviendaController {
 
   /**
    * @swagger
-   * /api/v1/vivienda/consultarDatosServicios:
-   *  get:
+   * /api/v1/vivienda/crearRegistroVivienda:
+   *  post:
    *    summary: Informacion de los estratos
    *    tags: [vivienda]
+   *    requestBody:
+   *      required: true
+   *      content:
+   *        application/json:
+   *          schema:
+   *            type: object
+   *            properties:
+   *              NRO_DOCUMENTO:
+   *                type: integer
+   *                description: número de documento del usuario
+   *              TIPO_VIVIENDA:
+   *                type: string
+   *                description: sigla del tipo vivienda
+   *              PERIMETRO:
+   *                type: string
+   *                description: sigla del perimetro
+   *              ESTRATO:
+   *                type: integer
+   *                description: numero de estrato
+   *              BENEFICIARIO_CREDITO_VIVIENDA:
+   *                type: string
+   *                description: cadena con la respuesta
+   *              CREDITO_VIVIENDA_VIGENTE:
+   *                type: string
+   *                description: cadena con la respuesta
+   *              SERVICIOS:
+   *                type: string
+   *                description: cadena con la lista de servicios
+   *              HABITANTES_VIVIENDA:
+   *                type: integer
+   *                description: numero de habitantes
+   *              CODIGO_EMPRESA:
+   *                type: integer
+   *                description: codigo de la empresa
+   *            required:
+   *              - NRO_DOCUMENTO
+   *              - TIPO_VIVIENDA
+   *              - PERIMETRO
+   *              - ESTRATO
+   *              - BENEFICIARIO_CREDITO_VIVIENDA
+   *              - CREDITO_VIVIENDA_VIGENTE
+   *              - HABITANTES_VIVIENDA
+   *              - CODIGO_EMPRESA
    *    responses:
    *      200:
-   *        description: Consulta exitosa de los estratos
+   *        description: Creación exitosa del registro de vivienda
    *      401:
-   *        description: Error en consultar la informacion de los estratos
+   *        description: Error en creación exitosa del registro de vivienda
    */
-   @route("/consultarDatosServicios")
+   @route("/crearRegistroVivienda")
    @POST()
    @before([validationMiddleware(CrearViviendaDto)])
    public async crearRegistroVivienda(req: Request, res: Response) {

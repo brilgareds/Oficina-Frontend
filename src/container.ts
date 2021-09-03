@@ -25,7 +25,10 @@ import { ViviendaMSSQLRepository } from "./components/vivienda/repositories/impl
 import { ViviendaService } from "./components/vivienda/vivienda.service";
 import { FamiliarMssqlRepository } from "./components/familiar/repositories/impl/mssql/familiar.repository";
 import { FamiliarService } from "./components/familiar/familiar.service";
-
+import { SaludMSSQLRepository } from "./components/salud/repositories/impl/mssql/salud.repository";
+import { SaludService } from "./components/salud/salud.service";
+import { FamiliarMssqlRepository } from "./components/familiar/repositories/impl/mssql/familiar.repository";
+import { FamiliarService } from "./components/familiar/familiar.service";
 
 export default (app: express.Application): void => {
   const container = createContainer({
@@ -46,6 +49,7 @@ export default (app: express.Application): void => {
     helpRepository: asClass(HelpMSSQLRepository).scoped(),
     educacionRepository: asClass(EducacionMssqlRepository).scoped(),
     viviendaRepository: asClass(ViviendaMSSQLRepository).scoped(),
+    saludRepository: asClass(SaludMSSQLRepository).scoped(),
     familiarRepository: asClass(FamiliarMssqlRepository).scoped(),
 
     // services
@@ -59,6 +63,7 @@ export default (app: express.Application): void => {
     helpService: asClass(HelpService).scoped(),
     educacionService: asClass(EducacionService).scoped(),
     viviendaService: asClass(ViviendaService).scoped(),
+    saludService: asClass(SaludService).scoped(),
     familiarService: asClass(FamiliarService).scoped(),
   });
 
