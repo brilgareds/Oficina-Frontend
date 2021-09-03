@@ -372,9 +372,9 @@ export class InformacionBasicaService {
         operacionActualizarDatos = await this.informacionBasicaRepository.actualizacionRegistroTallas(
           operacionActualizarDatos[0]['TALLAS_EMPLEADO_CODIGO'],
           USA_UNIFORME,
-          TALLA_CAMISA,
-          TALLA_PANTALON,
-          TALLA_CALZADO
+          TALLA_CAMISA_string,
+          TALLA_PANTALON_string,
+          TALLA_CALZADO_string
         );
       }
 
