@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import { route, GET, POST, before } from "awilix-express";
 import validationMiddleware from "../common/middlewares/validation";
-import { InformacionBasicaDto, DepartamentosDto, CiudadesDto, ActualizarInformacionBasicaDto } from "./dto/informacionBasica.dto";
+import { InformacionBasicaDto } from "./dto/informacionBasica.dto";
+import { DepartamentosDto } from "./dto/departamentos.dto";
+import { CiudadesDto } from "./dto/ciudades.dto";
+import { ActualizarInformacionBasicaDto } from "./dto/actualizarInformacionBasica.dto";
 import { InformacionBasicaService } from "./informacionBasica.service";
 
 /**
@@ -285,11 +288,8 @@ export class InformacionBasicaController {
    *          schema:
    *            type: object
    *            properties:
-   *              INFORMACION_BASICA_CODIGO:
-   *                type: integer
-   *                description: codigo del registro de informacion basica
    *              TIP_CODIGO_DOCUMENTO:
-   *                type: integer
+   *                type: string
    *                description: codigo del tipo de documento
    *              EMP_CODIGO:
    *                type: integer
@@ -334,10 +334,10 @@ export class InformacionBasicaController {
    *                type: string
    *                description: email corporativo
    *              CELULAR_CONTACTO:
-   *                type: integer
+   *                type: string
    *                description: celular de contacto
    *              CELULAR_CORPORATIVO:
-   *                type: integer
+   *                type: string
    *                description: celular corporativo
    *              ANTIGUEDAD_EMPRESA:
    *                type: integer
@@ -351,15 +351,27 @@ export class InformacionBasicaController {
    *              CARGOS_OCUPADOS:
    *                type: string
    *                description: cargos que se han ocupado
+   *              USA_UNIFORME:
+   *                type: integer
+   *                description: si(1) o no(2) usa uniforme
+   *              TALLA_CAMISA:
+   *                type: integer
+   *                description: talla de camisa del usuario
+   *              TALLA_PANTALON:
+   *                type: integer
+   *                description: talla de pantalon del usuario
+   *              TALLA_CALZADO:
+   *                type: integer
+   *                description: talla de calzado del usuario
    *            required:
-   *              - INFORMACION_BASICA_CODIGO
    *              - TIP_CODIGO_DOCUMENTO
    *              - EMP_CODIGO
    *              - NRO_DOCUMENTO
    *              - NOMBRES
    *              - APELLIDOS
    *              - SEXO
-   *              - FECHA_NACIMIENTO
+   *              - FECHA_NACIMIENTO,
+   *              - USA_UNIFORME
    *    responses:
    *      200:
    *        description: Datos de los departamentos

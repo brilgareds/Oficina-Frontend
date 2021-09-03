@@ -23,7 +23,8 @@ import { EducacionMssqlRepository } from "./components/educacion/repositories/im
 import { EducacionService } from "./components/educacion/educacion.service";
 import { ViviendaMSSQLRepository } from "./components/vivienda/repositories/impl/mssql/vivienda.repository";
 import { ViviendaService } from "./components/vivienda/vivienda.service";
-
+import { SaludMSSQLRepository } from "./components/salud/repositories/impl/mssql/salud.repository";
+import { SaludService } from "./components/salud/salud.service";
 
 export default (app: express.Application): void => {
   const container = createContainer({
@@ -44,6 +45,7 @@ export default (app: express.Application): void => {
     helpRepository: asClass(HelpMSSQLRepository).scoped(),
     educacionRepository: asClass(EducacionMssqlRepository).scoped(),
     viviendaRepository: asClass(ViviendaMSSQLRepository).scoped(),
+    saludRepository: asClass(SaludMSSQLRepository).scoped(),
 
     // services
     authService: asClass(AuthService).scoped(),
@@ -56,6 +58,7 @@ export default (app: express.Application): void => {
     helpService: asClass(HelpService).scoped(),
     educacionService: asClass(EducacionService).scoped(),
     viviendaService: asClass(ViviendaService).scoped(),
+    saludService: asClass(SaludService).scoped(),
   });
 
   app.use(scopePerRequest(container));
