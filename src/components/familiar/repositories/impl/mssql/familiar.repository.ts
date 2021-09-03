@@ -13,7 +13,7 @@ export class FamiliarMssqlRepository implements FamiliarRepository {
 
   public async consultarTipoRelacion(){
     const pool = await mssqlEsmad;
-    const result = await pool.query`SELECT TIP_CODIGO, TIP_NOMBRE
+    const result = await pool.query`SELECT TIP_NOMBRE, TIP_ATRIBUTO1
                                     FROM ESMAD_TIPO
                                     WHERE ESMAD_TIPO.CLT_CODIGO = 56 AND ESMAD_TIPO.ESTADO = 1 ORDER BY TIP_NOMBRE ASC`;   
     return result.recordset;  

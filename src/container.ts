@@ -23,6 +23,8 @@ import { EducacionMssqlRepository } from "./components/educacion/repositories/im
 import { EducacionService } from "./components/educacion/educacion.service";
 import { ViviendaMSSQLRepository } from "./components/vivienda/repositories/impl/mssql/vivienda.repository";
 import { ViviendaService } from "./components/vivienda/vivienda.service";
+import { FamiliarMssqlRepository } from "./components/familiar/repositories/impl/mssql/familiar.repository";
+import { FamiliarService } from "./components/familiar/familiar.service";
 import { SaludMSSQLRepository } from "./components/salud/repositories/impl/mssql/salud.repository";
 import { SaludService } from "./components/salud/salud.service";
 import { FamiliarMssqlRepository } from "./components/familiar/repositories/impl/mssql/familiar.repository";
