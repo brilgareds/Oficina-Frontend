@@ -26,4 +26,31 @@ export class CategoryMSSQLRepository implements CategoryRepository {
 
     throw new Error("Error de consulta");
   }
+
+
+  public async findHelpCategory(): Promise<any> {
+    const pool = await mssqlEsmad;
+    let query = `
+            SELECT 
+                ESMAD_TIPO.TIP_CODIGO, ESMAD_TIPO.TIP_NOMBRE
+            FROM 
+              dbo.ESMAD_TIPO
+            INNER JOIN 
+                dbo.ESMAD_CLASE_TIPO ON (ESMAD_TIPO.CLT_CODIGO = ESMAD_CLASE_TIPO.CLT_CODIGO)
+            AND ESMAD_CLASE_TIPO.CLT_CODIGO = 3  
+            AND ESMAD_TIPO.TIP_CODIGO2 = 359 
+            AND ESMAD_TIPO.EMP_CODIGO = 1 
+            AND ESMAD_CLASE_TIPO.ESTADO = 1 
+            AND ESMAD_TIPO.ESTADO = 1
+            ORDER BY ESMAD_TIPO.TIP_NOMBRE
+    `;
+
+    const result = await pool.query(query);
+
+    if (result.rowsAffected) {
+      return result.recordset;
+    }
+
+    throw new Error("Error de consulta");
+  }
 }
