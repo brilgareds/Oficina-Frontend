@@ -169,5 +169,45 @@ import { FamiliarService } from "./familiar.service";
     }
 
   }
+  
+  
+  /**
+   * @swagger
+   * /api/v1/familiar/consultarFamiliares:
+   *  post:
+   *    summary: Familiares del trabajador
+   *    tags: [Familiar]
+   *    requestBody:
+   *      required: true
+   *      content:
+   *        application/json:
+   *          schema:
+   *            type: object
+   *            properties:
+   *              COD_EMPL:
+   *                type: integer
+   *                description: identificación del usuario
+   *              COD_EMPR:
+   *                type: integer
+   *                description:
+   *            required:
+   *              - COD_EMPL
+   *              - COD_EMPR
+   *    responses:
+   *      200:
+   *        description: Consulta exitosa de la informacion de estudio del usuario
+   *      401:
+   *        description: Error en consultar informacion basica del usuario
+   */
+  @route("/consultarFamiliares")
+  @POST()
+  public async consultarFamiliares(req: Request, res: Response){
+    try {
+      const consultarFamiliares = await this.familiarService.consultarFamiliares(req.body);
+      res.status(200).json(consultarFamiliares);    
+    } catch (error) {
+      res.status(401).json({ message: error.message });  
+    }
+  }
 
  }
