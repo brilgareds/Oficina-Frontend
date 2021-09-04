@@ -1,4 +1,4 @@
-import { FamiliarCrearDto } from "./dto/familiar.dto";
+import { ConsultarFamiliares, FamiliarCrearDto } from "./dto/familiar.dto";
 import { FamiliarRepository } from "./repositories/familiar.repository";
 
 export class FamiliarService {
@@ -43,5 +43,15 @@ export class FamiliarService {
       
 
   }
+
+  public async consultarFamiliares({COD_EMPL, COD_EMPR}: ConsultarFamiliares){
+    try {
+      const consultarFamiliares = await this.familiarRepository.consultarFamiliares(COD_EMPL, COD_EMPR);
+      return consultarFamiliares;  
+    } catch (error) {
+      throw new Error(error.message);  
+    }
+  }
+    
 
 }

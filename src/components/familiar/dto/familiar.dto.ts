@@ -99,3 +99,14 @@ export class FamiliarCrearDto {
   HOB_FAMI: string;
   
 }
+
+export class ConsultarFamiliares {
+  
+  @IsNotEmpty()
+  @IsNumber()
+  COD_EMPL: number;
+  
+  @IsNotEmpty()
+  @IsNumber()
+  COD_EMPR: number; 
+}

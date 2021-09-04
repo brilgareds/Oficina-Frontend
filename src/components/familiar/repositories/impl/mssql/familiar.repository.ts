@@ -54,5 +54,15 @@ export class FamiliarMssqlRepository implements FamiliarRepository {
 
   }
 
+  public async consultarFamiliares(COD_EMPL: number, COD_EMPR: number): Promise<any>{
+    const pool = await mssqlEsmad;
+    const result = await pool.query`SELECT FAMILIARES_CODIGO, COD_EMPL, COD_EMPR, TIP_IDEN, COD_FAMI, NOM_FAMI, APE_FAMI, 
+                                    TIP_RELA, SEX_FAMI, FEC_NACI, EST_VIDA, FAM_DEPE, EST_DISC, TIP_DISC, CONTACTO_EMER, FAMILIAR_IN_HOME, 
+                                    MPI_FAMI, DIR_FAMI, TEL_FAMI, TRA_ESTU, GRA_ESCO, BEN_CACO, BEN_EEPS, PARTICIPAR_ACTIV, HOB_FAMI 
+                                    FROM ESMAD_FAMILIARES
+                                    WHERE COD_EMPL = ${COD_EMPL} AND ESMAD_FAMILIARES.COD_EMPR = ${COD_EMPR}`;
+    return result.recordset; 
+  }
+
   
 }
