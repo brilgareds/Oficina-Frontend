@@ -27,8 +27,6 @@ import { FamiliarMssqlRepository } from "./components/familiar/repositories/impl
 import { FamiliarService } from "./components/familiar/familiar.service";
 import { SaludMSSQLRepository } from "./components/salud/repositories/impl/mssql/salud.repository";
 import { SaludService } from "./components/salud/salud.service";
-import { FamiliarMssqlRepository } from "./components/familiar/repositories/impl/mssql/familiar.repository";
-import { FamiliarService } from "./components/familiar/familiar.service";
 
 export default (app: express.Application): void => {
   const container = createContainer({
