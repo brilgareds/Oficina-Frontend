@@ -93,11 +93,17 @@ export class SaludService {
     PLAN_SALUD_NO_EPS,
     PLAN_SALUD,
     PLAN_SALUD_OTROS,
-    ENTIDAD_OTROS
+    ENTIDAD_OTROS,
+    EMBARAZO_ALTO_RIESGO,
+    FECHA_EXAMEN_EMBARAZO,
+    TIEMPO_GESTACION,
+    FECHA_PARTO,
+    OBSERVACION
    }: CrearRegistroSaludDto) {
     try {
       let actualizarRegistroSalud = await this.saludRepository.tieneRegistroSalud(EMPRESA,NRO_DOCUMENTO);
 
+      //SALUD
       const FUMADOR_string = (FUMADOR)?"'"+FUMADOR+"'":"NULL";
       const BEBEDOR_string = (BEBEDOR)?"'"+BEBEDOR+"'":"NULL";
       const ANTEOJOS_string = (ANTEOJOS)?"'"+ANTEOJOS+"'":"NULL";
@@ -114,6 +120,13 @@ export class SaludService {
       const PLAN_SALUD_string = (PLAN_SALUD)?"'"+PLAN_SALUD+"'":"NULL";
       const PLAN_SALUD_OTROS_string = (PLAN_SALUD_OTROS)?"'"+PLAN_SALUD_OTROS+"'":"NULL";
       const ENTIDAD_OTROS_string = (ENTIDAD_OTROS)?"'"+ENTIDAD_OTROS+"'":"NULL";
+
+      //REPORTE EMBARAZO
+      const EMBARAZO_ALTO_RIESGO_string = (EMBARAZO_ALTO_RIESGO || EMBARAZO_ALTO_RIESGO==0)?EMBARAZO_ALTO_RIESGO+"":"NULL";
+      const FECHA_EXAMEN_EMBARAZO_string = (FECHA_EXAMEN_EMBARAZO)?"'"+FECHA_EXAMEN_EMBARAZO+"'":"NULL";
+      const TIEMPO_GESTACION_string = (TIEMPO_GESTACION || EMBARAZO_ALTO_RIESGO==0)?TIEMPO_GESTACION+"":"NULL";
+      const FECHA_PARTO_string = (FECHA_PARTO)?"'"+FECHA_PARTO+"'":"NULL";
+      const OBSERVACION_string = (OBSERVACION)?"'"+OBSERVACION+"'":"NULL";
 
         if(!actualizarRegistroSalud[0]['SALUD_CODIGO']){
 
@@ -176,7 +189,7 @@ export class SaludService {
         actualizarRegistroSalud = await this.saludRepository.tieneRegistroSaludKactus(NRO_DOCUMENTO, EMPRESA);
         const USU_creacion = ((NRO_DOCUMENTO+"").length>8)?(NRO_DOCUMENTO+"").substring(0, 8):NRO_DOCUMENTO+"";
         const dateAct_hora = new Date(Date.now());
-        const act_hora = dateAct_hora.getFullYear()+"-"+dateAct_hora.getMonth()+"-"+dateAct_hora.getDay();
+        const act_hora = dateAct_hora.toISOString().split('T')[0];
         if(actualizarRegistroSalud && 
            !actualizarRegistroSalud[0]['cod_empr'] && 
            !actualizarRegistroSalud[0]['cod_empl']){
@@ -220,6 +233,28 @@ export class SaludService {
             );
 
         }
+
+      actualizarRegistroSalud = await this.saludRepository.tieneRegistroReporteEmbarazo(EMPRESA,NRO_DOCUMENTO);
+      if(!actualizarRegistroSalud[0]['REPORTE_EMBARAZO_CODIGO']){
+        actualizarRegistroSalud = await this.saludRepository.crearRegistroReporteEmbarazo(
+          EMPRESA,
+          NRO_DOCUMENTO,
+          EMBARAZO_ALTO_RIESGO_string,
+          FECHA_EXAMEN_EMBARAZO_string,
+          TIEMPO_GESTACION_string,
+          FECHA_PARTO_string,
+          OBSERVACION_string
+        );
+      }else{
+        actualizarRegistroSalud = await this.saludRepository.actualizarRegistroReporteEmbarazo(
+          actualizarRegistroSalud[0]['REPORTE_EMBARAZO_CODIGO'],
+          EMBARAZO_ALTO_RIESGO_string,
+          FECHA_EXAMEN_EMBARAZO_string,
+          TIEMPO_GESTACION_string,
+          FECHA_PARTO_string,
+          OBSERVACION_string
+        );
+      }
 
       return actualizarRegistroSalud;
 
