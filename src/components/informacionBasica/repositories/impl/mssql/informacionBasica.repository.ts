@@ -317,6 +317,26 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
     return result.recordset;
   }
 
+  public async consultarLabelsNivel(
+    empresa: number,
+    nivel: number
+  ): Promise<any> {
+    const pool = await mssqlKactus;
+    const result = await pool.query`
+      SELECT
+        RTRIM(LTRIM(gn_nivel.nom_nive)) AS nom_nive
+      FROM
+          dbo.gn_nivel
+      WHERE
+          gn_nivel.cod_empr = ${empresa}
+          AND gn_nivel.num_nive = ${nivel}
+          AND gn_nivel.cod_nive = 0 
+          AND gn_nivel.ide_arbo = 'BI'
+    `;
+    
+    return result.recordset;
+  }
+
   public async existeRegistro(empresa: number, cedula: number): Promise<any> {
     const pool = await mssqlEsmad;
     const result = await pool.query`

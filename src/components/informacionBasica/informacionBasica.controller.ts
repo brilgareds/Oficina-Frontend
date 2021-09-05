@@ -5,6 +5,7 @@ import { InformacionBasicaDto } from "./dto/informacionBasica.dto";
 import { DepartamentosDto } from "./dto/departamentos.dto";
 import { CiudadesDto } from "./dto/ciudades.dto";
 import { ActualizarInformacionBasicaDto } from "./dto/actualizarInformacionBasica.dto";
+import { LabelsNivelDto } from "./dto/labelsNivel.dto";
 import { InformacionBasicaService } from "./informacionBasica.service";
 
 /**
@@ -124,6 +125,47 @@ export class InformacionBasicaController {
        const paises = await this.informacionBasicaService.consultarPaises();
  
        res.status(200).json(paises);
+     } catch (e) {
+       res.status(401).json({ message: e.message });
+     }
+   }
+
+  /**
+   * @swagger
+   * /api/v1/informacionBasica/consultarLabelsNivel:
+   *  post:
+   *    summary: Informacion del label del nivel
+   *    tags: [InformacionBasica]
+   *    requestBody:
+   *      required: true
+   *      content:
+   *        application/json:
+   *          schema:
+   *            type: object
+   *            properties:
+   *              empresa:
+   *                type: integer
+   *                description: numero de empresa del usuario
+   *              nivel:
+   *                type: integer
+   *                description: nivel del label
+   *            required:
+   *              - empresa
+   *              - nivel
+   *    responses:
+   *      200:
+   *        description: Consulta exitosa del label del nivel
+   *      401:
+   *        description: Error en consultar informacion del label del nivel
+   */
+   @route("/consultarLabelsNivel")
+   @POST()
+   @before([validationMiddleware(LabelsNivelDto)])
+   public async consultarLabelsNivel(req: Request, res: Response) {
+     try {
+       const buscarLabels = await this.informacionBasicaService.consultarLabelsNivel(req.body);
+ 
+       res.status(200).json(buscarLabels);
      } catch (e) {
        res.status(401).json({ message: e.message });
      }

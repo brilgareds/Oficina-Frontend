@@ -2,6 +2,7 @@ import { InformacionBasicaDto } from "./dto/informacionBasica.dto";
 import { DepartamentosDto } from "./dto/departamentos.dto";
 import { CiudadesDto } from "./dto/ciudades.dto";
 import { ActualizarInformacionBasicaDto } from "./dto/actualizarInformacionBasica.dto";
+import { LabelsNivelDto } from "./dto/labelsNivel.dto";
 import { InformacionBasicaRepository } from "./repositories/informacionBasica.repository";
 
 export class InformacionBasicaService {
@@ -51,6 +52,19 @@ export class InformacionBasicaService {
       const buscarPaises = await this.informacionBasicaRepository.consultarPaises();
 
       return buscarPaises;
+
+    } catch (error) {
+
+      throw new Error(error.message);
+
+    }
+  }
+
+  public async consultarLabelsNivel({ empresa,nivel }: LabelsNivelDto) {
+    try {
+      const buscarLabels = await this.informacionBasicaRepository.consultarLabelsNivel(empresa,nivel);
+
+      return buscarLabels;
 
     } catch (error) {
 
