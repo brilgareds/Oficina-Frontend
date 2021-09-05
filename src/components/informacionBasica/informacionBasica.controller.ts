@@ -381,6 +381,7 @@ export class InformacionBasicaController {
    @route("/actualizacionDatos")
    @POST()
    @before([validationMiddleware(ActualizarInformacionBasicaDto)])
+   
    public async actualizacionDatos(req: Request, res: Response) {
      try {
        const departamentos = await this.informacionBasicaService.actualizacionDatos(req.body);
