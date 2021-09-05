@@ -25,5 +25,6 @@ export interface FamiliarRepository {
                 BEN_EEPS: string,
                 PARTICIPAR_ACTIV: string,
                 HOB_FAMI: string): Promise<any>;
-  consultarFamiliares(COD_EMPL: number, COD_EMPR: number): Promise<any>              
+  consultarFamiliares(COD_EMPL: number, COD_EMPR: number): Promise<any>
+  consultarActividad(): Promise<any>;              
 }

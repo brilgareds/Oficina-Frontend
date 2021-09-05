@@ -53,5 +53,12 @@ export class FamiliarService {
     }
   }
     
-
+  public async consultarActividad(){
+    try {
+      const consultarActividad = await this.familiarRepository.consultarActividad();      
+      return consultarActividad;
+    } catch (error) {
+      throw new Error(error.message);
+    }  
+  }
 }
