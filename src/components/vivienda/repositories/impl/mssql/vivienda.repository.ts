@@ -166,6 +166,7 @@ export class ViviendaMSSQLRepository implements ViviendaRepository {
           ${CODIGO_EMPRESA}
       )
     `;
+
     const result = await pool.query(sql);
     return result.recordset;
   }
@@ -176,10 +177,14 @@ export class ViviendaMSSQLRepository implements ViviendaRepository {
       SELECT
           ESMAD_VIVIENDA.VIVIENDA_CODIGO
       FROM
-          dbo.ESMAD_VIVIENDA
+          SERVCLO09.kactus.dbo.nm_contr
+          LEFT JOIN dbo.ESMAD_VIVIENDA
+            ON nm_contr.cod_empr = ESMAD_VIVIENDA.CODIGO_EMPRESA
+               AND nm_contr.cod_empl = ESMAD_VIVIENDA.NRO_DOCUMENTO
       WHERE
-          ESMAD_VIVIENDA.CODIGO_EMPRESA = ${EMP_CODIGO}
-          AND ESMAD_VIVIENDA.NRO_DOCUMENTO = ${NRO_DOCUMENTO}
+          nm_contr.cod_empr = ${EMP_CODIGO}
+          AND nm_contr.cod_empl = ${NRO_DOCUMENTO}
+          AND nm_contr.ind_acti = 'A'
     `;
     
     return result.recordset;
@@ -199,22 +204,23 @@ export class ViviendaMSSQLRepository implements ViviendaRepository {
     const sql = `
       UPDATE dbo.ESMAD_VIVIENDA 
       SET 
-        TIPO_VIVIENDA = ${TIPO_VIVIENDA},
-        PERIMETRO = ${PERIMETRO},
+        TIPO_VIVIENDA = '${TIPO_VIVIENDA}',
+        PERIMETRO = '${PERIMETRO}',
         ESTRATO = ${ESTRATO},
-        BENEFICIARIO_CREDITO_VIVIENDA = ${BENEFICIARIO_CREDITO_VIVIENDA},
-        CREDITO_VIVIENDA_VIGENTE = ${CREDITO_VIVIENDA_VIGENTE},
+        BENEFICIARIO_CREDITO_VIVIENDA = '${BENEFICIARIO_CREDITO_VIVIENDA}',
+        CREDITO_VIVIENDA_VIGENTE = '${CREDITO_VIVIENDA_VIGENTE}',
         SERVICIOS = ${SERVICIOS},
         HABITANTES_VIVIENDA = ${HABITANTES_VIVIENDA}
     WHERE 
         VIVIENDA_CODIGO = ${VIVIENDA_CODIGO}
     `;
+    
     const result = await pool.query(sql);
     return result.recordset;
   }
 
   public async existeRegistroViviendaKactus(EMP_CODIGO: number, NRO_DOCUMENTO: number): Promise<any> {
-    const pool = await mssqlEsmad;
+    const pool = await mssqlKactus;
     const result = await pool.query`
       SELECT
           bi_datad.cod_empr,
@@ -245,9 +251,9 @@ export class ViviendaMSSQLRepository implements ViviendaRepository {
     USU_creacion: string,
     act_hora: string
   ): Promise<any> {
-    const pool = await mssqlEsmad;
+    const pool = await mssqlKactus;
     const sql = `
-      INSERT INTO dbo.ESMAD_VIVIENDA (
+      INSERT INTO dbo.bi_datad (
         cod_empr,
         cod_empl,
         viv_prop,
@@ -287,7 +293,7 @@ export class ViviendaMSSQLRepository implements ViviendaRepository {
     CREDITO_VIVIENDA_VIGENTE: string,
     HABITANTES_VIVIENDA: number
   ): Promise<any> {
-  const pool = await mssqlEsmad;
+  const pool = await mssqlKactus;
   const sql = `
     UPDATE dbo.bi_datad 
       SET 
