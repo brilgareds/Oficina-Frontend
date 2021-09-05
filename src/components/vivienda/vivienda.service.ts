@@ -147,7 +147,7 @@ export class ViviendaService {
 
       }
 
-      return actualizarDatosVivienda;
+      return {"status":"ok"};
 
     } catch (error) {
 

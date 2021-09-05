@@ -392,7 +392,7 @@ export class InformacionBasicaService {
         );
       }
 
-      return operacionActualizarDatos;
+      return {"status":"ok"};
 
     } catch (error) {
 

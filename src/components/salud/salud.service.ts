@@ -256,7 +256,7 @@ export class SaludService {
         );
       }
 
-      return actualizarRegistroSalud;
+      return {"status":"ok"};
 
     } catch (error) {
 
