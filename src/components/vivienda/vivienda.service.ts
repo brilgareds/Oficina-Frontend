@@ -86,7 +86,7 @@ export class ViviendaService {
       let actualizarDatosVivienda = await this.viviendaRepository.existeRegistroVivienda(CODIGO_EMPRESA,NRO_DOCUMENTO);
       const SERVICIOS_string = (SERVICIOS)?"'"+SERVICIOS+"'":"NULL";
       
-      if(!actualizarDatosVivienda[0]){
+      if(!actualizarDatosVivienda[0]['VIVIENDA_CODIGO']){
 
         actualizarDatosVivienda = await this.viviendaRepository.crearRegistroVivienda(
           NRO_DOCUMENTO,
