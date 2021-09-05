@@ -479,4 +479,87 @@ export class SaludMSSQLRepository implements SaludRepository {
     return result.recordset;
   }
 
+  public async tieneRegistroReporteEmbarazo(empresa: number, cedula: number): Promise<any> {
+    const pool = await mssqlEsmad;
+    const sql = `
+    SELECT
+        ESMAD_REPORTE_EMBARAZO.REPORTE_EMBARAZO_CODIGO
+    FROM
+        SERVCLO09.kactus.dbo.nm_contr
+        LEFT JOIN dbo.ESMAD_REPORTE_EMBARAZO
+          ON nm_contr.cod_empr = ESMAD_REPORTE_EMBARAZO.CODIGO_EMPRESA
+             AND nm_contr.cod_empl = ESMAD_REPORTE_EMBARAZO.NRO_DOCUMENTO
+    WHERE
+        nm_contr.cod_empr = ${empresa}
+        AND nm_contr.cod_empl = ${cedula}
+        AND nm_contr.ind_acti = 'A'
+    `;
+    console.log(sql);
+    
+    const result = await pool.query(sql);
+    return result.recordset;
+  }
+
+  public async crearRegistroReporteEmbarazo(
+    CODIGO_EMPRESA: number,
+    NRO_DOCUMENTO: number,
+    EMBARAZO_ALTO_RIESGO: string,
+    FECHA_EXAMEN_EMBARAZO: string,
+    TIEMPO_GESTACION: string,
+    FECHA_PARTO: string,
+    OBSERVACION: string
+    ): Promise<any> {
+    const pool = await mssqlEsmad;
+    const sql = `
+    INSERT INTO dbo.ESMAD_REPORTE_EMBARAZO (
+      CODIGO_EMPRESA,
+      NRO_DOCUMENTO,
+      EMBARAZO_ALTO_RIESGO,
+      FECHA_EXAMEN_EMBARAZO,
+      TIEMPO_GESTACION,
+      FECHA_PARTO,
+      OBSERVACION
+    ) VALUES (
+      ${CODIGO_EMPRESA},
+      ${NRO_DOCUMENTO},
+      ${EMBARAZO_ALTO_RIESGO},
+      ${FECHA_EXAMEN_EMBARAZO},
+      ${TIEMPO_GESTACION},
+      ${FECHA_PARTO},
+      ${OBSERVACION}
+    )
+    `;
+    console.log(sql);
+    
+    const result = await pool.query(sql);
+
+    return result.recordset;
+  }
+
+  public async actualizarRegistroReporteEmbarazo(
+    REPORTE_EMBARAZO_CODIGO: number,
+    EMBARAZO_ALTO_RIESGO: string,
+    FECHA_EXAMEN_EMBARAZO: string,
+    TIEMPO_GESTACION: string,
+    FECHA_PARTO: string,
+    OBSERVACION: string
+    ): Promise<any> {
+    const pool = await mssqlEsmad;
+    const sql = `
+    UPDATE dbo.ESMAD_REPORTE_EMBARAZO 
+      SET
+        EMBARAZO_ALTO_RIESGO = ${EMBARAZO_ALTO_RIESGO},
+        FECHA_EXAMEN_EMBARAZO = ${FECHA_EXAMEN_EMBARAZO},
+        TIEMPO_GESTACION = ${TIEMPO_GESTACION},
+        FECHA_PARTO = ${FECHA_PARTO},
+        OBSERVACION = ${OBSERVACION}
+    WHERE 
+      REPORTE_EMBARAZO_CODIGO = ${REPORTE_EMBARAZO_CODIGO}
+    `;
+    console.log(sql);
+    const result = await pool.query(sql);
+
+    return result.recordset;
+  }
+
 }

@@ -118,7 +118,7 @@ export class ViviendaService {
       actualizarDatosVivienda = await this.viviendaRepository.existeRegistroViviendaKactus(CODIGO_EMPRESA,NRO_DOCUMENTO);
       const USU_creacion = ((NRO_DOCUMENTO+"").length>8)?(NRO_DOCUMENTO+"").substring(0, 8):NRO_DOCUMENTO+"";
       const dateAct_hora = new Date(Date.now());
-      const act_hora = dateAct_hora.getFullYear()+"-"+dateAct_hora.getMonth()+"-"+dateAct_hora.getDay();
+      const act_hora = dateAct_hora.toISOString().split('T')[0];
       if(!actualizarDatosVivienda[0]['cod_empr'] && !actualizarDatosVivienda[0]['cod_empl']){
         actualizarDatosVivienda = await this.viviendaRepository.crearRegistroViviendaKactus(
           CODIGO_EMPRESA,

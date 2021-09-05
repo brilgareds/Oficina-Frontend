@@ -233,6 +233,21 @@ export class SaludController {
    *              ENTIDAD_OTROS:
    *                type: string
    *                description: entidad con la que posee el otro plan de salud
+   *              EMBARAZO_ALTO_RIESGO:
+   *                type: integer
+   *                description: Si(1) o No(0) es un embarazo de alto riesgo
+   *              FECHA_EXAMEN_EMBARAZO:
+   *                type: string
+   *                description: fecha del examen de embarazo
+   *              TIEMPO_GESTACION:
+   *                type: integer
+   *                description: tiempo de gestacion en semanas
+   *              FECHA_PARTO:
+   *                type: string
+   *                description: fecha probable de parto
+   *              OBSERVACION:
+   *                type: string
+   *                description: observacion del usuario
    *            required:
    *              - EMPRESA
    *              - NRO_DOCUMENTO

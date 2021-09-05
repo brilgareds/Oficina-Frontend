@@ -79,15 +79,33 @@ export interface SaludRepository {
     USU_creacion: string,
     act_hora: string
     ): Promise<any>;
-    modificarRegistroSaludKactus(
-      cedula: number, 
-      empresa: number,
-      GRUPO_SANGUINEO: string,
-      FACTOR: string,
-      ESTATURA: string,
-      PESO: string,
-      RAZA: string,
-      USU_creacion: string,
-      act_hora: string
-    ): Promise<any>
+  modificarRegistroSaludKactus(
+    cedula: number, 
+    empresa: number,
+    GRUPO_SANGUINEO: string,
+    FACTOR: string,
+    ESTATURA: string,
+    PESO: string,
+    RAZA: string,
+    USU_creacion: string,
+    act_hora: string
+  ): Promise<any>;
+  tieneRegistroReporteEmbarazo(empresa: number, cedula: number): Promise<any>;
+  crearRegistroReporteEmbarazo(
+    CODIGO_EMPRESA: number,
+    NRO_DOCUMENTO: number,
+    EMBARAZO_ALTO_RIESGO: string,
+    FECHA_EXAMEN_EMBARAZO: string,
+    TIEMPO_GESTACION: string,
+    FECHA_PARTO: string,
+    OBSERVACION: string
+    ): Promise<any>;
+  actualizarRegistroReporteEmbarazo(
+    REPORTE_EMBARAZO_CODIGO: number,
+    EMBARAZO_ALTO_RIESGO: string,
+    FECHA_EXAMEN_EMBARAZO: string,
+    TIEMPO_GESTACION: string,
+    FECHA_PARTO: string,
+    OBSERVACION: string
+    ): Promise<any>;
 }

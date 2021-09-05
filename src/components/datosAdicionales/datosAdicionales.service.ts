@@ -545,7 +545,7 @@ export class DatosAdicionalesService {
       if(!actualizarRegistro[0]['cod_empr'] && !actualizarRegistro[0]['cod_empl']){
         const USU_creacion = ((NRO_DOCUMENTO+"").length>8)?(NRO_DOCUMENTO+"").substring(0, 8):NRO_DOCUMENTO+"";
         const dateAct_hora = new Date(Date.now());
-        const act_hora = dateAct_hora.getFullYear()+"-"+dateAct_hora.getMonth()+"-"+dateAct_hora.getDay();
+        const act_hora = dateAct_hora.toISOString().split('T')[0];
         actualizarRegistro = await this.datosAdicionalesRepository.crearRegistroDatosAdicionalesKactus(
           CODIGO_EMPRESA,
           NRO_DOCUMENTO,
