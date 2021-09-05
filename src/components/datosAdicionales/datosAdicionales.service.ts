@@ -363,7 +363,7 @@ export class DatosAdicionalesService {
 
         const idRegistro = actualizarRegistro[0]['DATOS_ADICIONALES_CODIGO'];
         actualizarRegistro = await this.datosAdicionalesRepository.actualizarRegistroDatosAdicionales(
-          actualizarRegistro[0]['DATOS_ADICIONALES_CODIGO'],
+          idRegistro,
           HOBBIES_string,
           PROFESION_string,
           ANOS_PROFESION_string,
@@ -589,7 +589,7 @@ export class DatosAdicionalesService {
         );
       }
 
-      return actualizarRegistro;
+      return {"status":"ok"};
 
     } catch (error) {
 
