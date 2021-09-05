@@ -129,6 +129,30 @@ export class ViviendaController {
 
   /**
    * @swagger
+   * /api/v1/vivienda/consultarDatosServicios:
+   *  get:
+   *    summary: Informacion de los servicios
+   *    tags: [vivienda]
+   *    responses:
+   *      200:
+   *        description: Consulta exitosa de los servicios
+   *      401:
+   *        description: Error en consultar la informacion de los servicios
+   */
+   @route("/consultarDatosServicios")
+   @GET()
+   public async consultarDatosServicios(req: Request, res: Response) {
+     try {
+       const buscarDatosEstrato = await this.viviendaService.consultarDatosServicios();
+   
+       res.status(200).json(buscarDatosEstrato);
+     } catch (e) {
+       res.status(401).json({ message: e.message });
+     }
+   }
+
+  /**
+   * @swagger
    * /api/v1/vivienda/crearRegistroVivienda:
    *  post:
    *    summary: Informacion de los estratos
