@@ -146,12 +146,8 @@ export class InformacionBasicaController {
    *              empresa:
    *                type: integer
    *                description: numero de empresa del usuario
-   *              nivel:
-   *                type: integer
-   *                description: nivel del label
    *            required:
    *              - empresa
-   *              - nivel
    *    responses:
    *      200:
    *        description: Consulta exitosa del label del nivel

@@ -81,7 +81,6 @@ export interface InformacionBasicaRepository {
                               TALLA_CALZADO: string
                               ): Promise<any>;
   consultarLabelsNivel(
-                      empresa: number,
-                      nivel: number
+                      empresa: number
                       ): Promise<any>
 }

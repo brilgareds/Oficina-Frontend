@@ -6,8 +6,4 @@ export class LabelsNivelDto {
   @IsNumber()
   empresa: number;
 
-  @IsNotEmpty()
-  @IsNumber()
-  nivel: number;
-
 }

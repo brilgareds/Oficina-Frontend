@@ -60,9 +60,9 @@ export class InformacionBasicaService {
     }
   }
 
-  public async consultarLabelsNivel({ empresa,nivel }: LabelsNivelDto) {
+  public async consultarLabelsNivel({ empresa }: LabelsNivelDto) {
     try {
-      const buscarLabels = await this.informacionBasicaRepository.consultarLabelsNivel(empresa,nivel);
+      const buscarLabels = await this.informacionBasicaRepository.consultarLabelsNivel(empresa);
 
       return buscarLabels;
 
