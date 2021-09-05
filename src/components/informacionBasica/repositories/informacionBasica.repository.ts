@@ -79,5 +79,9 @@ export interface InformacionBasicaRepository {
                               TALLA_CAMISA: string,
                               TALLA_PANTALON: string,
                               TALLA_CALZADO: string
-                              ): Promise<any>
+                              ): Promise<any>;
+  consultarLabelsNivel(
+                      empresa: number,
+                      nivel: number
+                      ): Promise<any>
 }
