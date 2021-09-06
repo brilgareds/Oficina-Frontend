@@ -201,4 +201,79 @@ import { EducacionService } from "./educacion.service";
       res.status(401).json({ message: e.message });  
      }
    }
+
+  /**
+   * @swagger
+   * /api/v1/educacion/actualizarRegistro:
+   *  post:
+   *    summary: Informacion basica del usuario
+   *    tags: [Educacion]
+   *    requestBody:
+   *      required: true
+   *      content:
+   *        application/json:
+   *          schema:
+   *            type: object
+   *            properties:
+   *              EDUCACION_CODIGO:
+   *                type: integer
+   *                description: Codigo del registro de educación
+   *              NIVEL_ESTUDIO:
+   *                type: integer
+   *                description: Nivel de estudio alcanzado por el usuario
+   *              TITULO:
+   *                type: string
+   *                description: Titulo obtenido por el usuario
+   *              INSTITUCION:
+   *                type: string
+   *                description: Lugar de estudio
+   *              CIUDAD:
+   *                type: number
+   *                description: Ciudad donde estudio
+   *              ESTADO_ESTUDIO:
+   *                type: number
+   *                description: Estado en el que se encuentra el estudio del usuario
+   *              FECHA_INICIO:
+   *                type: string
+   *                description: Fecha de inicio de estudio
+   *              FECHA_FINALIZACION:
+   *                type: string
+   *                description: Fecha en que finaliza el estudio el usuario
+   *              FECHA_GRADO_TENTATIVO:
+   *                type: string
+   *                description: Posible fecha en la que el usuario se graduara
+   *              MODALIDAD_ESTUDIO:
+   *                type: number
+   *                description: Forma como realiza sus estudios el usuario
+   *              PROMEDIO:
+   *                type: string
+   *                description: Promedio
+   *            required:
+   *              - NIVEL_ESTUDIO
+   *              - TITULO
+   *              - INSTITUCION
+   *              - CIUDAD
+   *              - ESTADO_ESTUDIO
+   *              - FECHA_INICIO
+   *              - FECHA_FINALIZACION
+   *              - FECHA_GRADO_TENTATIVO
+   *              - MODALIDAD_ESTUDIO
+   *              - PROMEDIO
+   *    responses:
+   *      200:
+   *        description: Registros Creados de manera exitosa
+   *      401:
+   *        description: Error al insertar los registros del usuario
+   */
+  @route("/actualizarRegistro")
+  @POST()
+  public async actualizarRegistro(req: Request, res: Response) {
+    try {
+     const buscarMenu = await this.educacionService.actualizarRegistro(req.body);
+     res.status(200).json(buscarMenu);  
+    } catch (e) {
+     res.status(401).json({ message: e.message });  
+    }
+  }
+
  }

@@ -1,4 +1,5 @@
 import { EducacionCrearDto, ConsultarDatosEstudio } from "./dto/educacion.dto";
+import { ActualizarRegistroDto } from "./dto/actualizarRegistro.dto";
 import { EducacionRepository } from "./repositories/educacion.repository";
 
 export class EducacionService {
@@ -55,18 +56,54 @@ export class EducacionService {
     MODALIDAD_ESTUDIO,
     PROMEDIO}: EducacionCrearDto){
     try {
-      let crearRegistro = await this.educacionRepository.crearRegistro(MENU_CODIGO, 
-        INFORMACION_BASICA_CODIGO,
-        NIVEL_ESTUDIO,
-        TITULO,
-        INSTITUCION,
-        CIUDAD,
-        ESTADO_ESTUDIO,
-        FECHA_INICIO,
-        FECHA_FINALIZACION,
-        FECHA_GRADO_TENTATIVO,
-        MODALIDAD_ESTUDIO,
-        PROMEDIO);
+
+      let crearRegistro = await this.educacionRepository.crearRegistro(
+          MENU_CODIGO, 
+          INFORMACION_BASICA_CODIGO,
+          NIVEL_ESTUDIO,
+          TITULO,
+          INSTITUCION,
+          CIUDAD,
+          ESTADO_ESTUDIO,
+          FECHA_INICIO,
+          FECHA_FINALIZACION,
+          FECHA_GRADO_TENTATIVO,
+          MODALIDAD_ESTUDIO,
+          PROMEDIO);
+      return {"status":"ok"}
+
+    } catch (error) {
+      throw new Error(error.message);  
+    }
+  }
+
+  public async actualizarRegistro({
+    EDUCACION_CODIGO,
+    NIVEL_ESTUDIO,
+    TITULO,
+    INSTITUCION,
+    CIUDAD,
+    ESTADO_ESTUDIO,
+    FECHA_INICIO,
+    FECHA_FINALIZACION,
+    FECHA_GRADO_TENTATIVO,
+    MODALIDAD_ESTUDIO,
+    PROMEDIO}: ActualizarRegistroDto){
+    try {
+
+      let crearRegistro = await this.educacionRepository.actualizarRegistro(
+          EDUCACION_CODIGO,
+          NIVEL_ESTUDIO,
+          TITULO,
+          INSTITUCION,
+          CIUDAD,
+          ESTADO_ESTUDIO,
+          FECHA_INICIO,
+          FECHA_FINALIZACION,
+          FECHA_GRADO_TENTATIVO,
+          MODALIDAD_ESTUDIO,
+          PROMEDIO);
+      return {"status":"ok"}
     } catch (error) {
       throw new Error(error.message);  
     }

@@ -60,4 +60,38 @@ export class EducacionMssqlRepository implements EducacionRepository {
                               return result.recordset;
 
     }
+
+    public async actualizarRegistro(
+      EDUCACION_CODIGO: number,
+      NIVEL_ESTUDIO: number,
+      TITULO: string,
+      INSTITUCION: string,
+      CIUDAD: number,
+      ESTADO_ESTUDIO: number,
+      FECHA_INICIO: string,
+      FECHA_FINALIZACION: string,
+      FECHA_GRADO_TENTATIVO: string,
+      MODALIDAD_ESTUDIO: number,
+      PROMEDIO: string): Promise<any>{
+      const pool = await mssqlEsmad;
+      const result = await pool.query`
+        UPDATE dbo.ESMAD_EDUCACION 
+          SET
+            NIVEL_ESTUDIO = ${NIVEL_ESTUDIO},
+            TITULO = ${TITULO},
+            INSTITUCION = ${INSTITUCION},
+            CIUDAD = ${CIUDAD},
+            ESTADO_ESTUDIO = ${ESTADO_ESTUDIO},
+            FECHA_INICIO = ${FECHA_INICIO},
+            FECHA_FINALIZACION = ${FECHA_FINALIZACION},
+            FECHA_GRADO_TENTATIVO = ${FECHA_GRADO_TENTATIVO},
+            MODALIDAD_ESTUDIO = ${MODALIDAD_ESTUDIO},
+            PROMEDIO = ${PROMEDIO}
+        WHERE 
+          EDUCACION_CODIGO = ${EDUCACION_CODIGO}
+       `;
+       return result.recordset;
+
+}
+  
 }

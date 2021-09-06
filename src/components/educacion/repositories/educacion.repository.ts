@@ -16,4 +16,17 @@ export interface EducacionRepository {
                 FECHA_GRADO_TENTATIVO: string,
                 MODALIDAD_ESTUDIO: number,
                 PROMEDIO: string): Promise<any>;
+  existeDatosEstudio(cedula: number): Promise<any>;
+  actualizarRegistro(
+    EDUCACION_CODIGO: number,
+    NIVEL_ESTUDIO: number,
+    TITULO: string,
+    INSTITUCION: string,
+    CIUDAD: number,
+    ESTADO_ESTUDIO: number,
+    FECHA_INICIO: string,
+    FECHA_FINALIZACION: string,
+    FECHA_GRADO_TENTATIVO: string,
+    MODALIDAD_ESTUDIO: number,
+    PROMEDIO: string): Promise<any>
 }
