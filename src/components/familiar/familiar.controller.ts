@@ -210,4 +210,27 @@ import { FamiliarService } from "./familiar.service";
     }
   }
 
+  /**
+   * @swagger
+   * /api/v1/familiar/consultarActividad:
+   *  get:
+   *    summary: Lista los tipos de actividades de los familiares
+   *    tags: [Familiar]
+   *    responses:
+   *      200:
+   *        description: Tipos de actividad familiar
+   *      401:
+   *        description: Error en consultar tipos de actividades del familiar
+   */
+   @route("/consultarActividad")
+   @GET()
+   public async consultarActividad(req: Request, res: Response) {
+    try {
+      const consultarActividad = await this.familiarService.consultarActividad();
+      res.status(200).json(consultarActividad);
+    } catch (e) {
+      res.status(401).json({ message: e.message });
+    }
+  }
+
  }

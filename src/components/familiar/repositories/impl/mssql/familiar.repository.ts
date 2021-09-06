@@ -63,6 +63,14 @@ export class FamiliarMssqlRepository implements FamiliarRepository {
                                     WHERE COD_EMPL = ${COD_EMPL} AND ESMAD_FAMILIARES.COD_EMPR = ${COD_EMPR}`;
     return result.recordset; 
   }
+  
 
+  public async consultarActividad(){
+    const pool = await mssqlEsmad;
+    const result = await pool.query`SELECT TIP_NOMBRE, TIP_ATRIBUTO1
+                                    FROM ESMAD_TIPO
+                                    WHERE ESMAD_TIPO.CLT_CODIGO = 63 AND ESMAD_TIPO.ESTADO = 1 ORDER BY TIP_NOMBRE ASC`;   
+    return result.recordset;  
+  }
   
 }

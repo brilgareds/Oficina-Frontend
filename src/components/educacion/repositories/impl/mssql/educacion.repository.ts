@@ -29,9 +29,12 @@ export class EducacionMssqlRepository implements EducacionRepository {
 
   public async consultarDatosEstudio(cedula: number): Promise<any>{
     const pool = await mssqlEsmad;
-    const result = await pool.query`SELECT EDUCACION_CODIGO, INFORMACION_BASICA_CODIGO, NIVEL_ESTUDIO, TITULO, INSTITUCION, 
-                                      CIUDAD, ESTADO_ESTUDIO, FECHA_INICIO, FECHA_FINALIZACION, FECHA_GRADO_TENTATIVO, MODALIDAD_ESTUDIO, PROMEDIO 
-                                    FROM ESMAD_EDUCACION
+    const result = await pool.query`SELECT EDUCACION_CODIGO, INFORMACION_BASICA_CODIGO, NIVEL_ESTUDIO, NIVEL.TIP_NOMBRE AS NIVEL_NOMBRE, TITULO, INSTITUCION, 
+                                    CIUDAD, ESTADO_ESTUDIO, ESTADO.TIP_NOMBRE AS ESTADO_NOMBRE, FECHA_INICIO, FECHA_FINALIZACION, FECHA_GRADO_TENTATIVO, MODALIDAD_ESTUDIO, MODALIDAD.TIP_NOMBRE AS MODALIDAD_NOMBRE, PROMEDIO 
+                                    FROM ESMAD_EDUCACION LEFT JOIN dbo.ESMAD_TIPO AS MODALIDAD
+                                    ON(ESMAD_EDUCACION.MODALIDAD_ESTUDIO = MODALIDAD.TIP_CODIGO) LEFT JOIN dbo.ESMAD_TIPO AS NIVEL
+                                    ON(ESMAD_EDUCACION.NIVEL_ESTUDIO = NIVEL.TIP_CODIGO) LEFT JOIN dbo.ESMAD_TIPO AS ESTADO
+                                    ON(ESMAD_EDUCACION.ESTADO_ESTUDIO = ESTADO.TIP_CODIGO)
                                     WHERE INFORMACION_BASICA_CODIGO = ${cedula}`;  
     return result.recordset;  
   }
@@ -60,4 +63,5 @@ export class EducacionMssqlRepository implements EducacionRepository {
                               return result.recordset;
 
     }
+    
 }
