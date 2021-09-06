@@ -14,7 +14,7 @@ export class InformacionBasicaService {
       let buscarDatos = await this.informacionBasicaRepository.buscarDatos(cedula, empresa);
 
       if(!buscarDatos[0]){
-        buscarDatos = [];
+        buscarDatos = {"error":"No se encontraron datos"};
       }
       return buscarDatos;
 
@@ -30,7 +30,7 @@ export class InformacionBasicaService {
       let buscarTipDocumento = await this.informacionBasicaRepository.consultarTipDocumento();
 
       if(!buscarTipDocumento[0]){
-        buscarTipDocumento = [];
+        buscarTipDocumento = {"error":"No se encontraron datos"};
       }
 
       return buscarTipDocumento;
@@ -47,7 +47,7 @@ export class InformacionBasicaService {
       let buscarEstadoCivil = await this.informacionBasicaRepository.consultarEstadoCivil();
 
       if(!buscarEstadoCivil[0]){
-        buscarEstadoCivil = [];
+        buscarEstadoCivil = {"error":"No se encontraron datos"};
       }
       return buscarEstadoCivil;
 
@@ -63,7 +63,7 @@ export class InformacionBasicaService {
       let buscarPaises = await this.informacionBasicaRepository.consultarPaises();
 
       if(!buscarPaises[0]){
-        buscarPaises = [];
+        buscarPaises = {"error":"No se encontraron datos"};
       }
       return buscarPaises;
 
@@ -79,7 +79,7 @@ export class InformacionBasicaService {
       let buscarLabels = await this.informacionBasicaRepository.consultarLabelsNivel(empresa);
 
       if(!buscarLabels[0]){
-        buscarLabels = [];
+        buscarLabels = {"error":"No se encontraron datos"};
       }
       return buscarLabels;
 
@@ -92,14 +92,14 @@ export class InformacionBasicaService {
 
   public async consultarNomenclatura() {
     try {
-      const listaNomenclaturas = await this.informacionBasicaRepository.consultarNomenclatura();
+      let listaNomenclaturas = await this.informacionBasicaRepository.consultarNomenclatura();
 
       let arrayCalle: object[] = new Array();
       let arrayBis: object[] = new Array();
       let arrayCardinalidad: object[] = new Array();
       let arrayComplemento: object[] = new Array();
 
-      if(!listaNomenclaturas[0]){
+      if(listaNomenclaturas[0]){
 
       for (const nomenclatura of listaNomenclaturas) {
         if(nomenclatura['COD_NOME'] == 'CL' ||
@@ -187,10 +187,14 @@ export class InformacionBasicaService {
 
       }
 
+      listaNomenclaturas = {'arrayCalle': arrayCalle,'arrayBis': arrayBis,'arrayCardinalidad': arrayCardinalidad,
+                            'arrayComplemento': arrayComplemento};
+
+    }else{
+      listaNomenclaturas = {"error":"No se encontraron datos"};
     }
 
-      return {'arrayCalle': arrayCalle,'arrayBis': arrayBis,'arrayCardinalidad': arrayCardinalidad,
-              'arrayComplemento': arrayComplemento};
+      return listaNomenclaturas;
 
     } catch (error) {
 
@@ -204,7 +208,7 @@ export class InformacionBasicaService {
       let buscarEstadoCivil = await this.informacionBasicaRepository.consultarAntiguedad();
 
       if(!buscarEstadoCivil[0]){
-        buscarEstadoCivil = [];
+        buscarEstadoCivil = {"error":"No se encontraron datos"};
       }
       return buscarEstadoCivil;
 
@@ -220,7 +224,7 @@ export class InformacionBasicaService {
       let buscarDepartamento = await this.informacionBasicaRepository.consultarDepartamentos(codPais);
 
       if(!buscarDepartamento[0]){
-        buscarDepartamento = [];
+        buscarDepartamento = {"error":"No se encontraron datos"};
       }
       return buscarDepartamento;
 
@@ -236,7 +240,7 @@ export class InformacionBasicaService {
       let buscarMunicipios = await this.informacionBasicaRepository.consultarMunicipios(codDepartamento);
 
       if(!buscarMunicipios[0]){
-        buscarMunicipios = [];
+        buscarMunicipios = {"error":"No se encontraron datos"};
       }
       return buscarMunicipios;
 
@@ -249,12 +253,12 @@ export class InformacionBasicaService {
 
   public async consultarTalla() {
     try {
-      const buscarTallaUniformes = await this.informacionBasicaRepository.consultarTalla();
+      let buscarTallaUniformes = await this.informacionBasicaRepository.consultarTalla();
       let arrayCamisa = new Array();
       let arrayPantalonMujer = new Array();
       let arrayPantalonHombre = new Array();
       let arrayCalzado = new Array();
-      if(!buscarTallaUniformes[0]){
+      if(buscarTallaUniformes[0]){
         for(const tallaUniforme of buscarTallaUniformes){
 
           if(tallaUniforme.TIP_CODIGO2 == 1319){
@@ -268,10 +272,13 @@ export class InformacionBasicaService {
           }
 
         }
+        buscarTallaUniformes = {'tallaCamisa': arrayCamisa, 'tallaPantalonMujer': arrayPantalonMujer, 
+                                'tallaPantalonHombre':arrayPantalonHombre,'tallaCalzado':arrayCalzado};
+      }else{
+        buscarTallaUniformes = {"error":"No se encontraron datos"};
       }
 
-      return {'tallaCamisa': arrayCamisa, 'tallaPantalonMujer': arrayPantalonMujer, 
-              'tallaPantalonHombre':arrayPantalonHombre,'tallaCalzado':arrayCalzado};
+      return buscarTallaUniformes;
 
     } catch (error) {
 

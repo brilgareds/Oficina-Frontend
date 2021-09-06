@@ -7,8 +7,10 @@ export class SaludService {
 
   public async buscarDatos({ cedula,empresa }: SaludDatosDto) {
     try {
-      const buscarDatos = await this.saludRepository.buscarDatos(cedula, empresa);
-
+      let buscarDatos = await this.saludRepository.buscarDatos(cedula, empresa);
+      if(!buscarDatos[0]){
+        buscarDatos = {"error":"No se encontraron datos"};
+      }
       return buscarDatos;
 
     } catch (error) {
@@ -20,8 +22,10 @@ export class SaludService {
 
   public async buscarDatosGrupoSanguineo() {
     try {
-      const buscarDatosGrupoSanguineo = await this.saludRepository.buscarDatosGrupoSanguineo();
-
+      let buscarDatosGrupoSanguineo = await this.saludRepository.buscarDatosGrupoSanguineo();
+      if(!buscarDatosGrupoSanguineo[0]){
+        buscarDatosGrupoSanguineo = {"error":"No se encontraron datos"};
+      }
       return buscarDatosGrupoSanguineo;
 
     } catch (error) {
@@ -33,8 +37,10 @@ export class SaludService {
 
   public async buscarDatosFactor() {
     try {
-      const buscarDatosFactor = await this.saludRepository.buscarDatosFactor();
-
+      let buscarDatosFactor = await this.saludRepository.buscarDatosFactor();
+      if(!buscarDatosFactor[0]){
+        buscarDatosFactor = {"error":"No se encontraron datos"};
+      }
       return buscarDatosFactor;
 
     } catch (error) {
@@ -46,8 +52,10 @@ export class SaludService {
 
   public async buscarDatosRaza() {
     try {
-      const buscarDatosRaza = await this.saludRepository.buscarDatosRaza();
-
+      let buscarDatosRaza = await this.saludRepository.buscarDatosRaza();
+      if(!buscarDatosRaza[0]){
+        buscarDatosRaza = {"error":"No se encontraron datos"};
+      }
       return buscarDatosRaza;
 
     } catch (error) {
@@ -59,8 +67,10 @@ export class SaludService {
 
   public async buscarDatosPlanSalud() {
     try {
-      const buscarDatosPlanSalud = await this.saludRepository.buscarDatosPlanSalud();
-
+      let buscarDatosPlanSalud = await this.saludRepository.buscarDatosPlanSalud();
+      if(!buscarDatosPlanSalud[0]){
+        buscarDatosPlanSalud = {"error":"No se encontraron datos"};
+      }
       return buscarDatosPlanSalud;
 
     } catch (error) {

@@ -7,7 +7,10 @@ export class EducacionService {
 
   public async consultarNivelEstudio() {
     try {
-      const consultarNivelEstudio = await this.educacionRepository.consultarNivelEstudio();
+      let consultarNivelEstudio = await this.educacionRepository.consultarNivelEstudio();
+      if(!consultarNivelEstudio[0]){
+        consultarNivelEstudio = {"error":"No se encontraron datos"};
+      }
       return consultarNivelEstudio;
     } catch (error) {
       throw new Error(error.message);
@@ -16,7 +19,10 @@ export class EducacionService {
 
   public async consultarEstadoEstudio(){
     try {
-      const consultarEstadoEstudio = await this.educacionRepository.consultarEstadoEstudio();
+      let consultarEstadoEstudio = await this.educacionRepository.consultarEstadoEstudio();
+      if(!consultarEstadoEstudio[0]){
+        consultarEstadoEstudio = {"error":"No se encontraron datos"};
+      }
       return consultarEstadoEstudio;  
     } catch (error) {
       throw new Error(error.message);  
@@ -25,7 +31,10 @@ export class EducacionService {
 
   public async consultarModalidadEstudio(){
     try {
-      const consultarModalidadEstudio = await this.educacionRepository.consultarModalidadEstudio();
+      let consultarModalidadEstudio = await this.educacionRepository.consultarModalidadEstudio();
+      if(!consultarModalidadEstudio[0]){
+        consultarModalidadEstudio = {"error":"No se encontraron datos"};
+      }
       return consultarModalidadEstudio;  
     } catch (error) {
       throw new Error(error.message);  
@@ -34,9 +43,10 @@ export class EducacionService {
 
   public async consultarDatosEstudios({cedula}:ConsultarDatosEstudio){
     try {
-      const consultarDatosEstudio = await this.educacionRepository.consultarDatosEstudio(cedula);
-      //console.log(consultarDatosEstudio);
-      
+      let consultarDatosEstudio = await this.educacionRepository.consultarDatosEstudio(cedula);
+      if(!consultarDatosEstudio[0]){
+        consultarDatosEstudio = {"error":"No se encontraron datos"};
+      }
       return consultarDatosEstudio;
     } catch (error) {
       throw new Error(error.message);  
