@@ -171,7 +171,7 @@ export class RrhhMSSQLRepository implements RrhhRepository {
                   <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border: 1px solid #cccccc; border-collapse: collapse;">
                     <tr>
                       <td align="center" bgcolor="" style="padding: 0px 0 30px 0; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;">
-                        <img src="https://www.listos.com.co/modprueba/libs/imagenes/smadBKOSmall.png" alt="Creating Email Magic" style="display: block; width: 70%" />
+                        <img src="https://www.listos.com.co/modprueba/libs/imagenes/oficinavirtual/header.jpg" alt="Creating Email Magic" style="display: block; width: 70%" />
                       </td>
                     </tr>
                     <tr>
@@ -194,11 +194,11 @@ export class RrhhMSSQLRepository implements RrhhRepository {
                       <td style="margin: auto">
                         <table border="0" cellpadding="0" cellspacing="0" width="100%">
                           <tr>
-                            <img src="https://www.listos.com.co/modprueba/libs/imagenes/smadFooterSmall.png" alt="Creating Email Magic" style="display: block; width: 70% " />
+                            <img src="https://www.listos.com.co/modprueba/libs/imagenes/oficinavirtual/footer.jpg" alt="Creating Email Magic" style="display: block; width: 70% " />
   
                           </tr>
-                          <tr>
-                            <p>Esta es una cuenta de correo no monitoreada, por favor no responda este mensaje.</p>
+                          <tr style="text-align: center;">
+                            <p style="font-size: 10px;">Esta es una cuenta de correo no monitoreada, por favor no responda este mensaje.</p>
                           </tr>
                         </table>
                       </td>

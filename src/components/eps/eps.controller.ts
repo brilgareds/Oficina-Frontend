@@ -17,13 +17,13 @@ export class EpsController {
    * @swagger
    * /api/v1/eps/get:
    *  get:
-   *    summary: Retorna los generos de las personas
+   *    summary: Retorna las EPS habilitadas en el sistema
    *    tags: [EPS]
    *    security:
    *      - jwt: []
    *    responses:
    *      200:
-   *        description: Retorna la información de los generos
+   *        description: Consumo exitoso
    *      402:
    *        description: Error en el consumo / Token Invalido
    */
@@ -40,4 +40,5 @@ export class EpsController {
       res.status(400).json({ message: e.message });
     }
   }
+
 }

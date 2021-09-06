@@ -30,4 +30,24 @@ export class EpsMSSQLRepository implements EpsRepository {
 
   }
 
+  public async getEpsIncapacidad(): Promise<any> {
+
+    const pool = await mssqlKactus;
+    const result = await pool.query`
+                    SELECT DISTINCT
+                      cod_enti,
+                      tip_enti,
+                      RTRIM(LTRIM(nom_enti)) AS nom_enti
+                    FROM 
+                      NM_ENTID
+                    WHERE 
+                      cod_sucu = 0 AND tip_enti = 'EPS' 
+                    AND NOM_ENTI NOT LIKE '%(NO USAR)%'
+                    ORDER BY nom_enti ASC
+    `;
+
+    return result.recordset;
+
+  }
+
 }
