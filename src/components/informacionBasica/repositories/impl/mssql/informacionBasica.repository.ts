@@ -105,20 +105,20 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
         ESMAD_TALLAS_EMPLEADO.TALLA_CALZADO
     FROM
         SERVCLO09.kactus.dbo.nm_contr
-        INNER JOIN SERVCLO09.kactus.dbo.bi_emple
+        LEFT JOIN SERVCLO09.kactus.dbo.bi_emple
           ON nm_contr.cod_empl = bi_emple.cod_empl
              AND nm_contr.cod_empr = bi_emple.cod_empr
-        INNER JOIN SERVCLO09.kactus.dbo.gn_nivel AS Nivel2
+        LEFT JOIN SERVCLO09.kactus.dbo.gn_nivel AS Nivel2
           ON nm_contr.cod_empr = Nivel2.cod_empr
              AND nm_contr.cod_niv2 = Nivel2.cod_nive
              AND Nivel2.num_nive = 2
              AND Nivel2.ide_arbo = 'BI'
-        INNER JOIN SERVCLO09.kactus.dbo.gn_nivel AS Nivel3
+        LEFT JOIN SERVCLO09.kactus.dbo.gn_nivel AS Nivel3
           ON nm_contr.cod_empr = Nivel3.cod_empr
              AND bi_emple.mpi_resi = Nivel3.cod_nive
              AND Nivel3.num_nive = 3
              AND Nivel3.ide_arbo = 'BI'
-        INNER JOIN SERVCLO09.kactus.dbo.gn_nivel AS Nivel4
+        LEFT JOIN SERVCLO09.kactus.dbo.gn_nivel AS Nivel4
           ON nm_contr.cod_empr = Nivel4.cod_empr
              AND nm_contr.cod_niv4 = Nivel4.cod_nive
              AND Nivel4.num_nive = 4
@@ -128,7 +128,7 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
              AND nm_contr.cod_niv5 = Nivel5.cod_nive
              AND Nivel5.num_nive = 5
              AND Nivel5.ide_arbo = 'BI'
-        INNER JOIN SERVCLO09.kactus.dbo.bi_cargo
+        LEFT JOIN SERVCLO09.kactus.dbo.bi_cargo
           ON nm_contr.cod_carg = bi_cargo.cod_carg
              AND nm_contr.cod_empr = bi_cargo.cod_empr
              AND bi_cargo.ind_acti = 'A'
