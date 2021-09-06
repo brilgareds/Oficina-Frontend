@@ -29,6 +29,8 @@ import { SaludMSSQLRepository } from "./components/salud/repositories/impl/mssql
 import { SaludService } from "./components/salud/salud.service";
 import { DatosAdicionalesMSSQLRepository } from "./components/datosAdicionales/repositories/impl/mssql/datosAdicionales.repository";
 import { DatosAdicionalesService } from "./components/datosAdicionales/datosAdicionales.service";
+import { IncapacityMSSQLRepository } from "./components/incapacity/repositories/impl/mssql/incapacity.repository";
+import { IncapacityService } from "./components/incapacity/incapacity.service";
 
 export default (app: express.Application): void => {
   const container = createContainer({
@@ -52,6 +54,7 @@ export default (app: express.Application): void => {
     saludRepository: asClass(SaludMSSQLRepository).scoped(),
     familiarRepository: asClass(FamiliarMssqlRepository).scoped(),
     datosAdicionalesRepository: asClass(DatosAdicionalesMSSQLRepository).scoped(),
+    incapacityRepository: asClass(IncapacityMSSQLRepository).scoped(),
 
     // services
     authService: asClass(AuthService).scoped(),
@@ -67,6 +70,7 @@ export default (app: express.Application): void => {
     saludService: asClass(SaludService).scoped(),
     familiarService: asClass(FamiliarService).scoped(),
     datosAdicionalesService: asClass(DatosAdicionalesService).scoped(),
+    incapacityService: asClass(IncapacityService).scoped(),
   });
 
   app.use(scopePerRequest(container));
