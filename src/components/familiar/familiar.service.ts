@@ -7,9 +7,10 @@ export class FamiliarService {
 
   public async consultarDiscapacidad() {
     try {
-      const consultarDiscapacidad = await this.familiarRepository.consultarDiscapacidad();
-      //console.log(consultarDiscapacidad);
-      
+      let consultarDiscapacidad = await this.familiarRepository.consultarDiscapacidad();
+      if(!consultarDiscapacidad[0]){
+        consultarDiscapacidad = {"error":"No se encontraron datos"};
+      }
       return consultarDiscapacidad;
     } catch (error) {
       throw new Error(error.message);
@@ -18,9 +19,10 @@ export class FamiliarService {
 
   public async consultarTipoRelacion() {
     try {
-      const consultarTipoRelacion = await this.familiarRepository.consultarTipoRelacion();
-      //console.log(consultarDiscapacidad);
-      
+      let consultarTipoRelacion = await this.familiarRepository.consultarTipoRelacion();
+      if(!consultarTipoRelacion[0]){
+        consultarTipoRelacion = {"error":"No se encontraron datos"};
+      }
       return consultarTipoRelacion;
     } catch (error) {
       throw new Error(error.message);
@@ -46,7 +48,10 @@ export class FamiliarService {
 
   public async consultarFamiliares({COD_EMPL, COD_EMPR}: ConsultarFamiliares){
     try {
-      const consultarFamiliares = await this.familiarRepository.consultarFamiliares(COD_EMPL, COD_EMPR);
+      let consultarFamiliares = await this.familiarRepository.consultarFamiliares(COD_EMPL, COD_EMPR);
+      if(!consultarFamiliares[0]){
+        consultarFamiliares = {"error":"No se encontraron datos"};
+      }
       return consultarFamiliares;  
     } catch (error) {
       throw new Error(error.message);  
@@ -55,7 +60,10 @@ export class FamiliarService {
     
   public async consultarActividad(){
     try {
-      const consultarActividad = await this.familiarRepository.consultarActividad();      
+      let consultarActividad = await this.familiarRepository.consultarActividad();
+      if(!consultarActividad[0]){
+        consultarActividad = {"error":"No se encontraron datos"};
+      }
       return consultarActividad;
     } catch (error) {
       throw new Error(error.message);
