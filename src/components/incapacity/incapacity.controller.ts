@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { route, GET, POST, before } from "awilix-express";
 import { verifyJwt } from "../common/middlewares/jwt";
-import RequestWithUser from "../common/interfaces/requestWithUser";
 import { IncapacityService } from "./incapacity.service";
 
 /**
@@ -31,7 +30,7 @@ export class CategoryController {
   @route("/getEpsIncapacidad")
   @GET()
   // @before([verifyJwt])
-  public async getEpsIncapacidad(req: RequestWithUser, res: Response) {
+  public async getEpsIncapacidad(req: Request, res: Response) {
     try {
 
       const response = await this.incapacityService.getEpsIncapacidad();
