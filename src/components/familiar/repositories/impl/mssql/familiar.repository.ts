@@ -42,14 +42,18 @@ export class FamiliarMssqlRepository implements FamiliarRepository {
                               BEN_CACO: string,
                               BEN_EEPS: string,
                               PARTICIPAR_ACTIV: string,
-                              HOB_FAMI: string): Promise<any>{
+                              HOB_FAMI: string,
+                              PAI_FAMI: number,
+                              DTO_FAMI: number): Promise<any>{
     const pool = await mssqlEsmad;
     const result = await pool.query`INSERT INTO 
     ESMAD_FAMILIARES 
     (COD_EMPL, COD_EMPR, TIP_IDEN, COD_FAMI, NOM_FAMI, APE_FAMI, TIP_RELA, SEX_FAMI, FEC_NACI, EST_VIDA, FAM_DEPE, EST_DISC, TIP_DISC, 
-    CONTACTO_EMER, FAMILIAR_IN_HOME, MPI_FAMI, DIR_FAMI, TEL_FAMI, TRA_ESTU, GRA_ESCO, BEN_CACO, BEN_EEPS, PARTICIPAR_ACTIV, HOB_FAMI) 
-    VALUES (${COD_EMPL}, ${COD_EMPR}, ${TIP_IDEN}, ${COD_FAMI}, ${NOM_FAMI}, ${APE_FAMI}, ${TIP_RELA}, ${SEX_FAMI}, ${FEC_NACI}, ${EST_VIDA}, ${FAM_DEPE}, ${EST_DISC}, ${TIP_DISC}, 
-    ${CONTACTO_EMER}, ${FAMILIAR_IN_HOME}, ${MPI_FAMI}, ${DIR_FAMI}, ${TEL_FAMI}, ${TRA_ESTU}, ${GRA_ESCO}, ${BEN_CACO}, ${BEN_EEPS}, ${PARTICIPAR_ACTIV}, ${HOB_FAMI})`;   
+    CONTACTO_EMER, FAMILIAR_IN_HOME, MPI_FAMI, DIR_FAMI, TEL_FAMI, TRA_ESTU, GRA_ESCO, BEN_CACO, BEN_EEPS, PARTICIPAR_ACTIV, HOB_FAMI,
+    PAI_FAMI,DTO_FAMI) 
+    VALUES (${COD_EMPL}, ${COD_EMPR}, ${TIP_IDEN}, ${COD_FAMI}, ${NOM_FAMI}, ${APE_FAMI}, ${TIP_RELA}, ${SEX_FAMI}, ${FEC_NACI}, ${EST_VIDA}, 
+            ${FAM_DEPE}, ${EST_DISC}, ${TIP_DISC}, ${CONTACTO_EMER}, ${FAMILIAR_IN_HOME}, ${MPI_FAMI}, ${DIR_FAMI}, ${TEL_FAMI}, ${TRA_ESTU}, 
+            ${GRA_ESCO}, ${BEN_CACO}, ${BEN_EEPS}, ${PARTICIPAR_ACTIV}, ${HOB_FAMI}, ${PAI_FAMI}, ${DTO_FAMI})`;   
     return result.recordset; 
 
   }
@@ -58,7 +62,8 @@ export class FamiliarMssqlRepository implements FamiliarRepository {
     const pool = await mssqlEsmad;
     const result = await pool.query`SELECT FAMILIARES_CODIGO, COD_EMPL, COD_EMPR, TIP_IDEN, COD_FAMI, NOM_FAMI, APE_FAMI, 
                                     TIP_RELA, SEX_FAMI, FEC_NACI, EST_VIDA, FAM_DEPE, EST_DISC, TIP_DISC, CONTACTO_EMER, FAMILIAR_IN_HOME, 
-                                    MPI_FAMI, DIR_FAMI, TEL_FAMI, TRA_ESTU, GRA_ESCO, BEN_CACO, BEN_EEPS, PARTICIPAR_ACTIV, HOB_FAMI 
+                                    MPI_FAMI, DIR_FAMI, TEL_FAMI, TRA_ESTU, GRA_ESCO, BEN_CACO, BEN_EEPS, PARTICIPAR_ACTIV, HOB_FAMI,
+                                    PAI_FAMI,DTO_FAMI
                                     FROM ESMAD_FAMILIARES
                                     WHERE COD_EMPL = ${COD_EMPL} AND ESMAD_FAMILIARES.COD_EMPR = ${COD_EMPR}`;
     return result.recordset; 

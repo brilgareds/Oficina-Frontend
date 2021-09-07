@@ -149,6 +149,12 @@ import { FamiliarService } from "./familiar.service";
    *              HOB_FAMI:
    *                type: string
    *                description:
+   *              PAI_FAMI:
+   *                type: integer
+   *                description:
+   *              DTO_FAMI:
+   *                type: integer
+   *                description:
    *            required:
    *              - cedula
    *    responses:
