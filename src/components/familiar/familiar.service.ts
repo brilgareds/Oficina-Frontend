@@ -1,4 +1,4 @@
-import { ConsultarFamiliares, FamiliarCrearDto } from "./dto/familiar.dto";
+import { ConsultarFamiliares, FamiliarCrearDto, ActualizarFamiliar } from './dto/familiar.dto';
 import { FamiliarRepository } from "./repositories/familiar.repository";
 
 export class FamiliarService {
@@ -34,10 +34,25 @@ export class FamiliarService {
     MPI_FAMI, DIR_FAMI, TEL_FAMI, TRA_ESTU, GRA_ESCO, BEN_CACO, BEN_EEPS, PARTICIPAR_ACTIV,
     HOB_FAMI, PAI_FAMI, DTO_FAMI}: FamiliarCrearDto){
       try {
-        const crearFamiliar = await this.familiarRepository.crearFamiliar(COD_EMPL, COD_EMPR, TIP_IDEN, COD_FAMI, NOM_FAMI, APE_FAMI, TIP_RELA,
-          SEX_FAMI, FEC_NACI, EST_VIDA, FAM_DEPE, EST_DISC, TIP_DISC, CONTACTO_EMER, FAMILIAR_IN_HOME,
-          MPI_FAMI, DIR_FAMI, TEL_FAMI, TRA_ESTU, GRA_ESCO, BEN_CACO, BEN_EEPS, PARTICIPAR_ACTIV,
-          HOB_FAMI, PAI_FAMI, DTO_FAMI);
+
+        let crearFamiliar = await this.familiarRepository.consultarFamiliaresIndividual(COD_FAMI);
+        console.log(crearFamiliar);
+        
+        if(!crearFamiliar[0]){
+          crearFamiliar = await this.familiarRepository.crearFamiliar(COD_EMPL, COD_EMPR, TIP_IDEN, COD_FAMI, NOM_FAMI, APE_FAMI, TIP_RELA,
+            SEX_FAMI, FEC_NACI, EST_VIDA, FAM_DEPE, EST_DISC, TIP_DISC, CONTACTO_EMER, FAMILIAR_IN_HOME,
+            MPI_FAMI, DIR_FAMI, TEL_FAMI, TRA_ESTU, GRA_ESCO, BEN_CACO, BEN_EEPS, PARTICIPAR_ACTIV,
+            HOB_FAMI, PAI_FAMI, DTO_FAMI);
+        }else{
+          crearFamiliar = await this.familiarRepository.actualizarFamiliar(TIP_IDEN, COD_FAMI, NOM_FAMI, APE_FAMI, TIP_RELA,
+            SEX_FAMI, FEC_NACI, EST_VIDA, FAM_DEPE, EST_DISC, TIP_DISC, CONTACTO_EMER, FAMILIAR_IN_HOME,
+            MPI_FAMI, DIR_FAMI, TEL_FAMI, TRA_ESTU, GRA_ESCO, BEN_CACO, BEN_EEPS, PARTICIPAR_ACTIV,
+            HOB_FAMI, PAI_FAMI, DTO_FAMI);  
+        }
+         
+        if(crearFamiliar){
+          crearFamiliar = {"status":"ok"};
+        }
         return crearFamiliar;
       } catch (error) {
         throw new Error(error.message);  
@@ -68,5 +83,23 @@ export class FamiliarService {
     } catch (error) {
       throw new Error(error.message);
     }  
+  }
+
+  public async actualizarFamiliar({ TIP_IDEN, COD_FAMI, NOM_FAMI, APE_FAMI, TIP_RELA,
+                                    SEX_FAMI, FEC_NACI, EST_VIDA, FAM_DEPE, EST_DISC, TIP_DISC, CONTACTO_EMER, FAMILIAR_IN_HOME,
+                                    MPI_FAMI, DIR_FAMI, TEL_FAMI, TRA_ESTU, GRA_ESCO, BEN_CACO, BEN_EEPS, PARTICIPAR_ACTIV,
+                                    HOB_FAMI, PAI_FAMI, DTO_FAMI}: ActualizarFamiliar){
+    try {
+      let actualizarFamiliar = await this.familiarRepository.actualizarFamiliar(TIP_IDEN, COD_FAMI, NOM_FAMI, APE_FAMI, TIP_RELA,
+                                    SEX_FAMI, FEC_NACI, EST_VIDA, FAM_DEPE, EST_DISC, TIP_DISC, CONTACTO_EMER, FAMILIAR_IN_HOME,
+                                    MPI_FAMI, DIR_FAMI, TEL_FAMI, TRA_ESTU, GRA_ESCO, BEN_CACO, BEN_EEPS, PARTICIPAR_ACTIV,
+                                    HOB_FAMI, PAI_FAMI, DTO_FAMI);
+      if(!actualizarFamiliar[0]){
+        actualizarFamiliar = {"ok":"Usuario actualizado"};
+      }
+      return actualizarFamiliar;  
+    } catch (error) {
+      throw new Error(error.message);  
+    }
   }
 }

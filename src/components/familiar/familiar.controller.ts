@@ -239,4 +239,38 @@ import { FamiliarService } from "./familiar.service";
     }
   }
 
+  /**
+   * @swagger
+   * /api/v1/familiar/actualizarFamiliar:
+   *  post:
+   *    summary: Actualizar Familiar
+   *    tags: [Familiar]
+   *    requestBody:
+   *      required: true
+   *      content:
+   *        application/json:
+   *          schema:
+   *            type: object
+   *            properties:
+   *              FAMILIARES_CODIGO:
+   *                type: integer
+   *                description: Codigo del registro del familiar
+   *            required:
+   *              - COD_EMPL
+   *    responses:
+   *      200:
+   *        description: Actualizacion correcta
+   *      401:
+   *        description: Error en la actualizacion
+   */
+   @route("/actualizarFamiliar")
+   @POST()
+   public async actualizarFamiliar(req: Request, res: Response) {
+    try {
+      const actualizarFamiliar = await this.familiarService.actualizarFamiliar(req.body);
+      res.status(200).json(actualizarFamiliar);
+    } catch (e) {
+      res.status(401).json({ message: e.message });
+    }
+  }
  }

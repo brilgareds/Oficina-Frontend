@@ -77,5 +77,50 @@ export class FamiliarMssqlRepository implements FamiliarRepository {
                                     WHERE ESMAD_TIPO.CLT_CODIGO = 63 AND ESMAD_TIPO.ESTADO = 1 ORDER BY TIP_NOMBRE ASC`;   
     return result.recordset;  
   }
+
+  public async actualizarFamiliar(
+                              TIP_IDEN: string,
+                              COD_FAMI: number,
+                              NOM_FAMI: string,
+                              APE_FAMI: string,
+                              TIP_RELA: string,
+                              SEX_FAMI: string,
+                              FEC_NACI: string,
+                              EST_VIDA: string,
+                              FAM_DEPE: string,
+                              EST_DISC: string,
+                              TIP_DISC: number,
+                              CONTACTO_EMER: string,
+                              FAMILIAR_IN_HOME: string,
+                              MPI_FAMI: number,
+                              DIR_FAMI: string,
+                              TEL_FAMI: string,
+                              TRA_ESTU: string,
+                              GRA_ESCO: string,
+                              BEN_CACO: string,
+                              BEN_EEPS: string,
+                              PARTICIPAR_ACTIV: string,
+                              HOB_FAMI: string,
+                              PAI_FAMI: number,
+                              DTO_FAMI: number): Promise<any>{
+    const pool = await mssqlEsmad;
+    const result = await pool.query`UPDATE ESMAD_FAMILIARES SET  
+                                    TIP_IDEN = ${TIP_IDEN}, NOM_FAMI = ${NOM_FAMI}, APE_FAMI = ${APE_FAMI}, 
+                                    TIP_RELA = ${TIP_RELA}, SEX_FAMI = ${SEX_FAMI}, FEC_NACI = ${FEC_NACI}, EST_VIDA = ${EST_VIDA}, FAM_DEPE = ${FAM_DEPE}, EST_DISC = ${EST_DISC}, TIP_DISC = ${TIP_DISC}, 
+                                    CONTACTO_EMER = ${CONTACTO_EMER}, FAMILIAR_IN_HOME = ${FAMILIAR_IN_HOME}, MPI_FAMI = ${MPI_FAMI}, DIR_FAMI = ${DIR_FAMI}, TEL_FAMI = ${TEL_FAMI}, TRA_ESTU = ${TRA_ESTU}, GRA_ESCO = ${GRA_ESCO}, 
+                                    BEN_CACO = ${BEN_CACO}, BEN_EEPS = ${BEN_EEPS}, PARTICIPAR_ACTIV = ${PARTICIPAR_ACTIV}, HOB_FAMI = ${HOB_FAMI}, PAI_FAMI = ${PAI_FAMI}, DTO_FAMI = ${DTO_FAMI} 
+                                    WHERE COD_FAMI = ${COD_FAMI}`;
+    return result.recordset;
+  }
+
+  public async consultarFamiliaresIndividual(COD_FAMI: number): Promise<any>{
+    const pool = await mssqlEsmad;
+    const result = await pool.query`SELECT FAMILIARES_CODIGO, COD_EMPL, COD_EMPR, TIP_IDEN, COD_FAMI, NOM_FAMI, APE_FAMI, TIP_RELA, 
+                                    SEX_FAMI, FEC_NACI, EST_VIDA, FAM_DEPE, EST_DISC, TIP_DISC, CONTACTO_EMER, FAMILIAR_IN_HOME, 
+                                    MPI_FAMI, DIR_FAMI, TEL_FAMI, TRA_ESTU, GRA_ESCO, BEN_CACO, BEN_EEPS, PARTICIPAR_ACTIV, HOB_FAMI, PAI_FAMI, DTO_FAMI 
+                                    FROM ESMAD_FAMILIARES
+                                    WHERE COD_FAMI = ${COD_FAMI}`;
+    return result.recordset;
+  }
   
 }
