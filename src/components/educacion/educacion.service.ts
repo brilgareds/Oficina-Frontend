@@ -1,5 +1,6 @@
 import { EducacionCrearDto, ConsultarDatosEstudio } from "./dto/educacion.dto";
 import { ActualizarRegistroDto } from "./dto/actualizarRegistro.dto";
+import { EliminarRegistroDto } from "./dto/eliminarRegistro.dto";
 import { EducacionRepository } from "./repositories/educacion.repository";
 
 export class EducacionService {
@@ -78,7 +79,7 @@ export class EducacionService {
         FECHA_GRADO_TENTATIVO,
         MODALIDAD_ESTUDIO,
         PROMEDIO);
-      return {"status":"ok"}
+      return {"ok":"registro creado"}
     } catch (error) {
       throw new Error(error.message);  
     }
@@ -110,7 +111,16 @@ export class EducacionService {
           FECHA_GRADO_TENTATIVO,
           MODALIDAD_ESTUDIO,
           PROMEDIO);
-      return {"status":"ok"}
+      return {"ok":"registro actualizado"}
+    } catch (error) {
+      throw new Error(error.message);  
+    }
+  }
+
+  public async eliminarRegistro({ EDUCACION_CODIGO }: EliminarRegistroDto){
+    try {
+      const eliminarRegistro = await this.educacionRepository.eliminarRegistro(EDUCACION_CODIGO);
+      return {"ok":"Registro de educación eliminado"}
     } catch (error) {
       throw new Error(error.message);  
     }

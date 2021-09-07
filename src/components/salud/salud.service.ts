@@ -266,7 +266,7 @@ export class SaludService {
         );
       }
 
-      return {"status":"ok"};
+      return {"ok":"Actualización exitosa"};
 
     } catch (error) {
 

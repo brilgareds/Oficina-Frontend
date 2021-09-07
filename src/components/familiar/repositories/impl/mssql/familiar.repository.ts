@@ -50,10 +50,10 @@ export class FamiliarMssqlRepository implements FamiliarRepository {
     ESMAD_FAMILIARES 
     (COD_EMPL, COD_EMPR, TIP_IDEN, COD_FAMI, NOM_FAMI, APE_FAMI, TIP_RELA, SEX_FAMI, FEC_NACI, EST_VIDA, FAM_DEPE, EST_DISC, TIP_DISC, 
     CONTACTO_EMER, FAMILIAR_IN_HOME, MPI_FAMI, DIR_FAMI, TEL_FAMI, TRA_ESTU, GRA_ESCO, BEN_CACO, BEN_EEPS, PARTICIPAR_ACTIV, HOB_FAMI,
-    PAI_FAMI,DTO_FAMI) 
+    PAI_FAMI,DTO_FAMI,ESTADO) 
     VALUES (${COD_EMPL}, ${COD_EMPR}, ${TIP_IDEN}, ${COD_FAMI}, ${NOM_FAMI}, ${APE_FAMI}, ${TIP_RELA}, ${SEX_FAMI}, ${FEC_NACI}, ${EST_VIDA}, 
             ${FAM_DEPE}, ${EST_DISC}, ${TIP_DISC}, ${CONTACTO_EMER}, ${FAMILIAR_IN_HOME}, ${MPI_FAMI}, ${DIR_FAMI}, ${TEL_FAMI}, ${TRA_ESTU}, 
-            ${GRA_ESCO}, ${BEN_CACO}, ${BEN_EEPS}, ${PARTICIPAR_ACTIV}, ${HOB_FAMI}, ${PAI_FAMI}, ${DTO_FAMI})`;   
+            ${GRA_ESCO}, ${BEN_CACO}, ${BEN_EEPS}, ${PARTICIPAR_ACTIV}, ${HOB_FAMI}, ${PAI_FAMI}, ${DTO_FAMI}, 1)`;   
     return result.recordset; 
 
   }
@@ -65,7 +65,7 @@ export class FamiliarMssqlRepository implements FamiliarRepository {
                                     MPI_FAMI, DIR_FAMI, TEL_FAMI, TRA_ESTU, GRA_ESCO, BEN_CACO, BEN_EEPS, PARTICIPAR_ACTIV, HOB_FAMI,
                                     PAI_FAMI,DTO_FAMI
                                     FROM ESMAD_FAMILIARES
-                                    WHERE COD_EMPL = ${COD_EMPL} AND ESMAD_FAMILIARES.COD_EMPR = ${COD_EMPR}`;
+                                    WHERE COD_EMPL = ${COD_EMPL} AND ESMAD_FAMILIARES.COD_EMPR = ${COD_EMPR} AND ESTADO = 1`;
     return result.recordset; 
   }
   
@@ -120,6 +120,16 @@ export class FamiliarMssqlRepository implements FamiliarRepository {
                                     MPI_FAMI, DIR_FAMI, TEL_FAMI, TRA_ESTU, GRA_ESCO, BEN_CACO, BEN_EEPS, PARTICIPAR_ACTIV, HOB_FAMI, PAI_FAMI, DTO_FAMI 
                                     FROM ESMAD_FAMILIARES
                                     WHERE COD_FAMI = ${COD_FAMI}`;
+    return result.recordset;
+  }
+
+  public async eliminarFamiliaresIndividual(COD_FAMI: number): Promise<any>{
+    const pool = await mssqlEsmad;
+    const result = await pool.query`
+      UPDATE ESMAD_FAMILIARES 
+        SET
+          ESTADO = 0
+      WHERE COD_FAMI = ${COD_FAMI}`;
     return result.recordset;
   }
   

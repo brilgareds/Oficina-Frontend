@@ -612,7 +612,7 @@ export class DatosAdicionalesService {
         );
       }
 
-      return {"status":"ok"};
+      return {"ok":"Se actualizo el registro correctamente"};
 
     } catch (error) {
 

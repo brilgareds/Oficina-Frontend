@@ -55,5 +55,5 @@ export interface FamiliarRepository {
                       PAI_FAMI: number,
                       DTO_FAMI: number): Promise<any>;
   consultarFamiliaresIndividual(COD_FAMI: number):Promise<any>;                    
-                      
+  eliminarFamiliaresIndividual(COD_FAMI: number): Promise<any>;
 }
