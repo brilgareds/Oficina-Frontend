@@ -1,4 +1,5 @@
-import * as moment from "moment";
+import moment from "moment";
+import { JwtUserPayload } from "../common/interfaces/jwtUserPayload";
 import { SurveyAnswersDto } from "./dto/surveyAnswers.dto";
 import { SurveyHeadsDto } from "./dto/surveyHeads.dto";
 import { SurveyQuestionsDto } from "./dto/surveyQuestions.dto";
@@ -103,10 +104,11 @@ export class SurveyService {
     }
   }
 
-  public async getHealthConditionSurveyQuestions() {
+  public async getHealthConditionSurveyQuestions({
+    identification,
+  }: JwtUserPayload) {
     try {
       const surveyId = 6;
-      const identification = 1107088223;
       let heads: any[] = [];
       let questions: any[] = [];
       let responses: any[] = [];
@@ -265,6 +267,6 @@ export class SurveyService {
   }
 
   private daysPassed(date: Date) {
-    return moment.default().diff(moment.default(date), "days");
+    return moment().diff(moment(date), "days");
   }
 }
