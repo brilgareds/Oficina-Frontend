@@ -5,7 +5,7 @@ export class EducacionMssqlRepository implements EducacionRepository {
 
   public async consultarNivelEstudio(): Promise<any> {
     const pool = await mssqlEsmad;
-    const result = await pool.query`SELECT TIP_CODIGO, TIP_NOMBRE
+    const result = await pool.query`SELECT TIP_CODIGO, TIP_NOMBRE, TIP_ATRIBUTO1
                                     FROM ESMAD_TIPO
                                     WHERE ESMAD_TIPO.CLT_CODIGO = 52 AND ESMAD_TIPO.ESTADO = 1`;   
     return result.recordset;
