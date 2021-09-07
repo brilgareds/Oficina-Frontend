@@ -113,11 +113,11 @@ export class SurveyController {
    */
   @route("/healthCondition")
   @GET()
-  // @before([verifyJwt])
+  @before([verifyJwt])
   public async getHealthConditionSurveyQuestions(req: Request, res: Response) {
     try {
       const questions =
-        await this.surveyService.getHealthConditionSurveyQuestions();
+        await this.surveyService.getHealthConditionSurveyQuestions(req.user!);
 
       res.status(200).json({ data: questions });
     } catch (e) {
