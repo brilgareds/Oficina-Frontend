@@ -1,14 +1,9 @@
-import { NextFunction, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { access_token_secret, refresh_token_secret } from "../../../config/jwt";
 import { JwtUserPayload } from "../interfaces/jwtUserPayload";
-import RequestWithUser from "../interfaces/requestWithUser";
 
-export const verifyJwt = (
-  req: RequestWithUser,
-  res: Response,
-  next: NextFunction
-) => {
+export const verifyJwt = (req: Request, res: Response, next: NextFunction) => {
   try {
     const token: string = req.headers["authorization"] || "";
     if (!token.startsWith("Bearer ")) {
@@ -35,7 +30,7 @@ export const verifyJwt = (
 };
 
 export const verifyRefreshToken = (
-  req: RequestWithUser,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {

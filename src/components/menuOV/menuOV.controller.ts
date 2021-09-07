@@ -1,11 +1,8 @@
 import { Request, Response } from "express";
 import { route, GET, POST, before } from "awilix-express";
 import validationMiddleware from "../common/middlewares/validation";
-import { LoginDto } from "./dto/menuOV.dto";
 import { MenuOVService } from "./menuOV.service";
-import { verifyJwt, verifyRefreshToken } from "../common/middlewares/jwt";
-import RequestWithUser from "../common/interfaces/requestWithUser";
-import { JwtUserPayload } from "../common/interfaces/jwtUserPayload";
+import { verifyJwt } from "../common/middlewares/jwt";
 
 /**
  * @swagger

@@ -1,10 +1,12 @@
+import * as http from "http";
 import { startServer } from "../app";
+import { port } from "../config/app";
 
 async function main() {
   const app = await startServer();
-  const port = process.env.PORT;
+  const server = http.createServer(app);
 
-  app.listen(port, () => {
+  server.listen(port, () => {
     console.log(`Server on port ${port}`);
   });
 }
