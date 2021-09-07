@@ -19,15 +19,15 @@ export class SurveyMSSQLRepository implements SurveyRepository {
         (clasification) => "'" + clasification + "'"
       );
 
-      additionalValidations += `AND ESMAD_ENCUESTA_PREGUNTAS.EPR_CLASIFICACION IN (${clasificationsModified})`;
+      additionalValidations += ` AND ESMAD_ENCUESTA_PREGUNTAS.EPR_CLASIFICACION IN (${clasificationsModified})`;
     }
 
-    if (!frecuency) {
-      frecuency = "IS NULL";
+    if (frecuency) {
+      additionalValidations += `AND ESMAD_ENCUESTA_PREGUNTAS.EPR_FRECUENCIA ${frecuency}`;
     }
 
     const query = `SELECT 
-        ESMAD_ENCUESTA_CABEZERAS.COD_EC, 
+        DISTINCT ESMAD_ENCUESTA_CABEZERAS.COD_EC, 
         ESMAD_ENCUESTA_CABEZERAS.EC_NOMBRE, 
         ESMAD_ENCUESTA_CABEZERAS.COD_EN
       FROM 
@@ -36,7 +36,6 @@ export class SurveyMSSQLRepository implements SurveyRepository {
       INNER JOIN dbo.ESMAD_ENCUESTA_PREGUNTAS ON (ESMAD_ENCUESTA_CABEZERAS.COD_EC = ESMAD_ENCUESTA_PREGUNTAS.EPR_TIPO_CLASIFICACION)
       WHERE ESMAD_ENCUESTA.COD_EN = ${surveyId} 
       ${additionalValidations}
-      AND ESMAD_ENCUESTA_PREGUNTAS.EPR_FRECUENCIA ${frecuency}
       AND ESMAD_ENCUESTA.EMP_CODIGO = 3 
       AND ESMAD_ENCUESTA.ESTADO = 1 
       AND ESMAD_ENCUESTA_CABEZERAS.ESTADO = 1`;
@@ -66,8 +65,8 @@ export class SurveyMSSQLRepository implements SurveyRepository {
       additionalValidations += `AND ESMAD_ENCUESTA_PREGUNTAS.EPR_CLASIFICACION IN (${clasificationsModified})`;
     }
 
-    if (!frecuency) {
-      frecuency = "IS NULL";
+    if (frecuency) {
+      additionalValidations += `AND ESMAD_ENCUESTA_PREGUNTAS.EPR_FRECUENCIA ${frecuency}`;
     }
 
     const query = `SELECT
@@ -84,7 +83,6 @@ export class SurveyMSSQLRepository implements SurveyRepository {
       AND ESMAD_ENCUESTA.EMP_CODIGO = 3
       AND ESMAD_ENCUESTA_PREGUNTAS.ESTADO = 1
       AND ESMAD_ENCUESTA.ESTADO = 1
-      AND ESMAD_ENCUESTA_PREGUNTAS.EPR_FRECUENCIA ${frecuency}
       ORDER BY ESMAD_ENCUESTA_PREGUNTAS.COD_EPR`;
 
     const result = await pool.query(query);
@@ -126,9 +124,10 @@ export class SurveyMSSQLRepository implements SurveyRepository {
     frecuency,
   }: SurveyAnswersDto): Promise<any> {
     const pool = await mssqlEsmad;
+    let additionalValidations = "";
 
-    if (!frecuency) {
-      frecuency = "IS NULL";
+    if (frecuency) {
+      additionalValidations += `AND ESMAD_ENCUESTA_PREGUNTAS.EPR_FRECUENCIA ${frecuency}`;
     }
 
     const query = `
@@ -140,11 +139,11 @@ export class SurveyMSSQLRepository implements SurveyRepository {
       INNER JOIN dbo.ESMAD_ENCUESTA_RESPUESTAS_CLIENTES ON ESMAD_ENCUESTA_RESPUESTAS.COD_ER = ESMAD_ENCUESTA_RESPUESTAS_CLIENTES.COD_ER
       INNER JOIN dbo.ESMAD_OV_ENCUESTA_COVID ON ESMAD_ENCUESTA_RESPUESTAS_CLIENTES.ENCUESTA_COVID = ESMAD_OV_ENCUESTA_COVID.ENC_CODIGO
       WHERE ESMAD_OV_ENCUESTA_COVID.ENC_CEDULA = '${identification}'
+      ${additionalValidations}
       AND ESMAD_OV_ENCUESTA_COVID.ESTADO_SALUD = 1
       AND ESMAD_ENCUESTA_PREGUNTAS.COD_EN = 6
       AND ESMAD_ENCUESTA_PREGUNTAS.EPR_CLASIFICACION <> 'S'
       AND ESMAD_OV_ENCUESTA_COVID.ESTADO = 1
-      AND ESMAD_ENCUESTA_PREGUNTAS.EPR_FRECUENCIA ${frecuency}
     `;
 
     const result = await pool.query(query);
