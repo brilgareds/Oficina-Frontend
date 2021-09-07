@@ -1,4 +1,5 @@
 import { ConsultarFamiliares, FamiliarCrearDto, ActualizarFamiliar } from './dto/familiar.dto';
+import { EliminarFamiliares } from './dto/eliminarFamiliar.dto';
 import { FamiliarRepository } from "./repositories/familiar.repository";
 
 export class FamiliarService {
@@ -36,7 +37,6 @@ export class FamiliarService {
       try {
 
         let crearFamiliar = await this.familiarRepository.consultarFamiliaresIndividual(COD_FAMI);
-        console.log(crearFamiliar);
         
         if(!crearFamiliar[0]){
           crearFamiliar = await this.familiarRepository.crearFamiliar(COD_EMPL, COD_EMPR, TIP_IDEN, COD_FAMI, NOM_FAMI, APE_FAMI, TIP_RELA,
@@ -50,10 +50,7 @@ export class FamiliarService {
             HOB_FAMI, PAI_FAMI, DTO_FAMI);  
         }
          
-        if(crearFamiliar){
-          crearFamiliar = {"status":"ok"};
-        }
-        return crearFamiliar;
+        return {"ok":"Familiar creado"};
       } catch (error) {
         throw new Error(error.message);  
       }
@@ -94,12 +91,19 @@ export class FamiliarService {
                                     SEX_FAMI, FEC_NACI, EST_VIDA, FAM_DEPE, EST_DISC, TIP_DISC, CONTACTO_EMER, FAMILIAR_IN_HOME,
                                     MPI_FAMI, DIR_FAMI, TEL_FAMI, TRA_ESTU, GRA_ESCO, BEN_CACO, BEN_EEPS, PARTICIPAR_ACTIV,
                                     HOB_FAMI, PAI_FAMI, DTO_FAMI);
-      if(!actualizarFamiliar[0]){
-        actualizarFamiliar = {"ok":"Usuario actualizado"};
-      }
-      return actualizarFamiliar;  
+      return {"ok":"Usuario actualizado"};  
     } catch (error) {
       throw new Error(error.message);  
     }
   }
+
+  public async eliminarFamiliaresIndividual({ COD_FAMI }:EliminarFamiliares){
+    try {
+      const consultarActividad = await this.familiarRepository.eliminarFamiliaresIndividual(COD_FAMI);
+      return {"ok":"Familiar eliminado"};
+    } catch (error) {
+      throw new Error(error.message);
+    }  
+  }
+
 }

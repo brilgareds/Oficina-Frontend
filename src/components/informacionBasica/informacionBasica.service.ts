@@ -431,7 +431,7 @@ export class InformacionBasicaService {
         );
       }
 
-      return {"status":"ok"};
+      return {"ok":"Actualización de datos exitosa"};
 
     } catch (error) {
 

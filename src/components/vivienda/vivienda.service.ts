@@ -157,7 +157,7 @@ export class ViviendaService {
 
       }
 
-      return {"status":"ok"};
+      return {"ok":"Actualización exitosa"};
 
     } catch (error) {
 

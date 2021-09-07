@@ -27,5 +27,6 @@ export interface EducacionRepository {
     FECHA_FINALIZACION: string,
     FECHA_GRADO_TENTATIVO: string,
     MODALIDAD_ESTUDIO: number,
-    PROMEDIO: string): Promise<any>
+    PROMEDIO: string): Promise<any>;
+  eliminarRegistro(EDUCACION_CODIGO: number): Promise<any>;
 }
