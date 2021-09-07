@@ -97,6 +97,14 @@ export class FamiliarCrearDto {
   @IsNotEmpty()
   @IsString()
   HOB_FAMI: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  PAI_FAMI: number; 
+
+  @IsNotEmpty()
+  @IsNumber()
+  DTO_FAMI: number; 
   
 }
 

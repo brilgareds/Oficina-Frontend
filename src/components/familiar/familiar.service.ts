@@ -32,13 +32,13 @@ export class FamiliarService {
   public async crearFamiliar({COD_EMPL, COD_EMPR, TIP_IDEN, COD_FAMI, NOM_FAMI, APE_FAMI, TIP_RELA,
     SEX_FAMI, FEC_NACI, EST_VIDA, FAM_DEPE, EST_DISC, TIP_DISC, CONTACTO_EMER, FAMILIAR_IN_HOME,
     MPI_FAMI, DIR_FAMI, TEL_FAMI, TRA_ESTU, GRA_ESCO, BEN_CACO, BEN_EEPS, PARTICIPAR_ACTIV,
-    HOB_FAMI}: FamiliarCrearDto){
+    HOB_FAMI, PAI_FAMI, DTO_FAMI}: FamiliarCrearDto){
       try {
         const crearFamiliar = await this.familiarRepository.crearFamiliar(COD_EMPL, COD_EMPR, TIP_IDEN, COD_FAMI, NOM_FAMI, APE_FAMI, TIP_RELA,
           SEX_FAMI, FEC_NACI, EST_VIDA, FAM_DEPE, EST_DISC, TIP_DISC, CONTACTO_EMER, FAMILIAR_IN_HOME,
           MPI_FAMI, DIR_FAMI, TEL_FAMI, TRA_ESTU, GRA_ESCO, BEN_CACO, BEN_EEPS, PARTICIPAR_ACTIV,
-          HOB_FAMI);
-        return crearFamiliar;      
+          HOB_FAMI, PAI_FAMI, DTO_FAMI);
+        return crearFamiliar;
       } catch (error) {
         throw new Error(error.message);  
       }
