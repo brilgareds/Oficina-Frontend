@@ -33,7 +33,7 @@ export class DatosAdicionalesService {
           }
         }
         buscarDatos = {'buscarDatos':buscarDatos,'arrayDeudas':arrayDeudas,
-                           'arrayDeudasFuturas':arrayDeudasFuturas,'arrayIntereses':arrayIntereses}
+                           'arrayDeudasFuturas':arrayDeudasFuturas,'arrayIntereses':arrayIntereses};
       }else{
         buscarDatos = {"error":"No se encontraron datos"};
       }
