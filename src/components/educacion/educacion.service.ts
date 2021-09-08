@@ -65,7 +65,9 @@ export class EducacionService {
     FECHA_FINALIZACION,
     FECHA_GRADO_TENTATIVO,
     MODALIDAD_ESTUDIO,
-    PROMEDIO}: EducacionCrearDto){
+    PROMEDIO,
+    PAI_CODIGO,
+    DTO_CODIGO}: EducacionCrearDto){
     try {
       let crearRegistro = await this.educacionRepository.crearRegistro(MENU_CODIGO, 
         INFORMACION_BASICA_CODIGO,
@@ -78,7 +80,9 @@ export class EducacionService {
         FECHA_FINALIZACION,
         FECHA_GRADO_TENTATIVO,
         MODALIDAD_ESTUDIO,
-        PROMEDIO);
+        PROMEDIO,
+        PAI_CODIGO,
+        DTO_CODIGO);
       return {"ok":"registro creado"}
     } catch (error) {
       throw new Error(error.message);  
@@ -96,7 +100,9 @@ export class EducacionService {
     FECHA_FINALIZACION,
     FECHA_GRADO_TENTATIVO,
     MODALIDAD_ESTUDIO,
-    PROMEDIO}: ActualizarRegistroDto){
+    PROMEDIO,
+    PAI_CODIGO,
+    DTO_CODIGO}: ActualizarRegistroDto){
     try {
 
       let crearRegistro = await this.educacionRepository.actualizarRegistro(
@@ -110,7 +116,9 @@ export class EducacionService {
           FECHA_FINALIZACION,
           FECHA_GRADO_TENTATIVO,
           MODALIDAD_ESTUDIO,
-          PROMEDIO);
+          PROMEDIO,
+          PAI_CODIGO,
+          DTO_CODIGO);
       return {"ok":"registro actualizado"}
     } catch (error) {
       throw new Error(error.message);  
