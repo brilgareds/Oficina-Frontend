@@ -15,7 +15,9 @@ export interface EducacionRepository {
                 FECHA_FINALIZACION: string,
                 FECHA_GRADO_TENTATIVO: string,
                 MODALIDAD_ESTUDIO: number,
-                PROMEDIO: string): Promise<any>;
+                PROMEDIO: string,
+                PAI_CODIGO: number,
+                DTO_CODIGO: number): Promise<any>;
   actualizarRegistro(
     EDUCACION_CODIGO: number,
     NIVEL_ESTUDIO: number,
@@ -27,6 +29,8 @@ export interface EducacionRepository {
     FECHA_FINALIZACION: string,
     FECHA_GRADO_TENTATIVO: string,
     MODALIDAD_ESTUDIO: number,
-    PROMEDIO: string): Promise<any>;
+    PROMEDIO: string,
+    PAI_CODIGO: number,
+    DTO_CODIGO: number): Promise<any>;
   eliminarRegistro(EDUCACION_CODIGO: number): Promise<any>;
 }

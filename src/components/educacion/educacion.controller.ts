@@ -174,6 +174,12 @@ import { EducacionService } from "./educacion.service";
    *              PROMEDIO:
    *                type: string
    *                description: Promedio
+   *              PAI_CODIGO:
+   *                type: number
+   *                description: Codigo del pais
+   *              DTO_CODIGO:
+   *                type: number
+   *                description: Codigo del departamento
    *            required:
    *              - NIVEL_ESTUDIO
    *              - TITULO
@@ -185,6 +191,8 @@ import { EducacionService } from "./educacion.service";
    *              - FECHA_GRADO_TENTATIVO
    *              - MODALIDAD_ESTUDIO
    *              - PROMEDIO
+   *              - PAI_CODIGO
+   *              - DTO_CODIGO
    *    responses:
    *      200:
    *        description: Registros Creados de manera exitosa
@@ -248,6 +256,12 @@ import { EducacionService } from "./educacion.service";
    *              PROMEDIO:
    *                type: string
    *                description: Promedio
+   *              PAI_CODIGO:
+   *                type: number
+   *                description: Codigo del pais
+   *              DTO_CODIGO:
+   *                type: number
+   *                description: Codigo del departamento
    *            required:
    *              - NIVEL_ESTUDIO
    *              - TITULO
@@ -259,6 +273,8 @@ import { EducacionService } from "./educacion.service";
    *              - FECHA_GRADO_TENTATIVO
    *              - MODALIDAD_ESTUDIO
    *              - PROMEDIO
+   *              - PAI_CODIGO
+   *              - DTO_CODIGO
    *    responses:
    *      200:
    *        description: Registros Creados de manera exitosa
