@@ -134,7 +134,7 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
              AND bi_cargo.ind_acti = 'A'
         LEFT JOIN dbo.ESMAD_INFORMACION_BASICA
           ON nm_contr.cod_empl = ESMAD_INFORMACION_BASICA.NRO_DOCUMENTO
-             AND ESMAD_INFORMACION_BASICA.MENU_CODIGO = 1
+             AND nm_contr.cod_empr = ESMAD_INFORMACION_BASICA.CODIGO_EMPRESA
         LEFT JOIN dbo.ESMAD_TIPO
           ON ESMAD_INFORMACION_BASICA.TIP_CODIGO_DOCUMENTO = ESMAD_TIPO.TIP_CODIGO
         LEFT JOIN (SELECT
