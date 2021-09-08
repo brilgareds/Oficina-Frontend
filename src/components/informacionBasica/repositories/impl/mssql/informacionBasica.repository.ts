@@ -404,7 +404,7 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
         CARGOS_OCUPADOS,
         CODIGO_EMPRESA
     ) VALUES (
-        2,
+        1,
         ${TIP_CODIGO_DOCUMENTO},
         ${NRO_DOCUMENTO},
         ${NOMBRES},
