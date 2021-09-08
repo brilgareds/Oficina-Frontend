@@ -35,7 +35,7 @@ export class EducacionMssqlRepository implements EducacionRepository {
                                     ON(ESMAD_EDUCACION.MODALIDAD_ESTUDIO = MODALIDAD.TIP_CODIGO) LEFT JOIN dbo.ESMAD_TIPO AS NIVEL
                                     ON(ESMAD_EDUCACION.NIVEL_ESTUDIO = NIVEL.TIP_CODIGO) LEFT JOIN dbo.ESMAD_TIPO AS ESTADO
                                     ON(ESMAD_EDUCACION.ESTADO_ESTUDIO = ESTADO.TIP_CODIGO)
-                                    WHERE INFORMACION_BASICA_CODIGO = ${cedula} AND ESTADO = 1`;  
+                                    WHERE INFORMACION_BASICA_CODIGO = ${cedula} AND ESMAD_EDUCACION.ESTADO = 1`;  
     return result.recordset;  
   }
 
