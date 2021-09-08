@@ -169,7 +169,12 @@ export class FamiliarMssqlRepository implements FamiliarRepository {
                                     WHEN ESMAD_FAMILIARES.HOB_FAMI IS NOT NULL
                                     THEN ESMAD_FAMILIARES.HOB_FAMI
                                     ELSE bi_famil.hob_fami
-                                    END AS HOB_FAMI
+                                    END AS HOB_FAMI,
+                                    CASE
+                                      WHEN ESMAD_FAMILIARES.TIP_IDEN IS NOT NULL
+                                        THEN ESMAD_FAMILIARES.TIP_IDEN
+                                      ELSE bi_famil.tip_iden
+                                    END AS TIP_IDEN
                                     FROM ESMAD_FAMILIARES LEFT JOIN SERVCLO09.kactus.dbo.bi_famil
                                     ON(ESMAD_FAMILIARES.COD_EMPL = bi_famil.cod_empl) AND (ESMAD_FAMILIARES.COD_EMPR = bi_famil.cod_empr)
                                     WHERE ESMAD_FAMILIARES.COD_EMPL = ${COD_EMPL} and ESMAD_FAMILIARES.COD_EMPR = ${COD_EMPR} AND ESMAD_FAMILIARES.ESTADO = 1`;
