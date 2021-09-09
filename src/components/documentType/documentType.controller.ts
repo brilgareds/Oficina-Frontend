@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 import { route, GET, POST, before } from "awilix-express";
 import { DocumentTypeService } from "./documentType.service";
-import { verifyJwt, verifyRefreshToken } from "../common/middlewares/jwt";
-import RequestWithUser from "../common/interfaces/requestWithUser";
+import { verifyJwt } from "../common/middlewares/jwt";
 
 /**
  * @swagger
@@ -11,7 +10,7 @@ import RequestWithUser from "../common/interfaces/requestWithUser";
  */
 @route("/api/v1/documentType")
 export class DocumentTypeController {
-  constructor(private readonly documentTypeService: DocumentTypeService) { }
+  constructor(private readonly documentTypeService: DocumentTypeService) {}
 
   /**
    * @swagger
@@ -30,9 +29,8 @@ export class DocumentTypeController {
   @route("/get")
   @GET()
   // @before([verifyJwt])
-  public async getDocumentType(req: RequestWithUser, res: Response) {
+  public async getDocumentType(req: Request, res: Response) {
     try {
-
       const response = await this.documentTypeService.getDocumentType();
 
       res.status(200).json(response);

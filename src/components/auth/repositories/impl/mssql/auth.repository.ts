@@ -31,6 +31,7 @@ export class AuthMSSQLRepository implements AuthRepository {
     const query = `SELECT DISTINCT
       LTRIM(RTRIM( (Empleado.ape_empl)))     AS Apellidos,
       LTRIM(RTRIM( (Empleado.nom_empl)))     AS Nombres,
+      LTRIM(RTRIM( (Empleado.dir_resi)))     AS dire,
       LTRIM(RTRIM( (Empleado.sex_empl)))     AS Genero,
       LTRIM(RTRIM( (dbo.bi_cargo.nom_carg))) AS Cargo,
       LTRIM(RTRIM( (dbo.gn_nivel.nom_nive))) AS Area,
@@ -44,7 +45,7 @@ export class AuthMSSQLRepository implements AuthRepository {
       CONVERT(varchar,nm_contr.fec_ingr,111) as FECHA_INGRESO,
       CONVERT(varchar,nm_contr.fec_venc,111) as FECHA_VENCIMIENTO,
       nm_contr.nro_cont AS NUMERO_CONTRATO,
-      dbo.NM_ENTID.nom_enti as Entidad
+      LTRIM(RTRIM(dbo.NM_ENTID.nom_enti)) as Entidad
     FROM
       dbo.nm_contr
     LEFT JOIN dbo.gn_nivel
