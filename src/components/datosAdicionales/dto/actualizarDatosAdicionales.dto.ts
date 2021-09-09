@@ -17,19 +17,15 @@ export class ActualizarDatosAdicionalesDto {
   @IsString()
   PROFESION: string;
 
-  @IsNumber()
   ANOS_PROFESION: number;
 
-  @IsNumber()
   INGRESOS_ADICIONALES: number;
 
-  @IsNumber()
   MASCOTA: number;
 
   @IsString()
   CUAL_MASCOTA: string;
 
-  @IsNumber()
   RECREACION: number;
 
   @IsString()
@@ -38,7 +34,6 @@ export class ActualizarDatosAdicionalesDto {
   @IsString()
   FRECUENCIA_RECREACION: string;
 
-  @IsNumber()
   DEPORTE: number;
 
   @IsString()
@@ -47,7 +42,6 @@ export class ActualizarDatosAdicionalesDto {
   @IsString()
   FRECUENCIA_DEPORTE: string;
 
-  @IsNumber()
   OTRO_TRABAJO: number;
 
   @IsString()
@@ -56,28 +50,23 @@ export class ActualizarDatosAdicionalesDto {
   @IsString()
   FRECUENCIA_OTRO_TRABAJO: string;
 
-  @IsNumber()
   VEHICULO: number;
 
   @IsString()
   CUAL_VEHICULO: string;
 
-  @IsNumber()
   LICENCIA_CONDUCCION: number;
 
   @IsString()
   LICENCIA_CONDUCCION_TIPO: string;
 
-  @IsNumber()
   GRUPO_SOCIAL: number;
 
   @IsString()
   CUAL_GRUPO_SOCIAL: string;
 
-  @IsNumber()
   AHORRO: number;
 
-  @IsNumber()
   PORCENTAJE_AHORRO_SALARIAL: number;
 
   @IsString()
