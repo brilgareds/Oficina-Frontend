@@ -4,8 +4,6 @@ import validationMiddleware from "../common/middlewares/validation";
 import { LoginDto } from "./dto/login.dto";
 import { AuthService } from "./auth.service";
 import { verifyJwt, verifyRefreshToken } from "../common/middlewares/jwt";
-import RequestWithUser from "../common/interfaces/requestWithUser";
-import { JwtUserPayload } from "../common/interfaces/jwtUserPayload";
 
 /**
  * @swagger
@@ -72,11 +70,9 @@ export class AuthController {
   @route("/refresh")
   @POST()
   @before([verifyRefreshToken])
-  public async refresh(req: RequestWithUser, res: Response) {
+  public async refresh(req: Request, res: Response) {
     try {
-      const user: JwtUserPayload = req.user;
-
-      const login = await this.authService.refreshToken(user);
+      const login = await this.authService.refreshToken(req.user!);
 
       res.status(200).json(login);
     } catch (e) {
@@ -101,10 +97,9 @@ export class AuthController {
   @route("/me")
   @GET()
   @before([verifyJwt])
-  public async me(req: RequestWithUser, res: Response) {
+  public async me(req: Request, res: Response) {
     try {
-      const user: JwtUserPayload = req.user;
-      const userInformation = await this.authService.userInformation(user);
+      const userInformation = await this.authService.userInformation(req.user!);
 
       res.status(200).json(userInformation);
     } catch (e) {
