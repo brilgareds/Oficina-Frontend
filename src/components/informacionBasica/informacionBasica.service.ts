@@ -10,8 +10,12 @@ export class InformacionBasicaService {
 
   public async buscarMenu({ cedula,empresa }: InformacionBasicaDto) {
     try {
-      const buscarDatos = await this.informacionBasicaRepository.buscarDatos(cedula, empresa);
 
+      let buscarDatos = await this.informacionBasicaRepository.buscarDatos(cedula, empresa);
+
+      if(!buscarDatos[0]){
+        buscarDatos = {"error":"No se encontraron datos"};
+      }
       return buscarDatos;
 
     } catch (error) {
@@ -23,7 +27,11 @@ export class InformacionBasicaService {
 
   public async consultarTipDocumento() {
     try {
-      const buscarTipDocumento = await this.informacionBasicaRepository.consultarTipDocumento();
+      let buscarTipDocumento = await this.informacionBasicaRepository.consultarTipDocumento();
+
+      if(!buscarTipDocumento[0]){
+        buscarTipDocumento = {"error":"No se encontraron datos"};
+      }
 
       return buscarTipDocumento;
 
@@ -36,8 +44,11 @@ export class InformacionBasicaService {
 
   public async consultarEstadoCivil() {
     try {
-      const buscarEstadoCivil = await this.informacionBasicaRepository.consultarEstadoCivil();
+      let buscarEstadoCivil = await this.informacionBasicaRepository.consultarEstadoCivil();
 
+      if(!buscarEstadoCivil[0]){
+        buscarEstadoCivil = {"error":"No se encontraron datos"};
+      }
       return buscarEstadoCivil;
 
     } catch (error) {
@@ -49,8 +60,11 @@ export class InformacionBasicaService {
 
   public async consultarPaises() {
     try {
-      const buscarPaises = await this.informacionBasicaRepository.consultarPaises();
+      let buscarPaises = await this.informacionBasicaRepository.consultarPaises();
 
+      if(!buscarPaises[0]){
+        buscarPaises = {"error":"No se encontraron datos"};
+      }
       return buscarPaises;
 
     } catch (error) {
@@ -62,8 +76,11 @@ export class InformacionBasicaService {
 
   public async consultarLabelsNivel({ empresa }: LabelsNivelDto) {
     try {
-      const buscarLabels = await this.informacionBasicaRepository.consultarLabelsNivel(empresa);
+      let buscarLabels = await this.informacionBasicaRepository.consultarLabelsNivel(empresa);
 
+      if(!buscarLabels[0]){
+        buscarLabels = {"error":"No se encontraron datos"};
+      }
       return buscarLabels;
 
     } catch (error) {
@@ -75,12 +92,14 @@ export class InformacionBasicaService {
 
   public async consultarNomenclatura() {
     try {
-      const listaNomenclaturas = await this.informacionBasicaRepository.consultarNomenclatura();
+      let listaNomenclaturas = await this.informacionBasicaRepository.consultarNomenclatura();
 
       let arrayCalle: object[] = new Array();
       let arrayBis: object[] = new Array();
       let arrayCardinalidad: object[] = new Array();
       let arrayComplemento: object[] = new Array();
+
+      if(listaNomenclaturas[0]){
 
       for (const nomenclatura of listaNomenclaturas) {
         if(nomenclatura['COD_NOME'] == 'CL' ||
@@ -168,8 +187,14 @@ export class InformacionBasicaService {
 
       }
 
-      return {'arrayCalle': arrayCalle,'arrayBis': arrayBis,'arrayCardinalidad': arrayCardinalidad,
-              'arrayComplemento': arrayComplemento};
+      listaNomenclaturas = {'arrayCalle': arrayCalle,'arrayBis': arrayBis,'arrayCardinalidad': arrayCardinalidad,
+                            'arrayComplemento': arrayComplemento};
+
+    }else{
+      listaNomenclaturas = {"error":"No se encontraron datos"};
+    }
+
+      return listaNomenclaturas;
 
     } catch (error) {
 
@@ -180,8 +205,11 @@ export class InformacionBasicaService {
 
   public async consultarAntiguedad() {
     try {
-      const buscarEstadoCivil = await this.informacionBasicaRepository.consultarAntiguedad();
+      let buscarEstadoCivil = await this.informacionBasicaRepository.consultarAntiguedad();
 
+      if(!buscarEstadoCivil[0]){
+        buscarEstadoCivil = {"error":"No se encontraron datos"};
+      }
       return buscarEstadoCivil;
 
     } catch (error) {
@@ -193,8 +221,11 @@ export class InformacionBasicaService {
 
   public async consultarDepartamentos({ codPais }: DepartamentosDto) {
     try {
-      const buscarDepartamento = await this.informacionBasicaRepository.consultarDepartamentos(codPais);
+      let buscarDepartamento = await this.informacionBasicaRepository.consultarDepartamentos(codPais);
 
+      if(!buscarDepartamento[0]){
+        buscarDepartamento = {"error":"No se encontraron datos"};
+      }
       return buscarDepartamento;
 
     } catch (error) {
@@ -206,8 +237,11 @@ export class InformacionBasicaService {
 
   public async consultarMunicipios({ codDepartamento }: CiudadesDto) {
     try {
-      const buscarMunicipios = await this.informacionBasicaRepository.consultarMunicipios(codDepartamento);
+      let buscarMunicipios = await this.informacionBasicaRepository.consultarMunicipios(codDepartamento);
 
+      if(!buscarMunicipios[0]){
+        buscarMunicipios = {"error":"No se encontraron datos"};
+      }
       return buscarMunicipios;
 
     } catch (error) {
@@ -219,27 +253,32 @@ export class InformacionBasicaService {
 
   public async consultarTalla() {
     try {
-      const buscarTallaUniformes = await this.informacionBasicaRepository.consultarTalla();
+      let buscarTallaUniformes = await this.informacionBasicaRepository.consultarTalla();
       let arrayCamisa = new Array();
       let arrayPantalonMujer = new Array();
       let arrayPantalonHombre = new Array();
       let arrayCalzado = new Array();
-      for(const tallaUniforme of buscarTallaUniformes){
+      if(buscarTallaUniformes[0]){
+        for(const tallaUniforme of buscarTallaUniformes){
 
-        if(tallaUniforme.TIP_CODIGO2 == 1319){
-          arrayCamisa.push(tallaUniforme);
-        }else if(tallaUniforme.TIP_CODIGO2 == 1327){
-          arrayPantalonMujer.push(tallaUniforme);
-        }else if(tallaUniforme.TIP_CODIGO2 == 1328){
-          arrayPantalonHombre.push(tallaUniforme);
-        }else if(tallaUniforme.TIP_CODIGO2 == 1354){
-          arrayCalzado.push(tallaUniforme);
+          if(tallaUniforme.TIP_CODIGO2 == 1319){
+            arrayCamisa.push(tallaUniforme);
+          }else if(tallaUniforme.TIP_CODIGO2 == 1327){
+            arrayPantalonMujer.push(tallaUniforme);
+          }else if(tallaUniforme.TIP_CODIGO2 == 1328){
+            arrayPantalonHombre.push(tallaUniforme);
+          }else if(tallaUniforme.TIP_CODIGO2 == 1354){
+            arrayCalzado.push(tallaUniforme);
+          }
+
         }
-
+        buscarTallaUniformes = {'tallaCamisa': arrayCamisa, 'tallaPantalonMujer': arrayPantalonMujer, 
+                                'tallaPantalonHombre':arrayPantalonHombre,'tallaCalzado':arrayCalzado};
+      }else{
+        buscarTallaUniformes = {"error":"No se encontraron datos"};
       }
 
-      return {'tallaCamisa': arrayCamisa, 'tallaPantalonMujer': arrayPantalonMujer, 
-              'tallaPantalonHombre':arrayPantalonHombre,'tallaCalzado':arrayCalzado};
+      return buscarTallaUniformes;
 
     } catch (error) {
 
@@ -392,7 +431,7 @@ export class InformacionBasicaService {
         );
       }
 
-      return {"status":"ok"};
+      return {"ok":"Actualización de datos exitosa"};
 
     } catch (error) {
 

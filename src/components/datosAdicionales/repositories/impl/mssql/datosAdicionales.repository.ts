@@ -4,18 +4,18 @@ import { DatosAdicionalesRepository } from "../../datosAdicionales.repository";
 export class DatosAdicionalesMSSQLRepository implements DatosAdicionalesRepository {
   public async buscarDatos(CODIGO_EMPRESA: number, NRO_DOCUMENTO: number): Promise<any> {
     const pool = await mssqlEsmad;
-    const result = await pool.query`
+    const sql = `
       SELECT
           ESMAD_DATOS_ADICIONALES.DATOS_ADICIONALES_CODIGO,
           CASE
             WHEN ESMAD_DATOS_ADICIONALES.HOBBIES IS NOT NULL
               THEN ESMAD_DATOS_ADICIONALES.HOBBIES
-            ELSE bi_datad.hob_empl
+            ELSE RTRIM(LTRIM(bi_datad.hob_empl))
           END AS HOBBIES,
           CASE
             WHEN ESMAD_DATOS_ADICIONALES.PROFESION IS NOT NULL
               THEN ESMAD_DATOS_ADICIONALES.PROFESION
-            ELSE bi_datad.pro_fesi
+            ELSE RTRIM(LTRIM(bi_datad.pro_fesi))
           END AS PROFESION,
           CASE
             WHEN ESMAD_DATOS_ADICIONALES.ANOS_PROFESION IS NOT NULL
@@ -27,13 +27,13 @@ export class DatosAdicionalesMSSQLRepository implements DatosAdicionalesReposito
           CASE
             WHEN ESMAD_DATOS_ADICIONALES.CUAL_MASCOTA IS NOT NULL
               THEN ESMAD_DATOS_ADICIONALES.CUAL_MASCOTA
-            ELSE bi_datad.TIE_MASC
+            ELSE RTRIM(LTRIM(bi_datad.TIE_MASC))
           END AS CUAL_MASCOTA,
           ESMAD_DATOS_ADICIONALES.RECREACION,
           CASE
             WHEN ESMAD_DATOS_ADICIONALES.CUAL_RECREACION IS NOT NULL
               THEN ESMAD_DATOS_ADICIONALES.CUAL_RECREACION
-            ELSE bi_datad.REC_REAC
+            ELSE RTRIM(LTRIM(bi_datad.REC_REAC))
           END AS CUAL_RECREACION,
           CASE
             WHEN ESMAD_DATOS_ADICIONALES.FRECUENCIA_RECREACION IS NOT NULL
@@ -44,7 +44,7 @@ export class DatosAdicionalesMSSQLRepository implements DatosAdicionalesReposito
           CASE
             WHEN ESMAD_DATOS_ADICIONALES.CUAL_DEPORTE IS NOT NULL
               THEN ESMAD_DATOS_ADICIONALES.CUAL_DEPORTE
-            ELSE bi_datad.DEP_ORTE
+            ELSE RTRIM(LTRIM(bi_datad.DEP_ORTE))
           END AS CUAL_DEPORTE,
           CASE
             WHEN ESMAD_DATOS_ADICIONALES.FRECUENCIA_DEPORTE IS NOT NULL
@@ -55,18 +55,18 @@ export class DatosAdicionalesMSSQLRepository implements DatosAdicionalesReposito
           CASE
             WHEN ESMAD_DATOS_ADICIONALES.CUAL_OTRO_TRABAJO IS NOT NULL
               THEN ESMAD_DATOS_ADICIONALES.CUAL_OTRO_TRABAJO
-            ELSE bi_datad.OTR_TRAB
+            ELSE RTRIM(LTRIM(bi_datad.OTR_TRAB))
           END AS CUAL_OTRO_TRABAJO,
           CASE
-            WHEN ESMAD_DATOS_ADICIONALES.CUAL_OTRO_TRABAJO IS NOT NULL
-              THEN ESMAD_DATOS_ADICIONALES.CUAL_OTRO_TRABAJO
+            WHEN ESMAD_DATOS_ADICIONALES.FRECUENCIA_OTRO_TRABAJO IS NOT NULL
+              THEN ESMAD_DATOS_ADICIONALES.FRECUENCIA_OTRO_TRABAJO
             ELSE bi_datad.PER_TRAB
-          END AS CUAL_OTRO_TRABAJO,
+          END AS FRECUENCIA_OTRO_TRABAJO,
           ESMAD_DATOS_ADICIONALES.VEHICULO,
           CASE
             WHEN ESMAD_DATOS_ADICIONALES.CUAL_VEHICULO IS NOT NULL
               THEN ESMAD_DATOS_ADICIONALES.CUAL_VEHICULO
-            ELSE bi_datad.VEH_PROP
+            ELSE RTRIM(LTRIM(bi_datad.VEH_PROP))
           END AS CUAL_VEHICULO,
           ESMAD_DATOS_ADICIONALES.LICENCIA_CONDUCCION,
           CASE
@@ -78,12 +78,12 @@ export class DatosAdicionalesMSSQLRepository implements DatosAdicionalesReposito
           CASE
             WHEN ESMAD_DATOS_ADICIONALES.CUAL_GRUPO_SOCIAL IS NOT NULL
               THEN ESMAD_DATOS_ADICIONALES.CUAL_GRUPO_SOCIAL
-            ELSE bi_datad.GRU_SOCI
+            ELSE RTRIM(LTRIM(bi_datad.GRU_SOCI))
           END AS CUAL_GRUPO_SOCIAL,
           CASE
             WHEN ESMAD_DATOS_ADICIONALES.CONDICION_ESPECIAL IS NOT NULL
               THEN ESMAD_DATOS_ADICIONALES.CONDICION_ESPECIAL
-            ELSE bi_datad.CON_ESPE
+            ELSE RTRIM(LTRIM(bi_datad.CON_ESPE))
           END AS CONDICION_ESPECIAL,
           CASE
             WHEN ESMAD_DATOS_ADICIONALES.CONDICION_ESPECIAL_LGTB IS NOT NULL
@@ -109,7 +109,7 @@ export class DatosAdicionalesMSSQLRepository implements DatosAdicionalesReposito
           AND nm_contr.cod_empr = ${CODIGO_EMPRESA}
           AND nm_contr.ind_acti = 'A'
     `;
-    
+    const result = await pool.query(sql);
     return result.recordset;
   }
 
@@ -117,16 +117,16 @@ export class DatosAdicionalesMSSQLRepository implements DatosAdicionalesReposito
     const pool = await mssqlEsmad;
     const sql = `
       SELECT
-        ESMAD_LISTA_DATOS_ADICIONAES.TIP_CODIGO,
-        ESMAD_LISTA_DATOS_ADICIONAES.CONDICION_ESPECIAL
-        ESMAD_LISTA_DATOS_ADICIONAES.DEUDAS
-        ESMAD_LISTA_DATOS_ADICIONAES.DEUDAS_FUTURAS
+        ESMAD_LISTA_DATOS_ADICIONALES.TIP_CODIGO,
+        ESMAD_LISTA_DATOS_ADICIONALES.CONDICION_ESPECIAL,
+        ESMAD_LISTA_DATOS_ADICIONALES.DEUDAS,
+        ESMAD_LISTA_DATOS_ADICIONALES.DEUDAS_FUTURAS
       FROM
         dbo.ESMAD_TIPO
-        INNER JOIN dbo.ESMAD_LISTA_DATOS_ADICIONAES
-          ON ESMAD_LISTA_DATOS_ADICIONAES.DATOS_ADICIONALES_CODIGO = ${DATOS_ADICIONALES_CODIGO}
-             AND ESMAD_TIPO.TIP_CODIGO = ESMAD_LISTA_DATOS_ADICIONAES.TIP_CODIGO
-             AND ESMAD_LISTA_DATOS_ADICIONAES.ESTADO = 1
+        INNER JOIN dbo.ESMAD_LISTA_DATOS_ADICIONALES
+          ON ESMAD_LISTA_DATOS_ADICIONALES.DATOS_ADICIONALES_CODIGO = ${DATOS_ADICIONALES_CODIGO}
+             AND ESMAD_TIPO.TIP_CODIGO = ESMAD_LISTA_DATOS_ADICIONALES.TIP_CODIGO
+             AND ESMAD_LISTA_DATOS_ADICIONALES.ESTADO = 1
       WHERE
         ESMAD_TIPO.CLT_CODIGO IN (60,61,62)
     `;

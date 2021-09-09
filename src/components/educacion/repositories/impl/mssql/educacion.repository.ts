@@ -5,7 +5,7 @@ export class EducacionMssqlRepository implements EducacionRepository {
 
   public async consultarNivelEstudio(): Promise<any> {
     const pool = await mssqlEsmad;
-    const result = await pool.query`SELECT TIP_CODIGO, TIP_NOMBRE
+    const result = await pool.query`SELECT TIP_CODIGO, TIP_NOMBRE, TIP_ATRIBUTO1
                                     FROM ESMAD_TIPO
                                     WHERE ESMAD_TIPO.CLT_CODIGO = 52 AND ESMAD_TIPO.ESTADO = 1`;   
     return result.recordset;
@@ -29,13 +29,17 @@ export class EducacionMssqlRepository implements EducacionRepository {
 
   public async consultarDatosEstudio(cedula: number): Promise<any>{
     const pool = await mssqlEsmad;
-    const result = await pool.query`SELECT EDUCACION_CODIGO, INFORMACION_BASICA_CODIGO, NIVEL_ESTUDIO, NIVEL.TIP_NOMBRE AS NIVEL_NOMBRE, TITULO, INSTITUCION, 
-                                    CIUDAD, ESTADO_ESTUDIO, ESTADO.TIP_NOMBRE AS ESTADO_NOMBRE, FECHA_INICIO, FECHA_FINALIZACION, FECHA_GRADO_TENTATIVO, MODALIDAD_ESTUDIO, MODALIDAD.TIP_NOMBRE AS MODALIDAD_NOMBRE, PROMEDIO 
+    const result = await pool.query`SELECT EDUCACION_CODIGO, INFORMACION_BASICA_CODIGO, NIVEL_ESTUDIO, 
+                                    NIVEL.TIP_NOMBRE AS NIVEL_NOMBRE, TITULO, INSTITUCION, 
+                                    CIUDAD, ESTADO_ESTUDIO, ESTADO.TIP_NOMBRE AS ESTADO_NOMBRE, 
+                                    FECHA_INICIO, FECHA_FINALIZACION, FECHA_GRADO_TENTATIVO, 
+                                    MODALIDAD_ESTUDIO, MODALIDAD.TIP_NOMBRE AS MODALIDAD_NOMBRE, 
+                                    PROMEDIO, PAI_CODIGO, DTO_CODIGO
                                     FROM ESMAD_EDUCACION LEFT JOIN dbo.ESMAD_TIPO AS MODALIDAD
                                     ON(ESMAD_EDUCACION.MODALIDAD_ESTUDIO = MODALIDAD.TIP_CODIGO) LEFT JOIN dbo.ESMAD_TIPO AS NIVEL
                                     ON(ESMAD_EDUCACION.NIVEL_ESTUDIO = NIVEL.TIP_CODIGO) LEFT JOIN dbo.ESMAD_TIPO AS ESTADO
                                     ON(ESMAD_EDUCACION.ESTADO_ESTUDIO = ESTADO.TIP_CODIGO)
-                                    WHERE INFORMACION_BASICA_CODIGO = ${cedula}`;  
+                                    WHERE INFORMACION_BASICA_CODIGO = ${cedula} AND ESMAD_EDUCACION.ESTADO = 1`;  
     return result.recordset;  
   }
 
@@ -50,16 +54,19 @@ export class EducacionMssqlRepository implements EducacionRepository {
                              FECHA_FINALIZACION: string,
                              FECHA_GRADO_TENTATIVO: string,
                              MODALIDAD_ESTUDIO: number,
-                             PROMEDIO: string): Promise<any>{
+                             PROMEDIO: string,
+                             PAI_CODIGO: number,
+                             DTO_CODIGO: number): Promise<any>{
                               const pool = await mssqlEsmad;
                               const result = await pool.query`INSERT INTO ESMAD_EDUCACION 
                                                               (MENU_CODIGO, INFORMACION_BASICA_CODIGO, 
                                                               NIVEL_ESTUDIO, TITULO, INSTITUCION, CIUDAD, ESTADO_ESTUDIO, 
                                                               FECHA_INICIO, FECHA_FINALIZACION, FECHA_GRADO_TENTATIVO, 
-                                                              MODALIDAD_ESTUDIO, PROMEDIO) 
+                                                              MODALIDAD_ESTUDIO, PROMEDIO, ESTADO, PAI_CODIGO, DTO_CODIGO) 
                                                               VALUES (${MENU_CODIGO}, ${INFORMACION_BASICA_CODIGO}, ${NIVEL_ESTUDIO}, ${TITULO}, 
                                                                       ${INSTITUCION}, ${CIUDAD}, ${ESTADO_ESTUDIO}, ${FECHA_INICIO}, ${FECHA_FINALIZACION}, 
-                                                                      ${FECHA_GRADO_TENTATIVO}, ${MODALIDAD_ESTUDIO}, ${PROMEDIO})`;
+                                                                      ${FECHA_GRADO_TENTATIVO}, ${MODALIDAD_ESTUDIO}, ${PROMEDIO}, 1, ${PAI_CODIGO},
+                                                                      ${DTO_CODIGO})`;
                               return result.recordset;
 
     }
@@ -75,7 +82,9 @@ export class EducacionMssqlRepository implements EducacionRepository {
       FECHA_FINALIZACION: string,
       FECHA_GRADO_TENTATIVO: string,
       MODALIDAD_ESTUDIO: number,
-      PROMEDIO: string): Promise<any>{
+      PROMEDIO: string,
+      PAI_CODIGO: number,
+      DTO_CODIGO: number): Promise<any>{
       const pool = await mssqlEsmad;
       const result = await pool.query`
         UPDATE dbo.ESMAD_EDUCACION 
@@ -89,12 +98,28 @@ export class EducacionMssqlRepository implements EducacionRepository {
             FECHA_FINALIZACION = ${FECHA_FINALIZACION},
             FECHA_GRADO_TENTATIVO = ${FECHA_GRADO_TENTATIVO},
             MODALIDAD_ESTUDIO = ${MODALIDAD_ESTUDIO},
-            PROMEDIO = ${PROMEDIO}
+            PROMEDIO = ${PROMEDIO},
+            PAI_CODIGO = ${PAI_CODIGO},
+            DTO_CODIGO = ${DTO_CODIGO}
         WHERE 
           EDUCACION_CODIGO = ${EDUCACION_CODIGO}
        `;
        return result.recordset;
 
-}
+  }
+
+  public async eliminarRegistro(
+      EDUCACION_CODIGO: number
+    ): Promise<any>{
+    const pool = await mssqlEsmad;
+    const result = await pool.query`
+      UPDATE dbo.ESMAD_EDUCACION 
+        SET
+          ESTADO = 0
+      WHERE 
+        EDUCACION_CODIGO = ${EDUCACION_CODIGO}
+     `;
+     return result.recordset;
+  }
     
 }

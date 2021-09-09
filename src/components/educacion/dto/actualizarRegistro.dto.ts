@@ -46,4 +46,12 @@ export class ActualizarRegistroDto {
   @IsString()
   PROMEDIO: string;
 
+  @IsNotEmpty()
+  @IsNumber()
+  PAI_CODIGO: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  DTO_CODIGO: number;
+
 }

@@ -1,6 +1,4 @@
-// import { LoginDto } from "./dto/menuOV.dto";
-// import { signAccessToken, signRefreshToken } from "../common/helpers/jwt";
-// import { JwtUserPayload } from "../common/interfaces/jwtUserPayload";
+import { MenuOVDto } from "./dto/menuOV.dto";
 import { MenuOVRepository } from "./repositories/menuOV.repository";
 
 export class MenuOVService {
@@ -8,8 +6,28 @@ export class MenuOVService {
 
   public async buscarMenu() {
     try {
-      const menu = await this.menuOVRepository.buscarMenu();
+      let menu = await this.menuOVRepository.buscarMenu();
+      if(!menu[0]){
+        menu = {"error":"No se encontraron datos"};
+      }
+      return menu;
 
+    } catch (error) {
+
+      throw new Error(error.message);
+
+    }
+  }
+
+  public async formulariosCompletados({ CODIGO_EMPRESA,NRO_DOCUMENTO }:MenuOVDto) {
+    try {
+      let menu = await this.menuOVRepository.formulariosCompletados(
+        CODIGO_EMPRESA,
+        NRO_DOCUMENTO
+        );
+      if(!menu[0]){
+        menu = {"error":"No se encontraron datos"};
+      }
       return menu;
 
     } catch (error) {

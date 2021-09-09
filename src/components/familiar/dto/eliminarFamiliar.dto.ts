@@ -1,13 +1,10 @@
 import { IsNotEmpty, IsNumber, Max } from "class-validator";
-export class MenuOVDto {
 
-  @IsNotEmpty()
-  @IsNumber()
-  CODIGO_EMPRESA: number;
-
+export class EliminarFamiliares {
+  
   @IsNotEmpty()
   @IsNumber()
   @Max(9999999999)
-  NRO_DOCUMENTO: number;
-  
+  COD_FAMI: number;
+
 }
