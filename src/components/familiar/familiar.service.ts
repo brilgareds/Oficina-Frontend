@@ -14,7 +14,8 @@ export class FamiliarService {
       }
       return consultarDiscapacidad;
     } catch (error) {
-      throw new Error(error.message);
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");    
     }
   }
 
@@ -26,7 +27,8 @@ export class FamiliarService {
       }
       return consultarTipoRelacion;
     } catch (error) {
-      throw new Error(error.message);
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");    
     }
   }
 
@@ -52,7 +54,8 @@ export class FamiliarService {
          
         return {"ok":"Familiar creado"};
       } catch (error) {
-        throw new Error(error.message);  
+        console.log("error: ",error.message);
+        throw new Error("No se pudo realizar el proceso");
       }
       
 
@@ -66,7 +69,8 @@ export class FamiliarService {
       }
       return consultarFamiliares;  
     } catch (error) {
-      throw new Error(error.message);  
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");    
     }
   }
     
@@ -78,7 +82,8 @@ export class FamiliarService {
       }
       return consultarActividad;
     } catch (error) {
-      throw new Error(error.message);
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");    
     }  
   }
 
@@ -93,7 +98,8 @@ export class FamiliarService {
                                     HOB_FAMI, PAI_FAMI, DTO_FAMI);
       return {"ok":"Usuario actualizado"};  
     } catch (error) {
-      throw new Error(error.message);  
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");    
     }
   }
 
@@ -102,7 +108,8 @@ export class FamiliarService {
       const consultarActividad = await this.familiarRepository.eliminarFamiliaresIndividual(COD_FAMI);
       return {"ok":"Familiar eliminado"};
     } catch (error) {
-      throw new Error(error.message);
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");    
     }  
   }
 
