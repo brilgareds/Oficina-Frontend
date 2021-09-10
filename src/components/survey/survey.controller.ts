@@ -4,6 +4,9 @@ import { verifyJwt } from "../common/middlewares/jwt";
 import validationMiddleware from "../common/middlewares/validation";
 import { CovidSurveyCreateDto } from "./dto/covidSurveyCreate.dto";
 import { SurveyService } from "./survey.service";
+import { HealthConditionSurveyCreateDto } from "./dto/healthConditionSurveyCreate.dto";
+import { EpidemiologicalFenceSurveyCreateDto } from "./dto/epidemiologicalFenceSurveyCreate.dto";
+import { JwtUserPayload } from "../common/interfaces/jwtUserPayload";
 
 /**
  * @swagger
@@ -30,7 +33,7 @@ export class SurveyController {
    */
   @route("/covid")
   @GET()
-  // @before([verifyJwt])
+  @before([verifyJwt])
   public async getCovidSurveyQuestions(req: Request, res: Response) {
     try {
       const questions = await this.surveyService.getCovidSurveyQuestions();
@@ -58,9 +61,13 @@ export class SurveyController {
   @route("/covid")
   @POST()
   @before([verifyJwt, validationMiddleware(CovidSurveyCreateDto)])
-  public async saveCovidSurveyResponses(req: Request, res: Response) {
+  public async saveCovidSurveyAnswers(req: Request, res: Response) {
     try {
-      res.status(200).json({ data: "response" });
+      const answers = await this.surveyService.saveCovidSurveyAnswers(
+        req.body as CovidSurveyCreateDto
+      );
+
+      res.status(200).json({ data: answers });
     } catch (e) {
       res.status(401).json({ message: e.message });
     }
@@ -82,7 +89,7 @@ export class SurveyController {
    */
   @route("/epidemiologicalFence")
   @GET()
-  // @before([verifyJwt])
+  @before([verifyJwt])
   public async getEpidemiologicalFenceSurveyQuestions(
     req: Request,
     res: Response
@@ -92,6 +99,42 @@ export class SurveyController {
         await this.surveyService.getEpidemiologicalFenceSurveyQuestions();
 
       res.status(200).json({ data: questions });
+    } catch (e) {
+      res.status(401).json({ message: e.message });
+    }
+  }
+
+  /**
+   * @swagger
+   * /api/v1/surveys/epidemiologicalFence:
+   *  post:
+   *    summary:
+   *    tags: [Encuestas]
+   *    security:
+   *      - jwt: []
+   *    responses:
+   *      200:
+   *        description:
+   *      401:
+   *        description: Error en las credenciales
+   */
+  @route("/epidemiologicalFence")
+  @POST()
+  @before([
+    verifyJwt,
+    validationMiddleware(EpidemiologicalFenceSurveyCreateDto),
+  ])
+  public async saveEpidemiologicalFenceSurveyAnswers(
+    req: Request,
+    res: Response
+  ) {
+    try {
+      const answers =
+        await this.surveyService.saveEpidemiologicalFenceSurveyAnswers(
+          req.body as EpidemiologicalFenceSurveyCreateDto
+        );
+
+      res.status(200).json({ data: answers });
     } catch (e) {
       res.status(401).json({ message: e.message });
     }
@@ -117,11 +160,43 @@ export class SurveyController {
   public async getHealthConditionSurveyQuestions(req: Request, res: Response) {
     try {
       const questions =
-        await this.surveyService.getHealthConditionSurveyQuestions(req.user!);
+        await this.surveyService.getHealthConditionSurveyQuestions(
+          req.user as JwtUserPayload
+        );
 
       res.status(200).json({ data: questions });
     } catch (e) {
       res.status(401).json({ message: e.message });
+    }
+  }
+
+  /**
+   * @swagger
+   * /api/v1/surveys/healthCondition:
+   *  post:
+   *    summary:
+   *    tags: [Encuestas]
+   *    security:
+   *      - jwt: []
+   *    responses:
+   *      200:
+   *        description:
+   *      401:
+   *        description: Error en las credenciales
+   */
+  @route("/healthCondition")
+  @POST()
+  @before([verifyJwt, validationMiddleware(HealthConditionSurveyCreateDto)])
+  public async saveHealthConditionSurveyAnswers(req: Request, res: Response) {
+    try {
+      const answers = await this.surveyService.saveHealthConditionSurveyAnswers(
+        req.body as HealthConditionSurveyCreateDto,
+        req.user as JwtUserPayload
+      );
+
+      res.status(200).json({ data: answers });
+    } catch (e) {
+      res.status(400).json({ message: e.message });
     }
   }
 }

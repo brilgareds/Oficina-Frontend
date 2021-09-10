@@ -1,5 +1,9 @@
 import moment from "moment";
+import { mssqlEsmad } from "../../services/mssql";
 import { JwtUserPayload } from "../common/interfaces/jwtUserPayload";
+import { CovidSurveyCreateDto } from "./dto/covidSurveyCreate.dto";
+import { EpidemiologicalFenceSurveyCreateDto } from "./dto/epidemiologicalFenceSurveyCreate.dto";
+import { HealthConditionSurveyCreateDto } from "./dto/healthConditionSurveyCreate.dto";
 import { SurveyAnswersDto } from "./dto/surveyAnswers.dto";
 import { SurveyHeadsDto } from "./dto/surveyHeads.dto";
 import { SurveyQuestionsDto } from "./dto/surveyQuestions.dto";
@@ -57,6 +61,18 @@ export class SurveyService {
     }
   }
 
+  public async saveCovidSurveyAnswers(data: CovidSurveyCreateDto) {
+    const pool = await mssqlEsmad;
+    const transaction = pool.transaction();
+    try {
+      transaction.begin();
+
+      await transaction.commit();
+    } catch (err) {
+      await transaction.rollback();
+    }
+  }
+
   public async getEpidemiologicalFenceSurveyQuestions() {
     try {
       const surveyId = 4;
@@ -101,6 +117,20 @@ export class SurveyService {
       return newHeads;
     } catch (error) {
       throw new Error(error.message);
+    }
+  }
+
+  public async saveEpidemiologicalFenceSurveyAnswers(
+    data: EpidemiologicalFenceSurveyCreateDto
+  ) {
+    const pool = await mssqlEsmad;
+    const transaction = pool.transaction();
+    try {
+      transaction.begin();
+
+      await transaction.commit();
+    } catch (err) {
+      await transaction.rollback();
     }
   }
 
@@ -263,6 +293,45 @@ export class SurveyService {
       return newHeads;
     } catch (error) {
       throw new Error(error.message);
+    }
+  }
+
+  public async saveHealthConditionSurveyAnswers(
+    data: HealthConditionSurveyCreateDto,
+    user: JwtUserPayload
+  ) {
+    data.answers.map((answer) => {
+      if (!answer.codeER || !answer.value) {
+        throw new Error(
+          "El arreglo de respuestas debe contener el código y valor de la respuesta"
+        );
+      }
+    });
+
+    const pool = await mssqlEsmad;
+    const transaction = pool.transaction();
+
+    try {
+      await transaction.begin();
+      const survey =
+        await this.surveyRepository.saveHealthConditionSurveyAnswers(
+          user.identification,
+          user.company
+        );
+
+      const modifiedAnswers = data.answers.map((answer) => {
+        return `('${answer.codeER}','${user.identification}',getDate(),1,'${answer.value}',NULL,${survey.id})`;
+      });
+
+      await this.surveyRepository.saveSurveyAnswers(
+        "ENCUESTA_COVID",
+        modifiedAnswers
+      );
+
+      await transaction.commit();
+    } catch (err) {
+      console.log(err);
+      await transaction.rollback();
     }
   }
 
