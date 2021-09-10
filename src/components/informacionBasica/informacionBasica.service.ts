@@ -19,9 +19,8 @@ export class InformacionBasicaService {
       return buscarDatos;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -36,9 +35,8 @@ export class InformacionBasicaService {
       return buscarTipDocumento;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -52,9 +50,8 @@ export class InformacionBasicaService {
       return buscarEstadoCivil;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -68,9 +65,8 @@ export class InformacionBasicaService {
       return buscarPaises;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -84,9 +80,8 @@ export class InformacionBasicaService {
       return buscarLabels;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -197,9 +192,8 @@ export class InformacionBasicaService {
       return listaNomenclaturas;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -213,9 +207,8 @@ export class InformacionBasicaService {
       return buscarEstadoCivil;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -229,9 +222,8 @@ export class InformacionBasicaService {
       return buscarDepartamento;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -245,9 +237,8 @@ export class InformacionBasicaService {
       return buscarMunicipios;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -281,9 +272,8 @@ export class InformacionBasicaService {
       return buscarTallaUniformes;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -434,9 +424,8 @@ export class InformacionBasicaService {
       return {"ok":"Actualización de datos exitosa"};
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 

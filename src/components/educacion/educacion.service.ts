@@ -14,8 +14,8 @@ export class EducacionService {
       }
       return consultarNivelEstudio;
     } catch (error) {
-      throw new Error(error.message);
-    }
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");    }
   }
 
   public async consultarEstadoEstudio(){
@@ -26,8 +26,8 @@ export class EducacionService {
       }
       return consultarEstadoEstudio;  
     } catch (error) {
-      throw new Error(error.message);  
-    }
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");    }
   }
 
   public async consultarModalidadEstudio(){
@@ -38,8 +38,8 @@ export class EducacionService {
       }
       return consultarModalidadEstudio;  
     } catch (error) {
-      throw new Error(error.message);  
-    }
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");    }
   }
 
   public async consultarDatosEstudios({cedula}:ConsultarDatosEstudio){
@@ -50,8 +50,8 @@ export class EducacionService {
       }
       return consultarDatosEstudio;
     } catch (error) {
-      throw new Error(error.message);  
-    }
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");    }
   }
 
   public async crearRegistro({MENU_CODIGO, 
@@ -85,8 +85,8 @@ export class EducacionService {
         DTO_CODIGO);
       return {"ok":"registro creado"}
     } catch (error) {
-      throw new Error(error.message);  
-    }
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");    }
   }
 
   public async actualizarRegistro({
@@ -121,8 +121,8 @@ export class EducacionService {
           DTO_CODIGO);
       return {"ok":"registro actualizado"}
     } catch (error) {
-      throw new Error(error.message);  
-    }
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");    }
   }
 
   public async eliminarRegistro({ EDUCACION_CODIGO }: EliminarRegistroDto){
@@ -130,8 +130,8 @@ export class EducacionService {
       const eliminarRegistro = await this.educacionRepository.eliminarRegistro(EDUCACION_CODIGO);
       return {"ok":"Registro de educación eliminado"}
     } catch (error) {
-      throw new Error(error.message);  
-    }
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");    }
   }
 
 }

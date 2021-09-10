@@ -14,9 +14,8 @@ export class ViviendaService {
       return buscarDatos;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -29,9 +28,8 @@ export class ViviendaService {
       return buscarDatosTipVivienda;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -44,9 +42,8 @@ export class ViviendaService {
       return buscarDatosPerimetro;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -59,9 +56,8 @@ export class ViviendaService {
       return buscarDatosEstrato;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -74,9 +70,8 @@ export class ViviendaService {
       return buscarDatosServicio;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -160,9 +155,8 @@ export class ViviendaService {
       return {"ok":"Actualización exitosa"};
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 

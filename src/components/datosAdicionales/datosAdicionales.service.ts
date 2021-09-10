@@ -41,9 +41,8 @@ export class DatosAdicionalesService {
       return buscarDatos;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -58,9 +57,8 @@ export class DatosAdicionalesService {
       return buscarDatos;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -75,9 +73,8 @@ export class DatosAdicionalesService {
       return buscarDatos;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -92,9 +89,8 @@ export class DatosAdicionalesService {
       return buscarDatos;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -109,9 +105,8 @@ export class DatosAdicionalesService {
       return buscarDatos;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -126,9 +121,8 @@ export class DatosAdicionalesService {
       return buscarDatos;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -143,9 +137,8 @@ export class DatosAdicionalesService {
       return buscarDatos;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -615,9 +608,8 @@ export class DatosAdicionalesService {
       return {"ok":"Se actualizo el registro correctamente"};
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 

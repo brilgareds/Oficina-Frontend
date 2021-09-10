@@ -14,9 +14,8 @@ export class SaludService {
       return buscarDatos;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -29,9 +28,8 @@ export class SaludService {
       return buscarDatosGrupoSanguineo;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -44,9 +42,8 @@ export class SaludService {
       return buscarDatosFactor;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -59,9 +56,8 @@ export class SaludService {
       return buscarDatosRaza;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -74,9 +70,8 @@ export class SaludService {
       return buscarDatosPlanSalud;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -269,9 +264,8 @@ export class SaludService {
       return {"ok":"Actualización exitosa"};
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
