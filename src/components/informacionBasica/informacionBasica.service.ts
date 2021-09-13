@@ -302,7 +302,8 @@ export class InformacionBasicaService {
     USA_UNIFORME,
     TALLA_CAMISA,
     TALLA_PANTALON,
-    TALLA_CALZADO
+    TALLA_CALZADO,
+    PAI_CODIGO
   }: ActualizarInformacionBasicaDto) {
     try {
 
@@ -332,6 +333,7 @@ export class InformacionBasicaService {
       const TALLA_CAMISA_string: string = (TALLA_CAMISA)?TALLA_CAMISA+"":"NULL";
       const TALLA_PANTALON_string: string = (TALLA_PANTALON)?TALLA_PANTALON+"":"NULL";
       const TALLA_CALZADO_string: string = (TALLA_CALZADO)?TALLA_CALZADO+"":"NULL";
+      const PAI_CODIGO_string: string = (PAI_CODIGO)?PAI_CODIGO+"":"NULL";
 
       if (!operacionActualizarDatos[0]['INFORMACION_BASICA_CODIGO']) {
 
@@ -356,7 +358,8 @@ export class InformacionBasicaService {
           PLAN_CARRERA_string,
           NRO_CARGOS_string,
           CARGOS_OCUPADOS_string,
-          EMP_CODIGO);
+          EMP_CODIGO,
+          PAI_CODIGO_string);
 
       }else{
 
@@ -382,7 +385,8 @@ export class InformacionBasicaService {
           PLAN_CARRERA_string,
           NRO_CARGOS_string,
           CARGOS_OCUPADOS_string,
-          EMP_CODIGO);
+          EMP_CODIGO,
+          PAI_CODIGO_string);
 
       }
 
@@ -397,7 +401,8 @@ export class InformacionBasicaService {
         EMAIL_PERSONAL_string,
         EMAIL_CORPORATIVO_string,
         CELULAR_CONTACTO_string,
-        CELULAR_CORPORATIVO_string
+        CELULAR_CORPORATIVO_string,
+        PAI_CODIGO_string
       );
 
       operacionActualizarDatos = await this.informacionBasicaRepository.existeRegistroTallas(EMP_CODIGO, NRO_DOCUMENTO);

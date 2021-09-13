@@ -8,7 +8,11 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
     SELECT
         ESMAD_INFORMACION_BASICA.INFORMACION_BASICA_CODIGO,
         ESMAD_INFORMACION_BASICA.MENU_CODIGO,
-        bi_emple.pai_resi AS PAI_RESI,
+        CASE
+          WHEN ESMAD_INFORMACION_BASICA.PAI_RESI IS NOT NULL
+            THEN ESMAD_INFORMACION_BASICA.PAI_RESI
+          ELSE bi_emple.pai_resi
+        END AS PAI_RESI,
         CASE
           WHEN ESMAD_INFORMACION_BASICA.TIP_CODIGO_DOCUMENTO IS NOT NULL
             THEN ESMAD_INFORMACION_BASICA.TIP_CODIGO_DOCUMENTO
@@ -377,7 +381,8 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
     PLAN_CARRERA: string,
     NRO_CARGOS: string,
     CARGOS_OCUPADOS: string,
-    EMP_CODIGO: number): Promise<any> {
+    EMP_CODIGO: number,
+    PAI_CODIGO: string): Promise<any> {
     const pool = await mssqlEsmad;
     const sql = `
       INSERT INTO dbo.ESMAD_INFORMACION_BASICA (
@@ -402,7 +407,8 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
         PLAN_CARRERA,
         NRO_CARGOS,
         CARGOS_OCUPADOS,
-        CODIGO_EMPRESA
+        CODIGO_EMPRESA,
+        PAI_CODIGO
     ) VALUES (
         1,
         ${TIP_CODIGO_DOCUMENTO},
@@ -425,7 +431,8 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
         ${PLAN_CARRERA},
         ${NRO_CARGOS},
         ${CARGOS_OCUPADOS},
-        ${EMP_CODIGO}
+        ${EMP_CODIGO},
+        ${PAI_CODIGO}
     )
     `;
 
@@ -456,7 +463,8 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
     PLAN_CARRERA: string,
     NRO_CARGOS: string,
     CARGOS_OCUPADOS: string,
-    EMP_CODIGO:number): Promise<any> {
+    EMP_CODIGO:number,
+    PAI_CODIGO: string): Promise<any> {
     const pool = await mssqlEsmad;
     const sql = `
       UPDATE dbo.ESMAD_INFORMACION_BASICA 
@@ -481,7 +489,8 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
           PLAN_CARRERA = ${PLAN_CARRERA},
           NRO_CARGOS = ${NRO_CARGOS},
           CARGOS_OCUPADOS = ${CARGOS_OCUPADOS},
-          CODIGO_EMPRESA = ${EMP_CODIGO}
+          CODIGO_EMPRESA = ${EMP_CODIGO},
+          PAI_CODIGO = ${PAI_CODIGO}
       WHERE 
           INFORMACION_BASICA_CODIGO = ${INFORMACION_BASICA_CODIGO}
     `;
@@ -501,7 +510,8 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
     EMAIL_PERSONAL: string,
     EMAIL_CORPORATIVO: string,
     CELULAR_CONTACTO: string,
-    CELULAR_CORPORATIVO: string): Promise<any> {
+    CELULAR_CORPORATIVO: string,
+    PAI_CODIGO: string): Promise<any> {
     const pool = await mssqlKactus
     const sql = `
       UPDATE dbo.bi_emple 
@@ -514,7 +524,8 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
           eee_mail = ${EMAIL_PERSONAL},
           box_mail = ${EMAIL_CORPORATIVO},
           tel_movi = ${CELULAR_CONTACTO},
-          tel_trab = ${CELULAR_CORPORATIVO}
+          tel_trab = ${CELULAR_CORPORATIVO},
+          pai_resi = ${PAI_CODIGO}
       WHERE 
         cod_empr = ${EMP_CODIGO}
         AND cod_empl = ${NRO_DOCUMENTO_string}

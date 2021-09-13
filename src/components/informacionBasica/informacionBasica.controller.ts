@@ -401,6 +401,9 @@ export class InformacionBasicaController {
    *              TALLA_CALZADO:
    *                type: integer
    *                description: talla de calzado del usuario
+   *              PAI_CODIGO:
+   *                type: string
+   *                description: codigo de pais
    *            required:
    *              - TIP_CODIGO_DOCUMENTO
    *              - EMP_CODIGO
@@ -410,6 +413,7 @@ export class InformacionBasicaController {
    *              - SEXO
    *              - FECHA_NACIMIENTO,
    *              - USA_UNIFORME
+   *              - PAI_CODIGO
    *    responses:
    *      200:
    *        description: Datos de los departamentos

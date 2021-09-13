@@ -86,4 +86,8 @@ export class ActualizarInformacionBasicaDto {
   @IsNumber()
   TALLA_CALZADO: number
 
+  @IsNotEmpty()
+  @IsString()
+  PAI_CODIGO: string;
+
 }
