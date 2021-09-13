@@ -10,6 +10,7 @@ export class DatosAdicionalesService {
 
       let buscarDatos = await this.datosAdicionalesRepository.buscarDatos(CODIGO_EMPRESA, NRO_DOCUMENTO);
 
+      let arrayEspeciales =  new Array();
       let arrayDeudas = new Array();
       let arrayDeudasFuturas = new Array();
       let arrayIntereses =  new Array();
@@ -20,6 +21,9 @@ export class DatosAdicionalesService {
           );
           if(datosDeListas.length > 0){
             for (const value of datosDeListas) {
+              if(value['CONDICION_ESPECIAL'] == 1){
+                arrayEspeciales.push(value);
+              }
               if(value['DEUDAS'] == 1) {
                 arrayDeudas.push(value);
               }
@@ -32,7 +36,7 @@ export class DatosAdicionalesService {
             }
           }
         }
-        buscarDatos = {'buscarDatos':buscarDatos,'arrayDeudas':arrayDeudas,
+        buscarDatos = {'buscarDatos':buscarDatos,'arrayEspeciales':arrayEspeciales,'arrayDeudas':arrayDeudas,
                            'arrayDeudasFuturas':arrayDeudasFuturas,'arrayIntereses':arrayIntereses};
       }else{
         buscarDatos = {"error":"No se encontraron datos"};
