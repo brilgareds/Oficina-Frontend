@@ -21,6 +21,7 @@ export const verifyJwt = (req: Request, res: Response, next: NextFunction) => {
       last_name: user.last_name,
       identification: user.identification,
       status: user.status,
+      company: user.company,
     };
 
     next();
@@ -51,6 +52,7 @@ export const verifyRefreshToken = (
       last_name: user.last_name,
       identification: user.identification,
       status: user.status,
+      company: user.company,
     };
 
     next();
