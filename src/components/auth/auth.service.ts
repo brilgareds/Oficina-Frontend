@@ -17,6 +17,7 @@ export class AuthService {
         last_name: user.Apellidos,
         identification: user.Cedula,
         status: user.ESTADO,
+        company: user.Empresa,
       });
 
       const refreshToken = signRefreshToken({
@@ -24,6 +25,7 @@ export class AuthService {
         last_name: user.Apellidos,
         identification: user.Cedula,
         status: user.ESTADO,
+        company: user.Empresa,
       });
 
       return {
@@ -42,6 +44,7 @@ export class AuthService {
         last_name: user.last_name,
         identification: user.identification,
         status: user.status,
+        company: user.company,
       });
 
       const refreshToken = signRefreshToken({
@@ -49,6 +52,7 @@ export class AuthService {
         last_name: user.last_name,
         identification: user.identification,
         status: user.status,
+        company: user.company,
       });
 
       return {

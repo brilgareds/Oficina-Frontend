@@ -12,6 +12,18 @@ export const getDateToday = (getWithHours: boolean = false) => {
 
 }
 
+export const getDatetime = () => {
+
+  const dateFormat = new Date();
+  let day = ("0" + dateFormat.getDate()).slice(-2);
+  let month = ("0" + (dateFormat.getMonth() + 1)).slice(-2);
+  let year = dateFormat.getFullYear();
+  let hours = `${dateFormat.getHours()}:${dateFormat.getMinutes()}:${dateFormat.getSeconds()}`;
+
+  return String(`${year}-${month}-${day} ${hours}`);
+
+}
+
 export const extraerExtensionArchivo = (fileName: string) => {
   const fileNameSplit = fileName.split('.');
   return fileNameSplit[fileNameSplit.length - 1];
@@ -33,8 +45,6 @@ export const CreateOrValidateFolder = (path: string) => {
 
   return true;
 }
-
-
 
 export const AlertaHtml = (titulo: any, cuerpoMensaje: any) => {
   let body = `
