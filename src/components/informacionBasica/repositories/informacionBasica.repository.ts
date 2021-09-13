@@ -8,7 +8,7 @@ export interface InformacionBasicaRepository {
   consultarNomenclatura(): Promise<any>;
   consultarAntiguedad(): Promise<any>;
   consultarTalla(): Promise<any>;
-  existeRegistro(cedula: number): Promise<any>;
+  existeRegistro(empresa: number, cedula: number): Promise<any>;
   crearRegistro(TIP_CODIGO_DOCUMENTO: string,
                 NRO_DOCUMENTO: string,
                 NOMBRES: string,
@@ -28,7 +28,8 @@ export interface InformacionBasicaRepository {
                 ANTIGUEDAD_EMPRESA: string,
                 PLAN_CARRERA: string,
                 NRO_CARGOS: string,
-                CARGOS_OCUPADOS: string): Promise<any>;
+                CARGOS_OCUPADOS: string,
+                EMP_CODIGO: number): Promise<any>;
   actualizacionRegistro(
                 INFORMACION_BASICA_CODIGO: number,
                 TIP_CODIGO_DOCUMENTO: string,
@@ -50,7 +51,8 @@ export interface InformacionBasicaRepository {
                 ANTIGUEDAD_EMPRESA: string,
                 PLAN_CARRERA: string,
                 NRO_CARGOS: string,
-                CARGOS_OCUPADOS: string): Promise<any>;
+                CARGOS_OCUPADOS: string,
+                EMP_CODIGO:number): Promise<any>;
   actualizacionBi_emple(EMP_CODIGO: number,
                         NRO_DOCUMENTO_string: string,
                         ESTADO_CIVIL: string,
@@ -62,4 +64,23 @@ export interface InformacionBasicaRepository {
                         EMAIL_CORPORATIVO: string,
                         CELULAR_CONTACTO: string,
                         CELULAR_CORPORATIVO: string): Promise<any>;
+  existeRegistroTallas(empresa: number, cedula: number): Promise<any>
+  crearRegistroTallas(
+                      EMP_CODIGO: number,
+                      NRO_DOCUMENTO: string,
+                      USA_UNIFORME: number,
+                      TALLA_CAMISA: string,
+                      TALLA_PANTALON: string,
+                      TALLA_CALZADO: string
+                      ): Promise<any>;
+  actualizacionRegistroTallas(
+                              TALLAS_EMPLEADO_CODIGO: number,
+                              USA_UNIFORME: number,
+                              TALLA_CAMISA: string,
+                              TALLA_PANTALON: string,
+                              TALLA_CALZADO: string
+                              ): Promise<any>;
+  consultarLabelsNivel(
+                      empresa: number
+                      ): Promise<any>
 }

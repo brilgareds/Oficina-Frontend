@@ -1,4 +1,8 @@
-import { InformacionBasicaDto, DepartamentosDto, CiudadesDto, ActualizarInformacionBasicaDto } from "./dto/informacionBasica.dto";
+import { InformacionBasicaDto } from "./dto/informacionBasica.dto";
+import { DepartamentosDto } from "./dto/departamentos.dto";
+import { CiudadesDto } from "./dto/ciudades.dto";
+import { ActualizarInformacionBasicaDto } from "./dto/actualizarInformacionBasica.dto";
+import { LabelsNivelDto } from "./dto/labelsNivel.dto";
 import { InformacionBasicaRepository } from "./repositories/informacionBasica.repository";
 
 export class InformacionBasicaService {
@@ -6,8 +10,12 @@ export class InformacionBasicaService {
 
   public async buscarMenu({ cedula,empresa }: InformacionBasicaDto) {
     try {
-      const buscarDatos = await this.informacionBasicaRepository.buscarDatos(cedula, empresa);
 
+      let buscarDatos = await this.informacionBasicaRepository.buscarDatos(cedula, empresa);
+
+      if(!buscarDatos[0]){
+        buscarDatos = {"error":"No se encontraron datos"};
+      }
       return buscarDatos;
 
     } catch (error) {
@@ -19,7 +27,11 @@ export class InformacionBasicaService {
 
   public async consultarTipDocumento() {
     try {
-      const buscarTipDocumento = await this.informacionBasicaRepository.consultarTipDocumento();
+      let buscarTipDocumento = await this.informacionBasicaRepository.consultarTipDocumento();
+
+      if(!buscarTipDocumento[0]){
+        buscarTipDocumento = {"error":"No se encontraron datos"};
+      }
 
       return buscarTipDocumento;
 
@@ -32,8 +44,11 @@ export class InformacionBasicaService {
 
   public async consultarEstadoCivil() {
     try {
-      const buscarEstadoCivil = await this.informacionBasicaRepository.consultarEstadoCivil();
+      let buscarEstadoCivil = await this.informacionBasicaRepository.consultarEstadoCivil();
 
+      if(!buscarEstadoCivil[0]){
+        buscarEstadoCivil = {"error":"No se encontraron datos"};
+      }
       return buscarEstadoCivil;
 
     } catch (error) {
@@ -45,9 +60,28 @@ export class InformacionBasicaService {
 
   public async consultarPaises() {
     try {
-      const buscarPaises = await this.informacionBasicaRepository.consultarPaises();
+      let buscarPaises = await this.informacionBasicaRepository.consultarPaises();
 
+      if(!buscarPaises[0]){
+        buscarPaises = {"error":"No se encontraron datos"};
+      }
       return buscarPaises;
+
+    } catch (error) {
+
+      throw new Error(error.message);
+
+    }
+  }
+
+  public async consultarLabelsNivel({ empresa }: LabelsNivelDto) {
+    try {
+      let buscarLabels = await this.informacionBasicaRepository.consultarLabelsNivel(empresa);
+
+      if(!buscarLabels[0]){
+        buscarLabels = {"error":"No se encontraron datos"};
+      }
+      return buscarLabels;
 
     } catch (error) {
 
@@ -58,12 +92,14 @@ export class InformacionBasicaService {
 
   public async consultarNomenclatura() {
     try {
-      const listaNomenclaturas = await this.informacionBasicaRepository.consultarNomenclatura();
+      let listaNomenclaturas = await this.informacionBasicaRepository.consultarNomenclatura();
 
       let arrayCalle: object[] = new Array();
       let arrayBis: object[] = new Array();
       let arrayCardinalidad: object[] = new Array();
       let arrayComplemento: object[] = new Array();
+
+      if(listaNomenclaturas[0]){
 
       for (const nomenclatura of listaNomenclaturas) {
         if(nomenclatura['COD_NOME'] == 'CL' ||
@@ -151,8 +187,14 @@ export class InformacionBasicaService {
 
       }
 
-      return {'arrayCalle': arrayCalle,'arrayBis': arrayBis,'arrayCardinalidad': arrayCardinalidad,
-              'arrayComplemento': arrayComplemento};
+      listaNomenclaturas = {'arrayCalle': arrayCalle,'arrayBis': arrayBis,'arrayCardinalidad': arrayCardinalidad,
+                            'arrayComplemento': arrayComplemento};
+
+    }else{
+      listaNomenclaturas = {"error":"No se encontraron datos"};
+    }
+
+      return listaNomenclaturas;
 
     } catch (error) {
 
@@ -163,8 +205,11 @@ export class InformacionBasicaService {
 
   public async consultarAntiguedad() {
     try {
-      const buscarEstadoCivil = await this.informacionBasicaRepository.consultarAntiguedad();
+      let buscarEstadoCivil = await this.informacionBasicaRepository.consultarAntiguedad();
 
+      if(!buscarEstadoCivil[0]){
+        buscarEstadoCivil = {"error":"No se encontraron datos"};
+      }
       return buscarEstadoCivil;
 
     } catch (error) {
@@ -176,8 +221,11 @@ export class InformacionBasicaService {
 
   public async consultarDepartamentos({ codPais }: DepartamentosDto) {
     try {
-      const buscarDepartamento = await this.informacionBasicaRepository.consultarDepartamentos(codPais);
+      let buscarDepartamento = await this.informacionBasicaRepository.consultarDepartamentos(codPais);
 
+      if(!buscarDepartamento[0]){
+        buscarDepartamento = {"error":"No se encontraron datos"};
+      }
       return buscarDepartamento;
 
     } catch (error) {
@@ -189,8 +237,11 @@ export class InformacionBasicaService {
 
   public async consultarMunicipios({ codDepartamento }: CiudadesDto) {
     try {
-      const buscarMunicipios = await this.informacionBasicaRepository.consultarMunicipios(codDepartamento);
+      let buscarMunicipios = await this.informacionBasicaRepository.consultarMunicipios(codDepartamento);
 
+      if(!buscarMunicipios[0]){
+        buscarMunicipios = {"error":"No se encontraron datos"};
+      }
       return buscarMunicipios;
 
     } catch (error) {
@@ -202,27 +253,32 @@ export class InformacionBasicaService {
 
   public async consultarTalla() {
     try {
-      const buscarTallaUniformes = await this.informacionBasicaRepository.consultarTalla();
+      let buscarTallaUniformes = await this.informacionBasicaRepository.consultarTalla();
       let arrayCamisa = new Array();
       let arrayPantalonMujer = new Array();
       let arrayPantalonHombre = new Array();
       let arrayCalzado = new Array();
-      for(const tallaUniforme of buscarTallaUniformes){
+      if(buscarTallaUniformes[0]){
+        for(const tallaUniforme of buscarTallaUniformes){
 
-        if(tallaUniforme.TIP_CODIGO2 == 1319){
-          arrayCamisa.push(tallaUniforme);
-        }else if(tallaUniforme.TIP_CODIGO2 == 1327){
-          arrayPantalonMujer.push(tallaUniforme);
-        }else if(tallaUniforme.TIP_CODIGO2 == 1328){
-          arrayPantalonHombre.push(tallaUniforme);
-        }else if(tallaUniforme.TIP_CODIGO2 == 1354){
-          arrayCalzado.push(tallaUniforme);
+          if(tallaUniforme.TIP_CODIGO2 == 1319){
+            arrayCamisa.push(tallaUniforme);
+          }else if(tallaUniforme.TIP_CODIGO2 == 1327){
+            arrayPantalonMujer.push(tallaUniforme);
+          }else if(tallaUniforme.TIP_CODIGO2 == 1328){
+            arrayPantalonHombre.push(tallaUniforme);
+          }else if(tallaUniforme.TIP_CODIGO2 == 1354){
+            arrayCalzado.push(tallaUniforme);
+          }
+
         }
-
+        buscarTallaUniformes = {'tallaCamisa': arrayCamisa, 'tallaPantalonMujer': arrayPantalonMujer, 
+                                'tallaPantalonHombre':arrayPantalonHombre,'tallaCalzado':arrayCalzado};
+      }else{
+        buscarTallaUniformes = {"error":"No se encontraron datos"};
       }
 
-      return {'tallaCamisa': arrayCamisa, 'tallaPantalonMujer': arrayPantalonMujer, 
-              'tallaPantalonHombre':arrayPantalonHombre,'tallaCalzado':arrayCalzado};
+      return buscarTallaUniformes;
 
     } catch (error) {
 
@@ -252,35 +308,42 @@ export class InformacionBasicaService {
     ANTIGUEDAD_EMPRESA,
     PLAN_CARRERA,
     NRO_CARGOS,
-    CARGOS_OCUPADOS
+    CARGOS_OCUPADOS,
+    USA_UNIFORME,
+    TALLA_CAMISA,
+    TALLA_PANTALON,
+    TALLA_CALZADO
   }: ActualizarInformacionBasicaDto) {
     try {
 
       
-      let operacionActualizarDatos = await this.informacionBasicaRepository.existeRegistro(NRO_DOCUMENTO);
+      let operacionActualizarDatos = await this.informacionBasicaRepository.existeRegistro(EMP_CODIGO, NRO_DOCUMENTO);
       
-      const TIP_CODIGO_DOCUMENTO_string: string = (TIP_CODIGO_DOCUMENTO)?"'"+TIP_CODIGO_DOCUMENTO+"'":"(null)";
-      const NRO_DOCUMENTO_string: string = (NRO_DOCUMENTO)?NRO_DOCUMENTO+"":"(null)";
-      const NOMBRES_string: string = (NOMBRES)?"'"+NOMBRES+"'":"(null)";
-      const APELLIDOS_string: string = (APELLIDOS)?"'"+APELLIDOS+"'":"(null)";
-      const SEXO_string: string = (SEXO)?"'"+SEXO+"'":"(null)";
-      const FECHA_NACIMIENTO_string: string = (FECHA_NACIMIENTO)?"'"+FECHA_NACIMIENTO+"'":"(null)";
-      const ESTADO_CIVIL_string: string = (ESTADO_CIVIL)?"'"+ESTADO_CIVIL+"'":"(null)";
-      const DEPARTAMENTO_RESIDENCIA_string: string = (DEPARTAMENTO_RESIDENCIA)?DEPARTAMENTO_RESIDENCIA+"":"(null)";
-      const CIUDAD_RESIDENCIA_string: string = (CIUDAD_RESIDENCIA)?CIUDAD_RESIDENCIA+"":"(null)";
-      const BARRIO_RESIDENCIA_string: string = (BARRIO_RESIDENCIA)?"'"+BARRIO_RESIDENCIA+"'":"(null)";
-      const LOCALIDAD_RESIDENCIA_string: string = (LOCALIDAD_RESIDENCIA)?"'"+LOCALIDAD_RESIDENCIA+"'":"(null)";
-      const DIRECCION_COMPLETA_string: string = (DIRECCION_COMPLETA)?"'"+DIRECCION_COMPLETA+"'":"(null)";
-      const EMAIL_PERSONAL_string: string = (EMAIL_PERSONAL)?"'"+EMAIL_PERSONAL+"'":"(null)";
-      const EMAIL_CORPORATIVO_string: string = (EMAIL_CORPORATIVO)?"'"+EMAIL_CORPORATIVO+"'":"(null)";
-      const CELULAR_CONTACTO_string: string = (CELULAR_CONTACTO)?CELULAR_CONTACTO+"":"(null)";
-      const CELULAR_CORPORATIVO_string: string = (CELULAR_CORPORATIVO)?CELULAR_CORPORATIVO+"":"(null)";
-      const ANTIGUEDAD_EMPRESA_string: string = (ANTIGUEDAD_EMPRESA)?"'"+ANTIGUEDAD_EMPRESA+"'":"(null)";
+      const TIP_CODIGO_DOCUMENTO_string: string = (TIP_CODIGO_DOCUMENTO)?"'"+TIP_CODIGO_DOCUMENTO+"'":"NULL";
+      const NRO_DOCUMENTO_string: string = (NRO_DOCUMENTO)?NRO_DOCUMENTO+"":"NULL";
+      const NOMBRES_string: string = (NOMBRES)?"'"+NOMBRES+"'":"NULL";
+      const APELLIDOS_string: string = (APELLIDOS)?"'"+APELLIDOS+"'":"NULL";
+      const SEXO_string: string = (SEXO)?"'"+SEXO+"'":"NULL";
+      const FECHA_NACIMIENTO_string: string = (FECHA_NACIMIENTO)?"'"+FECHA_NACIMIENTO+"'":"NULL";
+      const ESTADO_CIVIL_string: string = (ESTADO_CIVIL)?"'"+ESTADO_CIVIL+"'":"NULL";
+      const DEPARTAMENTO_RESIDENCIA_string: string = (DEPARTAMENTO_RESIDENCIA)?DEPARTAMENTO_RESIDENCIA+"":"NULL";
+      const CIUDAD_RESIDENCIA_string: string = (CIUDAD_RESIDENCIA)?CIUDAD_RESIDENCIA+"":"NULL";
+      const BARRIO_RESIDENCIA_string: string = (BARRIO_RESIDENCIA)?"'"+BARRIO_RESIDENCIA+"'":"NULL";
+      const LOCALIDAD_RESIDENCIA_string: string = (LOCALIDAD_RESIDENCIA)?"'"+LOCALIDAD_RESIDENCIA+"'":"NULL";
+      const DIRECCION_COMPLETA_string: string = (DIRECCION_COMPLETA)?"'"+DIRECCION_COMPLETA+"'":"NULL";
+      const EMAIL_PERSONAL_string: string = (EMAIL_PERSONAL)?"'"+EMAIL_PERSONAL+"'":"NULL";
+      const EMAIL_CORPORATIVO_string: string = (EMAIL_CORPORATIVO)?"'"+EMAIL_CORPORATIVO+"'":"NULL";
+      const CELULAR_CONTACTO_string: string = (CELULAR_CONTACTO)?"'"+CELULAR_CONTACTO+"'":"NULL";
+      const CELULAR_CORPORATIVO_string: string = (CELULAR_CORPORATIVO)?"'"+CELULAR_CORPORATIVO+"'":"NULL";
+      const ANTIGUEDAD_EMPRESA_string: string = (ANTIGUEDAD_EMPRESA)?"'"+ANTIGUEDAD_EMPRESA+"'":"NULL";
       const PLAN_CARRERA_string: string = PLAN_CARRERA+"";
-      const NRO_CARGOS_string: string = (NRO_CARGOS)?NRO_CARGOS+"":"(null)";
-      const CARGOS_OCUPADOS_string: string = (CARGOS_OCUPADOS)?"'"+CARGOS_OCUPADOS+"'":"(null)";
+      const NRO_CARGOS_string: string = (NRO_CARGOS)?NRO_CARGOS+"":"NULL";
+      const CARGOS_OCUPADOS_string: string = (CARGOS_OCUPADOS)?"'"+CARGOS_OCUPADOS+"'":"NULL";
+      const TALLA_CAMISA_string: string = (TALLA_CAMISA)?TALLA_CAMISA+"":"NULL";
+      const TALLA_PANTALON_string: string = (TALLA_PANTALON)?TALLA_PANTALON+"":"NULL";
+      const TALLA_CALZADO_string: string = (TALLA_CALZADO)?TALLA_CALZADO+"":"NULL";
 
-      if (operacionActualizarDatos == "") {
+      if (!operacionActualizarDatos[0]['INFORMACION_BASICA_CODIGO']) {
 
         operacionActualizarDatos = await this.informacionBasicaRepository.crearRegistro(
           TIP_CODIGO_DOCUMENTO_string,
@@ -302,11 +365,12 @@ export class InformacionBasicaService {
           ANTIGUEDAD_EMPRESA_string,
           PLAN_CARRERA_string,
           NRO_CARGOS_string,
-          CARGOS_OCUPADOS_string);
+          CARGOS_OCUPADOS_string,
+          EMP_CODIGO);
 
       }else{
 
-        /*operacionActualizarDatos = await this.informacionBasicaRepository.actualizacionRegistro(
+        operacionActualizarDatos = await this.informacionBasicaRepository.actualizacionRegistro(
           operacionActualizarDatos[0]['INFORMACION_BASICA_CODIGO'],
           TIP_CODIGO_DOCUMENTO_string,
           NRO_DOCUMENTO_string,
@@ -327,11 +391,12 @@ export class InformacionBasicaService {
           ANTIGUEDAD_EMPRESA_string,
           PLAN_CARRERA_string,
           NRO_CARGOS_string,
-          CARGOS_OCUPADOS_string);*/
+          CARGOS_OCUPADOS_string,
+          EMP_CODIGO);
 
       }
 
-      /*operacionActualizarDatos = await this.informacionBasicaRepository.actualizacionBi_emple(
+      operacionActualizarDatos = await this.informacionBasicaRepository.actualizacionBi_emple(
         EMP_CODIGO,
         NRO_DOCUMENTO_string,
         ESTADO_CIVIL_string,
@@ -343,9 +408,30 @@ export class InformacionBasicaService {
         EMAIL_CORPORATIVO_string,
         CELULAR_CONTACTO_string,
         CELULAR_CORPORATIVO_string
-      );*/
+      );
 
-      return operacionActualizarDatos;
+      operacionActualizarDatos = await this.informacionBasicaRepository.existeRegistroTallas(EMP_CODIGO, NRO_DOCUMENTO);
+      
+      if(!operacionActualizarDatos[0]['TALLAS_EMPLEADO_CODIGO']){
+        operacionActualizarDatos = await this.informacionBasicaRepository.crearRegistroTallas(
+          EMP_CODIGO,
+          NRO_DOCUMENTO_string,
+          USA_UNIFORME,
+          TALLA_CAMISA_string,
+          TALLA_PANTALON_string,
+          TALLA_CALZADO_string
+        );
+      }else{
+        operacionActualizarDatos = await this.informacionBasicaRepository.actualizacionRegistroTallas(
+          operacionActualizarDatos[0]['TALLAS_EMPLEADO_CODIGO'],
+          USA_UNIFORME,
+          TALLA_CAMISA_string,
+          TALLA_PANTALON_string,
+          TALLA_CALZADO_string
+        );
+      }
+
+      return {"ok":"Actualización de datos exitosa"};
 
     } catch (error) {
 

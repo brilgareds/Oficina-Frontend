@@ -6,7 +6,9 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
     const pool = await mssqlEsmad;
     const result = await pool.query`
     SELECT
+        ESMAD_INFORMACION_BASICA.INFORMACION_BASICA_CODIGO,
         ESMAD_INFORMACION_BASICA.MENU_CODIGO,
+        bi_emple.pai_resi AS PAI_RESI,
         CASE
           WHEN ESMAD_INFORMACION_BASICA.TIP_CODIGO_DOCUMENTO IS NOT NULL
             THEN ESMAD_INFORMACION_BASICA.TIP_CODIGO_DOCUMENTO
@@ -96,23 +98,27 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
         ESMAD_INFORMACION_BASICA.ANTIGUEDAD_EMPRESA,
         ESMAD_INFORMACION_BASICA.PLAN_CARRERA,
         ESMAD_INFORMACION_BASICA.NRO_CARGOS,
-        ESMAD_INFORMACION_BASICA.CARGOS_OCUPADOS
+        ESMAD_INFORMACION_BASICA.CARGOS_OCUPADOS,
+        ESMAD_TALLAS_EMPLEADO.USA_UNIFORME,
+        ESMAD_TALLAS_EMPLEADO.TALLA_CAMISA,
+        ESMAD_TALLAS_EMPLEADO.TALLA_PANTALON,
+        ESMAD_TALLAS_EMPLEADO.TALLA_CALZADO
     FROM
         SERVCLO09.kactus.dbo.nm_contr
-        INNER JOIN SERVCLO09.kactus.dbo.bi_emple
+        LEFT JOIN SERVCLO09.kactus.dbo.bi_emple
           ON nm_contr.cod_empl = bi_emple.cod_empl
              AND nm_contr.cod_empr = bi_emple.cod_empr
-        INNER JOIN SERVCLO09.kactus.dbo.gn_nivel AS Nivel2
+        LEFT JOIN SERVCLO09.kactus.dbo.gn_nivel AS Nivel2
           ON nm_contr.cod_empr = Nivel2.cod_empr
              AND nm_contr.cod_niv2 = Nivel2.cod_nive
              AND Nivel2.num_nive = 2
              AND Nivel2.ide_arbo = 'BI'
-        INNER JOIN SERVCLO09.kactus.dbo.gn_nivel AS Nivel3
+        LEFT JOIN SERVCLO09.kactus.dbo.gn_nivel AS Nivel3
           ON nm_contr.cod_empr = Nivel3.cod_empr
              AND bi_emple.mpi_resi = Nivel3.cod_nive
              AND Nivel3.num_nive = 3
              AND Nivel3.ide_arbo = 'BI'
-        INNER JOIN SERVCLO09.kactus.dbo.gn_nivel AS Nivel4
+        LEFT JOIN SERVCLO09.kactus.dbo.gn_nivel AS Nivel4
           ON nm_contr.cod_empr = Nivel4.cod_empr
              AND nm_contr.cod_niv4 = Nivel4.cod_nive
              AND Nivel4.num_nive = 4
@@ -122,13 +128,13 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
              AND nm_contr.cod_niv5 = Nivel5.cod_nive
              AND Nivel5.num_nive = 5
              AND Nivel5.ide_arbo = 'BI'
-        INNER JOIN SERVCLO09.kactus.dbo.bi_cargo
+        LEFT JOIN SERVCLO09.kactus.dbo.bi_cargo
           ON nm_contr.cod_carg = bi_cargo.cod_carg
              AND nm_contr.cod_empr = bi_cargo.cod_empr
              AND bi_cargo.ind_acti = 'A'
         LEFT JOIN dbo.ESMAD_INFORMACION_BASICA
           ON nm_contr.cod_empl = ESMAD_INFORMACION_BASICA.NRO_DOCUMENTO
-             AND ESMAD_INFORMACION_BASICA.MENU_CODIGO = 1
+             AND nm_contr.cod_empr = ESMAD_INFORMACION_BASICA.CODIGO_EMPRESA
         LEFT JOIN dbo.ESMAD_TIPO
           ON ESMAD_INFORMACION_BASICA.TIP_CODIGO_DOCUMENTO = ESMAD_TIPO.TIP_CODIGO
         LEFT JOIN (SELECT
@@ -143,8 +149,11 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
                   WHERE
                           Departamento.COD_LOCA = 0
                           AND Departamento.cod_mpio = 0) AS departamento
-        ON bi_emple.pai_resi = departamento.cod_pais
-           AND bi_emple.dto_resi = departamento.cod_dpto
+          ON bi_emple.pai_resi = departamento.cod_pais
+             AND bi_emple.dto_resi = departamento.cod_dpto
+        LEFT JOIN dbo.ESMAD_TALLAS_EMPLEADO
+          ON nm_contr.cod_empl = ESMAD_TALLAS_EMPLEADO.NRO_DOCUMENTO
+             AND nm_contr.cod_empr = ESMAD_TALLAS_EMPLEADO.CODIGO_EMPRESA
     WHERE
         nm_contr.cod_empl = ${cedula}
         AND nm_contr.cod_empr = ${empresa}
@@ -308,15 +317,40 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
     return result.recordset;
   }
 
-  public async existeRegistro(cedula: number): Promise<any> {
+  public async consultarLabelsNivel(
+    empresa: number
+  ): Promise<any> {
+    const pool = await mssqlKactus;
+    const result = await pool.query`
+      SELECT
+        gn_nivel.num_nive,
+        RTRIM(LTRIM(gn_nivel.nom_nive)) AS nom_nive
+      FROM
+          dbo.gn_nivel
+      WHERE
+          gn_nivel.cod_empr = ${empresa}
+          AND gn_nivel.num_nive IN (2,4,5)
+          AND gn_nivel.cod_nive = 0 
+          AND gn_nivel.ide_arbo = 'BI'
+    `;
+    
+    return result.recordset;
+  }
+
+  public async existeRegistro(empresa: number, cedula: number): Promise<any> {
     const pool = await mssqlEsmad;
     const result = await pool.query`
-    SELECT
-      ESMAD_INFORMACION_BASICA.INFORMACION_BASICA_CODIGO
-    FROM
-      dbo.ESMAD_INFORMACION_BASICA
-    WHERE
-      ESMAD_INFORMACION_BASICA.NRO_DOCUMENTO = ${cedula}
+      SELECT
+        ESMAD_INFORMACION_BASICA.INFORMACION_BASICA_CODIGO
+      FROM
+        SERVCLO09.kactus.dbo.nm_contr
+        LEFT JOIN dbo.ESMAD_INFORMACION_BASICA
+          ON nm_contr.cod_empl = ESMAD_INFORMACION_BASICA.NRO_DOCUMENTO
+             AND nm_contr.cod_empr = ESMAD_INFORMACION_BASICA.CODIGO_EMPRESA
+      WHERE
+        nm_contr.cod_empl = ${cedula}
+        AND nm_contr.cod_empr = ${empresa}
+        AND nm_contr.ind_acti = 'A'
     `;
     
     return result.recordset;
@@ -342,7 +376,8 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
     ANTIGUEDAD_EMPRESA: string,
     PLAN_CARRERA: string,
     NRO_CARGOS: string,
-    CARGOS_OCUPADOS: string): Promise<any> {
+    CARGOS_OCUPADOS: string,
+    EMP_CODIGO: number): Promise<any> {
     const pool = await mssqlEsmad;
     const sql = `
       INSERT INTO dbo.ESMAD_INFORMACION_BASICA (
@@ -366,9 +401,10 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
         ANTIGUEDAD_EMPRESA,
         PLAN_CARRERA,
         NRO_CARGOS,
-        CARGOS_OCUPADOS
+        CARGOS_OCUPADOS,
+        CODIGO_EMPRESA
     ) VALUES (
-        2,
+        1,
         ${TIP_CODIGO_DOCUMENTO},
         ${NRO_DOCUMENTO},
         ${NOMBRES},
@@ -388,7 +424,8 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
         ${ANTIGUEDAD_EMPRESA},
         ${PLAN_CARRERA},
         ${NRO_CARGOS},
-        ${CARGOS_OCUPADOS}
+        ${CARGOS_OCUPADOS},
+        ${EMP_CODIGO}
     )
     `;
 
@@ -418,35 +455,10 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
     ANTIGUEDAD_EMPRESA: string,
     PLAN_CARRERA: string,
     NRO_CARGOS: string,
-    CARGOS_OCUPADOS: string): Promise<any> {
+    CARGOS_OCUPADOS: string,
+    EMP_CODIGO:number): Promise<any> {
     const pool = await mssqlEsmad;
-    console.log(`
-    UPDATE dbo.ESMAD_INFORMACION_BASICA 
-      SET 
-        TIP_CODIGO_DOCUMENTO = ${TIP_CODIGO_DOCUMENTO},
-        NRO_DOCUMENTO = ${NRO_DOCUMENTO},
-        NOMBRES = ${NOMBRES},
-        APELLIDOS = ${APELLIDOS},
-        SEXO = ${SEXO},
-        FECHA_NACIMIENTO = ${FECHA_NACIMIENTO},
-        ESTADO_CIVIL = ${ESTADO_CIVIL},
-        DEPARTAMENTO_RESIDENCIA = ${DEPARTAMENTO_RESIDENCIA},
-        CIUDAD_RESIDENCIA = ${CIUDAD_RESIDENCIA},
-        BARRIO_RESIDENCIA = ${BARRIO_RESIDENCIA},
-        LOCALIDAD_RESIDENCIA = ${LOCALIDAD_RESIDENCIA},
-        DIRECCION_COMPLETA = ${DIRECCION_COMPLETA},
-        EMAIL_PERSONAL = ${EMAIL_PERSONAL},
-        EMAIL_CORPORATIVO = ${EMAIL_CORPORATIVO},
-        CELULAR_CONTACTO = ${CELULAR_CONTACTO},
-        CELULAR_CORPORATIVO = ${CELULAR_CORPORATIVO},
-        ANTIGUEDAD_EMPRESA = ${ANTIGUEDAD_EMPRESA},
-        PLAN_CARRERA = ${PLAN_CARRERA},
-        NRO_CARGOS = ${NRO_CARGOS},
-        CARGOS_OCUPADOS = ${CARGOS_OCUPADOS}
-    WHERE 
-      INFORMACION_BASICA_CODIGO = ${INFORMACION_BASICA_CODIGO}
-  `);
-    const result = await pool.query`
+    const sql = `
       UPDATE dbo.ESMAD_INFORMACION_BASICA 
         SET 
           TIP_CODIGO_DOCUMENTO = ${TIP_CODIGO_DOCUMENTO},
@@ -468,11 +480,13 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
           ANTIGUEDAD_EMPRESA = ${ANTIGUEDAD_EMPRESA},
           PLAN_CARRERA = ${PLAN_CARRERA},
           NRO_CARGOS = ${NRO_CARGOS},
-          CARGOS_OCUPADOS = ${CARGOS_OCUPADOS}
+          CARGOS_OCUPADOS = ${CARGOS_OCUPADOS},
+          CODIGO_EMPRESA = ${EMP_CODIGO}
       WHERE 
-        INFORMACION_BASICA_CODIGO = ${INFORMACION_BASICA_CODIGO}
+          INFORMACION_BASICA_CODIGO = ${INFORMACION_BASICA_CODIGO}
     `;
     
+    const result = await pool.query(sql);
     return result.recordset;
   }
 
@@ -488,24 +502,8 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
     EMAIL_CORPORATIVO: string,
     CELULAR_CONTACTO: string,
     CELULAR_CORPORATIVO: string): Promise<any> {
-    const pool = await mssqlKactus;
-    console.log(`
-                  UPDATE dbo.bi_emple 
-                    SET 
-                      est_civi = ${ESTADO_CIVIL},
-                      dto_resi = ${DEPARTAMENTO_RESIDENCIA},
-                      mpi_resi = ${CIUDAD_RESIDENCIA},
-                      bar_resi = ${BARRIO_RESIDENCIA},
-                      dir_resi = ${DIRECCION_COMPLETA},
-                      eee_mail = ${EMAIL_PERSONAL},
-                      box_mail = ${EMAIL_CORPORATIVO},
-                      tel_movi = ${CELULAR_CONTACTO},
-                      tel_trab = ${CELULAR_CORPORATIVO}
-                  WHERE 
-                    cod_empr = ${EMP_CODIGO}
-                    AND cod_empl = ${NRO_DOCUMENTO_string}
-                `);
-    const result = await pool.query`
+    const pool = await mssqlKactus
+    const sql = `
       UPDATE dbo.bi_emple 
         SET 
           est_civi = ${ESTADO_CIVIL},
@@ -522,6 +520,81 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
         AND cod_empl = ${NRO_DOCUMENTO_string}
     `;
     
+    const result = await pool.query(sql);
+    return result.recordset;
+  }
+
+  public async existeRegistroTallas(empresa: number, cedula: number): Promise<any> {
+    const pool = await mssqlEsmad;
+    const result = await pool.query`
+      SELECT
+        ESMAD_TALLAS_EMPLEADO.TALLAS_EMPLEADO_CODIGO
+      FROM
+        SERVCLO09.kactus.dbo.nm_contr
+        LEFT JOIN dbo.ESMAD_TALLAS_EMPLEADO
+          ON nm_contr.cod_empl = ESMAD_TALLAS_EMPLEADO.NRO_DOCUMENTO
+             AND nm_contr.cod_empr = ESMAD_TALLAS_EMPLEADO.CODIGO_EMPRESA
+      WHERE
+        nm_contr.cod_empl = ${cedula}
+        AND nm_contr.cod_empr = ${empresa}
+        AND nm_contr.ind_acti = 'A'
+    `;
+    
+    return result.recordset;
+  }
+
+  public async crearRegistroTallas(
+    EMP_CODIGO: number,
+    NRO_DOCUMENTO: string,
+    USA_UNIFORME: number,
+    TALLA_CAMISA: string,
+    TALLA_PANTALON: string,
+    TALLA_CALZADO: string
+    ): Promise<any> {
+    const pool = await mssqlEsmad;
+    const sql = `
+      INSERT INTO dbo.ESMAD_TALLAS_EMPLEADO (
+        NRO_DOCUMENTO,
+        CODIGO_EMPRESA,
+        USA_UNIFORME,
+        TALLA_CAMISA,
+        TALLA_PANTALON,
+        TALLA_CALZADO
+    ) VALUES (
+        ${NRO_DOCUMENTO},
+        ${EMP_CODIGO},
+        ${USA_UNIFORME},
+        ${TALLA_CAMISA},
+        ${TALLA_PANTALON},
+        ${TALLA_CALZADO}
+    )
+    `;
+
+    const result = await pool.query(sql);
+    return result.recordset;
+
+  }
+
+  public async actualizacionRegistroTallas(
+    TALLAS_EMPLEADO_CODIGO: number,
+    USA_UNIFORME: number,
+    TALLA_CAMISA: string,
+    TALLA_PANTALON: string,
+    TALLA_CALZADO: string
+    ): Promise<any> {
+    const pool = await mssqlEsmad
+    const sql = `
+      UPDATE dbo.ESMAD_TALLAS_EMPLEADO 
+        SET 
+          USA_UNIFORME = ${USA_UNIFORME},
+          TALLA_CAMISA = ${TALLA_CAMISA},
+          TALLA_PANTALON = ${TALLA_PANTALON},
+          TALLA_CALZADO = ${TALLA_CALZADO}
+      WHERE 
+        TALLAS_EMPLEADO_CODIGO = ${TALLAS_EMPLEADO_CODIGO}
+    `;
+    
+    const result = await pool.query(sql);
     return result.recordset;
   }
 

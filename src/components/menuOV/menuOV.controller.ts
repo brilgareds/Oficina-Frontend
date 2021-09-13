@@ -36,4 +36,44 @@ export class MenuOVController {
       res.status(401).json({ message: e.message });
     }
   }
+
+  /**
+   * @swagger
+   * /api/v1/menuOV/formulariosCompletados:
+   *  post:
+   *    summary: Menus completados
+   *    tags: [MenuOV]
+   *    requestBody:
+   *      required: true
+   *      content:
+   *        application/json:
+   *          schema:
+   *            type: object
+   *            properties:
+   *              CODIGO_EMPRESA:
+   *                type: integer
+   *                description: codigo de la empresa
+   *              NRO_DOCUMENTO:
+   *                type: integer
+   *                description: numero del documento
+   *            required:
+   *              - EMP_CODIGO
+   *              - NRO_DOCUMENTO
+   *    responses:
+   *      200:
+   *        description: Datos del menu
+   *      401:
+   *        description: Error en consultar datos de menu
+   */
+   @route("/formulariosCompletados")
+   @POST()
+   public async formulariosCompletados(req: Request, res: Response) {
+     try {
+       const buscarMenu = await this.menuOVService.formulariosCompletados(req.body);
+ 
+       res.status(200).json(buscarMenu);
+     } catch (e) {
+       res.status(401).json({ message: e.message });
+     }
+   }
 }

@@ -1,7 +1,11 @@
 import { Request, Response } from "express";
 import { route, GET, POST, before } from "awilix-express";
 import validationMiddleware from "../common/middlewares/validation";
-import { InformacionBasicaDto, DepartamentosDto, CiudadesDto, ActualizarInformacionBasicaDto } from "./dto/informacionBasica.dto";
+import { InformacionBasicaDto } from "./dto/informacionBasica.dto";
+import { DepartamentosDto } from "./dto/departamentos.dto";
+import { CiudadesDto } from "./dto/ciudades.dto";
+import { ActualizarInformacionBasicaDto } from "./dto/actualizarInformacionBasica.dto";
+import { LabelsNivelDto } from "./dto/labelsNivel.dto";
 import { InformacionBasicaService } from "./informacionBasica.service";
 
 /**
@@ -121,6 +125,43 @@ export class InformacionBasicaController {
        const paises = await this.informacionBasicaService.consultarPaises();
  
        res.status(200).json(paises);
+     } catch (e) {
+       res.status(401).json({ message: e.message });
+     }
+   }
+
+  /**
+   * @swagger
+   * /api/v1/informacionBasica/consultarLabelsNivel:
+   *  post:
+   *    summary: Informacion del label del nivel
+   *    tags: [InformacionBasica]
+   *    requestBody:
+   *      required: true
+   *      content:
+   *        application/json:
+   *          schema:
+   *            type: object
+   *            properties:
+   *              empresa:
+   *                type: integer
+   *                description: numero de empresa del usuario
+   *            required:
+   *              - empresa
+   *    responses:
+   *      200:
+   *        description: Consulta exitosa del label del nivel
+   *      401:
+   *        description: Error en consultar informacion del label del nivel
+   */
+   @route("/consultarLabelsNivel")
+   @POST()
+   @before([validationMiddleware(LabelsNivelDto)])
+   public async consultarLabelsNivel(req: Request, res: Response) {
+     try {
+       const buscarLabels = await this.informacionBasicaService.consultarLabelsNivel(req.body);
+ 
+       res.status(200).json(buscarLabels);
      } catch (e) {
        res.status(401).json({ message: e.message });
      }
@@ -285,11 +326,8 @@ export class InformacionBasicaController {
    *          schema:
    *            type: object
    *            properties:
-   *              INFORMACION_BASICA_CODIGO:
-   *                type: integer
-   *                description: codigo del registro de informacion basica
    *              TIP_CODIGO_DOCUMENTO:
-   *                type: integer
+   *                type: string
    *                description: codigo del tipo de documento
    *              EMP_CODIGO:
    *                type: integer
@@ -334,10 +372,10 @@ export class InformacionBasicaController {
    *                type: string
    *                description: email corporativo
    *              CELULAR_CONTACTO:
-   *                type: integer
+   *                type: string
    *                description: celular de contacto
    *              CELULAR_CORPORATIVO:
-   *                type: integer
+   *                type: string
    *                description: celular corporativo
    *              ANTIGUEDAD_EMPRESA:
    *                type: integer
@@ -351,15 +389,27 @@ export class InformacionBasicaController {
    *              CARGOS_OCUPADOS:
    *                type: string
    *                description: cargos que se han ocupado
+   *              USA_UNIFORME:
+   *                type: integer
+   *                description: si(1) o no(2) usa uniforme
+   *              TALLA_CAMISA:
+   *                type: integer
+   *                description: talla de camisa del usuario
+   *              TALLA_PANTALON:
+   *                type: integer
+   *                description: talla de pantalon del usuario
+   *              TALLA_CALZADO:
+   *                type: integer
+   *                description: talla de calzado del usuario
    *            required:
-   *              - INFORMACION_BASICA_CODIGO
    *              - TIP_CODIGO_DOCUMENTO
    *              - EMP_CODIGO
    *              - NRO_DOCUMENTO
    *              - NOMBRES
    *              - APELLIDOS
    *              - SEXO
-   *              - FECHA_NACIMIENTO
+   *              - FECHA_NACIMIENTO,
+   *              - USA_UNIFORME
    *    responses:
    *      200:
    *        description: Datos de los departamentos
@@ -369,6 +419,7 @@ export class InformacionBasicaController {
    @route("/actualizacionDatos")
    @POST()
    @before([validationMiddleware(ActualizarInformacionBasicaDto)])
+   
    public async actualizacionDatos(req: Request, res: Response) {
      try {
        const departamentos = await this.informacionBasicaService.actualizacionDatos(req.body);
