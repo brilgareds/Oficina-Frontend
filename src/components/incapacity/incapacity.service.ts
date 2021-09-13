@@ -36,12 +36,22 @@ export class IncapacityService {
     }
   }
 
+
   public async saveDisabilityFiling(reqData: any) {
     try {
 
       const { files, body } = reqData;
       const jsonBody = JSON.parse(body.allData);
-      const jsonFilesNames = body.filesNames;
+      let jsonFilesNames: any;
+      let jsonFilesCodigos: any;
+
+      if (!Array.isArray(body.filesCodigos)) {
+        jsonFilesNames = [body.filesNames];
+        jsonFilesCodigos = [body.filesCodigos];
+      } else {
+        jsonFilesNames = body.filesNames;
+        jsonFilesCodigos = body.filesCodigos;
+      }
 
       let publicIncapacitiyFolder = path.join(__dirname, '..', '..', '..', 'temp', 'incapacity');
       if (CreateOrValidateFolder(publicIncapacitiyFolder)) {
@@ -76,17 +86,24 @@ export class IncapacityService {
 
             let posibleError = 0;
 
-            files.forEach((file: any, key: any) => {
+            files.forEach(async (file: any, key: any) => {
 
               let extension = extraerExtensionArchivo(file.originalname.toLowerCase());
               let nameFile = `SolicitudNum_${lastIdInsert}_Cc_${jsonBody.dataUser.cedula}_${limpiarNombreArchivo(jsonFilesNames[key])}_${getDateToday(true)}.${extension}`;
               let publicRoute = path.join(__dirname, '..', '..', '..', 'temp', 'incapacity', jsonBody.dataUser.cedula, nameFile);
 
-              (!fs.createWriteStream(publicRoute).write(file.buffer)) && (posibleError++);
+              if (!fs.createWriteStream(publicRoute).write(file.buffer)) {
+
+                let routeFile = path.join('temp', 'incapacity', jsonBody.dataUser.cedula, nameFile);
+                await this.incapacityRepository.saveIncapacityFile(Number(lastIdInsert), String(routeFile), String(dataUser.cedula), Number(jsonFilesCodigos[key]));
+
+              } else {
+                posibleError++;
+              }
 
             });
 
-            if (posibleError > 0) {
+            if (posibleError === 0) {
 
               // const correo = dataUser.correoElectronico;
               const correo = `jose.avila@visionymarketing.com.co`;
@@ -137,6 +154,32 @@ export class IncapacityService {
 
     return false;
 
+  }
+
+
+  public async getUserIncapacities(cedula: number) {
+    try {
+      return await this.incapacityRepository.getUserIncapacities(cedula);
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+
+  public async getUserIncapacitiesFiles(numeroIncapacidad: number) {
+    try {
+      return await this.incapacityRepository.getUserIncapacitiesFiles(numeroIncapacidad);
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  public async getUserDataIncapacity(numeroIncapacidad: number) {
+    try {
+      return await this.incapacityRepository.getUserDataIncapacity(numeroIncapacidad);
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
 
 

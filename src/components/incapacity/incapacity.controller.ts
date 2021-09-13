@@ -48,7 +48,7 @@ export class CategoryController {
  * @swagger
  * /api/v1/incapacity/getTypesIncapacity:
  *  post:
- *    summary: Login de la aplicación
+ *    summary: Optiene el tipo de incapacidades
  *    tags: [INCAPACITY]
  *    requestBody:
  *      required: true
@@ -87,7 +87,7 @@ export class CategoryController {
  * @swagger
  * /api/v1/incapacity/getDocumentsIncapacity:
  *  post:
- *    summary: Login de la aplicación
+ *    summary: Optioene el tipo de documentos para incapacidades
  *    tags: [INCAPACITY]
  *    requestBody:
  *      required: true
@@ -213,6 +213,124 @@ export class CategoryController {
 
     } catch (e) {
       res.status(401).json({ message: e.message });
+    }
+  }
+
+
+
+  /**
+ * @swagger
+ * /api/v1/incapacity/getUserIncapacities:
+ *  post:
+ *    summary: Obtiene todas las incapacidades del usuario
+ *    tags: [INCAPACITY]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              cedula:
+ *                type: integer
+ *                description: cedula del usuario
+ *            required:
+ *              - cedula
+ *    responses:
+ *      200:
+ *        description: Consumo exitoso
+ *      402:
+ *        description: Error en el consumo / Token Invalido
+ */
+  @route("/getUserIncapacities")
+  @POST()
+  // @before([verifyJwt])
+  public async getUserIncapacities(req: Request, res: Response) {
+    try {
+
+      const response = await this.incapacityService.getUserIncapacities(req.body.cedula);
+
+      res.status(200).json(response);
+    } catch (e) {
+      res.status(400).json({ message: e.message });
+    }
+  }
+
+
+  /**
+ * @swagger
+ * /api/v1/incapacity/getUserIncapacitiesFiles:
+ *  post:
+ *    summary: Obtiene todas los archivos de una incapacidad
+ *    tags: [INCAPACITY]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              numeroIncapacidad:
+ *                type: integer
+ *                description: consecutivo de la incapacidad 
+ *            required:
+ *              - numeroIncapacidad
+ *    responses:
+ *      200:
+ *        description: Consumo exitoso
+ *      402:
+ *        description: Error en el consumo / Token Invalido
+ */
+  @route("/getUserIncapacitiesFiles")
+  @POST()
+  // @before([verifyJwt])
+  public async getUserIncapacitiesFiles(req: Request, res: Response) {
+    try {
+
+      const response = await this.incapacityService.getUserIncapacitiesFiles(req.body.numeroIncapacidad);
+
+      res.status(200).json(response);
+    } catch (e) {
+      res.status(400).json({ message: e.message });
+    }
+  }
+
+
+  /**
+ * @swagger
+ * /api/v1/incapacity/getUserDataIncapacity:
+ *  post:
+ *    summary: Obtiene todas los datos de la incapacidad
+ *    tags: [INCAPACITY]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              numeroIncapacidad:
+ *                type: integer
+ *                description: consecutivo de la incapacidad 
+ *            required:
+ *              - numeroIncapacidad
+ *    responses:
+ *      200:
+ *        description: Consumo exitoso
+ *      402:
+ *        description: Error en el consumo / Token Invalido
+ */
+  @route("/getUserDataIncapacity")
+  @POST()
+  // @before([verifyJwt])
+  public async getUserDataIncapacity(req: Request, res: Response) {
+    try {
+
+      const response = await this.incapacityService.getUserDataIncapacity(req.body.numeroIncapacidad);
+
+      res.status(200).json(response);
+    } catch (e) {
+      res.status(400).json({ message: e.message });
     }
   }
 
