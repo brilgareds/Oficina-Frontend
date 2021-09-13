@@ -268,9 +268,6 @@ import { EducacionService } from "./educacion.service";
    *              - INSTITUCION
    *              - CIUDAD
    *              - ESTADO_ESTUDIO
-   *              - FECHA_INICIO
-   *              - FECHA_FINALIZACION
-   *              - FECHA_GRADO_TENTATIVO
    *              - MODALIDAD_ESTUDIO
    *              - PROMEDIO
    *              - PAI_CODIGO
