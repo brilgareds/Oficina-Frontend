@@ -8,121 +8,137 @@ export class DatosAdicionalesService {
   public async buscarDatos({ CODIGO_EMPRESA,NRO_DOCUMENTO }: BuscarDatosDto) {
     try {
 
-      const buscarDatos = await this.datosAdicionalesRepository.buscarDatos(CODIGO_EMPRESA, NRO_DOCUMENTO);
+      let buscarDatos = await this.datosAdicionalesRepository.buscarDatos(CODIGO_EMPRESA, NRO_DOCUMENTO);
 
       let arrayDeudas = new Array();
       let arrayDeudasFuturas = new Array();
       let arrayIntereses =  new Array();
-      if(buscarDatos[0]['DATOS_ADICIONALES_CODIGO']){
-        const datosDeListas = await this.datosAdicionalesRepository.buscarDatosListaDatosAdicionales(
-          buscarDatos[0]['DATOS_ADICIONALES_CODIGO']
-        );
-        if(datosDeListas.length > 0){
-          for (const value of datosDeListas) {
-            if(value['DEUDAS'] == 1) {
-              arrayDeudas.push(value);
-            }
-            if(value['DEUDAS_FUTURAS'] == 1){
-              arrayDeudasFuturas.push(value);
-            }
-            if(value['DEUDAS'] == 0 && value['DEUDAS_FUTURAS'] == 0){
-              arrayIntereses.push(value);
+      if(buscarDatos[0]){
+        if(buscarDatos[0]['DATOS_ADICIONALES_CODIGO']){
+          const datosDeListas = await this.datosAdicionalesRepository.buscarDatosListaDatosAdicionales(
+            buscarDatos[0]['DATOS_ADICIONALES_CODIGO']
+          );
+          if(datosDeListas.length > 0){
+            for (const value of datosDeListas) {
+              if(value['DEUDAS'] == 1) {
+                arrayDeudas.push(value);
+              }
+              if(value['DEUDAS_FUTURAS'] == 1){
+                arrayDeudasFuturas.push(value);
+              }
+              if(value['DEUDAS'] == 0 && value['DEUDAS_FUTURAS'] == 0){
+                arrayIntereses.push(value);
+              }
             }
           }
         }
+        buscarDatos = {'buscarDatos':buscarDatos,'arrayDeudas':arrayDeudas,
+                           'arrayDeudasFuturas':arrayDeudasFuturas,'arrayIntereses':arrayIntereses};
+      }else{
+        buscarDatos = {"error":"No se encontraron datos"};
       }
 
-      return {'buscarDatos':buscarDatos,'arrayDeudas':arrayDeudas,
-              'arrayDeudasFuturas':arrayDeudasFuturas,'arrayIntereses':arrayIntereses};
+      return buscarDatos;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
   public async buscarDatosFrecuencia() {
     try {
 
-      const buscarDatos = await this.datosAdicionalesRepository.buscarDatosFrecuencia();
+      let buscarDatos = await this.datosAdicionalesRepository.buscarDatosFrecuencia();
 
+      if(!buscarDatos[0]){
+        buscarDatos = {"error":"No se encontraron datos"};
+      }
       return buscarDatos;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
   public async buscarDatosVehiculos() {
     try {
 
-      const buscarDatos = await this.datosAdicionalesRepository.buscarDatosVehiculos();
+      let buscarDatos = await this.datosAdicionalesRepository.buscarDatosVehiculos();
 
+      if(!buscarDatos[0]){
+        buscarDatos = {"error":"No se encontraron datos"};
+      }
       return buscarDatos;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
   public async buscarDatosLicenciaConduccion() {
     try {
 
-      const buscarDatos = await this.datosAdicionalesRepository.buscarDatosLicenciaConduccion();
+      let buscarDatos = await this.datosAdicionalesRepository.buscarDatosLicenciaConduccion();
 
+      if(!buscarDatos[0]){
+        buscarDatos = {"error":"No se encontraron datos"};
+      }
       return buscarDatos;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
   public async buscarDatosCondicionEspecial() {
     try {
 
-      const buscarDatos = await this.datosAdicionalesRepository.buscarDatosCondicionEspecial();
+      let buscarDatos = await this.datosAdicionalesRepository.buscarDatosCondicionEspecial();
 
+      if(!buscarDatos[0]){
+        buscarDatos = {"error":"No se encontraron datos"};
+      }
       return buscarDatos;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
   public async buscarDatosBienesServicios() {
     try {
 
-      const buscarDatos = await this.datosAdicionalesRepository.buscarDatosBienesServicios();
+      let buscarDatos = await this.datosAdicionalesRepository.buscarDatosBienesServicios();
 
+      if(!buscarDatos[0]){
+        buscarDatos = {"error":"No se encontraron datos"};
+      }
       return buscarDatos;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
   public async buscarDatosTemasInteres() {
     try {
 
-      const buscarDatos = await this.datosAdicionalesRepository.buscarDatosTemasInteres();
+      let buscarDatos = await this.datosAdicionalesRepository.buscarDatosTemasInteres();
 
+      if(!buscarDatos[0]){
+        buscarDatos = {"error":"No se encontraron datos"};
+      }
       return buscarDatos;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -589,12 +605,11 @@ export class DatosAdicionalesService {
         );
       }
 
-      return {"status":"ok"};
+      return {"ok":"Se actualizo el registro correctamente"};
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 

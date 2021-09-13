@@ -5,7 +5,7 @@ export class SaludMSSQLRepository implements SaludRepository {
   public async buscarDatos(cedula: number, empresa: number): Promise<any> {
     const pool = await mssqlEsmad;
     const result = await pool.query`
-    SELECT
+    SELECT TOP 1
         CASE
           WHEN ESMAD_SALUD.GRUPO_SANGUINEO IS NOT NULL
             THEN ESMAD_SALUD.GRUPO_SANGUINEO
@@ -94,7 +94,12 @@ export class SaludMSSQLRepository implements SaludRepository {
           WHEN ESMAD_SALUD.ENTIDAD_OTROS IS NOT NULL
             THEN ESMAD_SALUD.ENTIDAD_OTROS
           ELSE RTRIM(LTRIM(bi_datad.OTR_PLAN))
-        END AS ENTIDAD_OTROS
+        END AS ENTIDAD_OTROS,
+        ESMAD_REPORTE_EMBARAZO.EMBARAZO_ALTO_RIESGO,
+        ESMAD_REPORTE_EMBARAZO.FECHA_EXAMEN_EMBARAZO,
+        ESMAD_REPORTE_EMBARAZO.TIEMPO_GESTACION,
+        ESMAD_REPORTE_EMBARAZO.FECHA_PARTO,
+        ESMAD_REPORTE_EMBARAZO.OBSERVACION
     FROM
         SERVCLO09.kactus.dbo.nm_contr
         LEFT JOIN SERVCLO09.kactus.dbo.bi_datad
@@ -103,6 +108,9 @@ export class SaludMSSQLRepository implements SaludRepository {
         LEFT JOIN dbo.ESMAD_SALUD
           ON nm_contr.cod_empl = ESMAD_SALUD.NRO_DOCUMENTO
              AND nm_contr.cod_empr = ESMAD_SALUD.CODIGO_EMPRESA
+        LEFT JOIN dbo.ESMAD_REPORTE_EMBARAZO
+          ON nm_contr.cod_empl = ESMAD_REPORTE_EMBARAZO.NRO_DOCUMENTO
+             AND nm_contr.cod_empr = ESMAD_REPORTE_EMBARAZO.CODIGO_EMPRESA
     WHERE
         nm_contr.cod_empl = ${cedula}
         AND nm_contr.cod_empr = ${empresa}
@@ -344,6 +352,7 @@ export class SaludMSSQLRepository implements SaludRepository {
         NRO_DOCUMENTO = ${NRO_DOCUMENTO}
         AND CODIGO_EMPRESA = ${CODIGO_EMPRESA}
     `;
+    
     const result = await pool.query(sql);
     
     return result.recordset;
@@ -494,7 +503,6 @@ export class SaludMSSQLRepository implements SaludRepository {
         AND nm_contr.cod_empl = ${cedula}
         AND nm_contr.ind_acti = 'A'
     `;
-    console.log(sql);
     
     const result = await pool.query(sql);
     return result.recordset;
@@ -529,7 +537,6 @@ export class SaludMSSQLRepository implements SaludRepository {
       ${OBSERVACION}
     )
     `;
-    console.log(sql);
     
     const result = await pool.query(sql);
 
@@ -556,7 +563,6 @@ export class SaludMSSQLRepository implements SaludRepository {
     WHERE 
       REPORTE_EMBARAZO_CODIGO = ${REPORTE_EMBARAZO_CODIGO}
     `;
-    console.log(sql);
     const result = await pool.query(sql);
 
     return result.recordset;

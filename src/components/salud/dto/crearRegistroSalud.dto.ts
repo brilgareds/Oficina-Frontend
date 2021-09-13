@@ -64,7 +64,6 @@ export class CrearRegistroSaludDto {
   @IsString()
   ENFERMEDAD_LABORAL: string;
 
-  @IsNumber()
   PERDIDA_CAPACIDAD_SALUD: number;
 
   @IsString()
@@ -79,13 +78,11 @@ export class CrearRegistroSaludDto {
   @IsString()
   ENTIDAD_OTROS: string;
 
-  @IsNumber()
   EMBARAZO_ALTO_RIESGO: number;
 
   @IsString()
   FECHA_EXAMEN_EMBARAZO: string;
 
-  @IsNumber()
   TIEMPO_GESTACION: number;
 
   @IsString()

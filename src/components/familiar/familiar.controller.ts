@@ -149,6 +149,12 @@ import { FamiliarService } from "./familiar.service";
    *              HOB_FAMI:
    *                type: string
    *                description:
+   *              PAI_FAMI:
+   *                type: integer
+   *                description:
+   *              DTO_FAMI:
+   *                type: integer
+   *                description:
    *            required:
    *              - cedula
    *    responses:
@@ -232,5 +238,75 @@ import { FamiliarService } from "./familiar.service";
       res.status(401).json({ message: e.message });
     }
   }
+
+  /**
+   * @swagger
+   * /api/v1/familiar/actualizarFamiliar:
+   *  post:
+   *    summary: Actualizar Familiar
+   *    tags: [Familiar]
+   *    requestBody:
+   *      required: true
+   *      content:
+   *        application/json:
+   *          schema:
+   *            type: object
+   *            properties:
+   *              FAMILIARES_CODIGO:
+   *                type: integer
+   *                description: Codigo del registro del familiar
+   *            required:
+   *              - COD_EMPL
+   *    responses:
+   *      200:
+   *        description: Actualizacion correcta
+   *      401:
+   *        description: Error en la actualizacion
+   */
+   @route("/actualizarFamiliar")
+   @POST()
+   public async actualizarFamiliar(req: Request, res: Response) {
+    try {
+      const actualizarFamiliar = await this.familiarService.actualizarFamiliar(req.body);
+      res.status(200).json(actualizarFamiliar);
+    } catch (e) {
+      res.status(401).json({ message: e.message });
+    }
+  }
+
+  /**
+   * @swagger
+   * /api/v1/familiar/eliminarFamiliaresIndividual:
+   *  post:
+   *    summary: Eliminar familiares del usuario
+   *    tags: [Familiar]
+   *    requestBody:
+   *      required: true
+   *      content:
+   *        application/json:
+   *          schema:
+   *            type: object
+   *            properties:
+   *              COD_FAMI:
+   *                type: integer
+   *                description: numero de documento del familiar
+   *            required:
+   *              - COD_FAMI
+   *    responses:
+   *      200:
+   *        description: Eliminación exitosa del familiares del usuario
+   *      401:
+   *        description: Error en eliminar el familiar del usuario
+   */
+   @route("/eliminarFamiliaresIndividual")
+   @POST()
+   public async eliminarFamiliaresIndividual(req: Request, res: Response){
+     try {
+       const eliminarFamiliares = await this.familiarService.eliminarFamiliaresIndividual(req.body);
+       res.status(200).json(eliminarFamiliares);    
+     } catch (error) {
+       res.status(401).json({ message: error.message });  
+     }
+   }
 
  }

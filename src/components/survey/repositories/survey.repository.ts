@@ -9,4 +9,11 @@ export interface SurveyRepository {
   getSurveyResponses(surveyResponses: SurveyResponsesDto): Promise<any>;
   getSurveyAnswers(surveyAnswers: SurveyAnswersDto): Promise<any>;
   getSurveyFrecuency(): Promise<any>;
+  saveCovidSurveyAnswers(): Promise<any>;
+  saveEpidemiologicalFenceSurveyAnswers(): Promise<any>;
+  saveHealthConditionSurveyAnswers(
+    userIdentification: number,
+    userCompany: string
+  ): Promise<any>;
+  saveSurveyAnswers(surveyType: string, answers: string[]): Promise<any>;
 }

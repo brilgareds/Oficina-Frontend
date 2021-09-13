@@ -173,4 +173,66 @@ export class SurveyMSSQLRepository implements SurveyRepository {
 
     throw new Error("Error de consulta");
   }
+
+  public async saveCovidSurveyAnswers(): Promise<any> {
+    const pool = await mssqlEsmad;
+  }
+
+  public async saveEpidemiologicalFenceSurveyAnswers(): Promise<any> {
+    const pool = await mssqlEsmad;
+  }
+
+  public async saveHealthConditionSurveyAnswers(
+    userIdentification: number,
+    userCompany: string
+  ): Promise<any> {
+    const pool = await mssqlEsmad;
+
+    const result = await pool.query(`INSERT INTO dbo.ESMAD_OV_ENCUESTA_COVID ( 
+      ESMAD_OV_ENCUESTA_COVID.ENC_CEDULA, 
+      ESMAD_OV_ENCUESTA_COVID.USUARIO_CREACION, 
+      ESMAD_OV_ENCUESTA_COVID.FECHA_CREACION, 
+      ESMAD_OV_ENCUESTA_COVID.ESTADO,
+      ESMAD_OV_ENCUESTA_COVID.COD_EMPRESA,
+      ESMAD_OV_ENCUESTA_COVID.CASOS_COVID
+    ) VALUES (
+      ${userIdentification},
+      ${userIdentification},
+      getDate(),
+      1,
+      ${userCompany},
+      1
+    );SELECT SCOPE_IDENTITY() AS id`);
+
+    if (result.rowsAffected) {
+      return result.recordset[0];
+    }
+
+    throw new Error("Error de consulta");
+  }
+
+  public async saveSurveyAnswers(surveyType: string, answers: string[]) {
+    const pool = await mssqlEsmad;
+    const answersString = answers.toString();
+
+    const query = `
+      INSERT INTO dbo.ESMAD_ENCUESTA_RESPUESTAS_CLIENTES (
+        ESMAD_ENCUESTA_RESPUESTAS_CLIENTES.COD_ER,
+        ESMAD_ENCUESTA_RESPUESTAS_CLIENTES.USUARIO_CREACION,
+        ESMAD_ENCUESTA_RESPUESTAS_CLIENTES.FECHA_CREACION,
+        ESMAD_ENCUESTA_RESPUESTAS_CLIENTES.ESTADO,
+        ESMAD_ENCUESTA_RESPUESTAS_CLIENTES.RESPUESTA_ABIERTA,
+        ESMAD_ENCUESTA_RESPUESTAS_CLIENTES.COD_SE,
+        ESMAD_ENCUESTA_RESPUESTAS_CLIENTES.${surveyType}
+      ) VALUES ${answersString}
+    `;
+
+    const result = await pool.query(query);
+
+    if (result.rowsAffected) {
+      return result.recordset;
+    }
+
+    throw new Error("Error de consulta");
+  }
 }

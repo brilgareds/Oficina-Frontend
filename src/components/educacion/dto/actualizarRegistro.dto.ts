@@ -26,15 +26,12 @@ export class ActualizarRegistroDto {
   @IsNumber()
   ESTADO_ESTUDIO: number;
   
-  @IsNotEmpty()
   @IsNumber()
   FECHA_INICIO: string;
   
-  @IsNotEmpty()
   @IsString()
   FECHA_FINALIZACION: string
   
-  @IsNotEmpty()
   @IsString()
   FECHA_GRADO_TENTATIVO: string;
   
@@ -45,5 +42,13 @@ export class ActualizarRegistroDto {
   @IsNotEmpty()
   @IsString()
   PROMEDIO: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  PAI_CODIGO: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  DTO_CODIGO: number;
 
 }

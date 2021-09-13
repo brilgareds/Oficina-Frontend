@@ -33,6 +33,8 @@ import { DatosAdicionalesService } from "./components/datosAdicionales/datosAdic
 import { IncapacityMSSQLRepository } from "./components/incapacity/repositories/impl/mssql/incapacity.repository";
 import { IncapacityService } from "./components/incapacity/incapacity.service";
 import { SurveyService } from "./components/survey/survey.service";
+import { MyWalletMSSQLRepository } from "./components/myWallet/repositories/impl/mssql/myWallet.repository";
+import { MyWalletService } from "./components/myWallet/myWallet.service";
 
 export default (app: express.Application): void => {
   const container = createContainer({
@@ -60,6 +62,7 @@ export default (app: express.Application): void => {
     datosAdicionalesRepository: asClass(DatosAdicionalesMSSQLRepository).scoped(),
     incapacityRepository: asClass(IncapacityMSSQLRepository).scoped(),
     surveyRepository: asClass(SurveyMSSQLRepository).scoped(),
+    myWalletRepository: asClass(MyWalletMSSQLRepository).scoped(),
 
     // services
     authService: asClass(AuthService).scoped(),
@@ -77,6 +80,7 @@ export default (app: express.Application): void => {
     datosAdicionalesService: asClass(DatosAdicionalesService).scoped(),
     incapacityService: asClass(IncapacityService).scoped(),
     surveyService: asClass(SurveyService).scoped(),
+    myWalletService: asClass(MyWalletService).scoped(),
   });
 
   app.use(scopePerRequest(container));

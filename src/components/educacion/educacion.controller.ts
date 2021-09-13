@@ -174,6 +174,12 @@ import { EducacionService } from "./educacion.service";
    *              PROMEDIO:
    *                type: string
    *                description: Promedio
+   *              PAI_CODIGO:
+   *                type: number
+   *                description: Codigo del pais
+   *              DTO_CODIGO:
+   *                type: number
+   *                description: Codigo del departamento
    *            required:
    *              - NIVEL_ESTUDIO
    *              - TITULO
@@ -185,6 +191,8 @@ import { EducacionService } from "./educacion.service";
    *              - FECHA_GRADO_TENTATIVO
    *              - MODALIDAD_ESTUDIO
    *              - PROMEDIO
+   *              - PAI_CODIGO
+   *              - DTO_CODIGO
    *    responses:
    *      200:
    *        description: Registros Creados de manera exitosa
@@ -248,17 +256,22 @@ import { EducacionService } from "./educacion.service";
    *              PROMEDIO:
    *                type: string
    *                description: Promedio
+   *              PAI_CODIGO:
+   *                type: number
+   *                description: Codigo del pais
+   *              DTO_CODIGO:
+   *                type: number
+   *                description: Codigo del departamento
    *            required:
    *              - NIVEL_ESTUDIO
    *              - TITULO
    *              - INSTITUCION
    *              - CIUDAD
    *              - ESTADO_ESTUDIO
-   *              - FECHA_INICIO
-   *              - FECHA_FINALIZACION
-   *              - FECHA_GRADO_TENTATIVO
    *              - MODALIDAD_ESTUDIO
    *              - PROMEDIO
+   *              - PAI_CODIGO
+   *              - DTO_CODIGO
    *    responses:
    *      200:
    *        description: Registros Creados de manera exitosa
@@ -271,6 +284,41 @@ import { EducacionService } from "./educacion.service";
      try {
       const buscarMenu = await this.educacionService.actualizarRegistro(req.body);
       res.status(200).json(buscarMenu);  
+     } catch (e) {
+      res.status(401).json({ message: e.message });  
+     }
+   }
+
+  /**
+   * @swagger
+   * /api/v1/educacion/eliminarRegistro:
+   *  post:
+   *    summary: Eliminar registro de educación
+   *    tags: [Educacion]
+   *    requestBody:
+   *      required: true
+   *      content:
+   *        application/json:
+   *          schema:
+   *            type: object
+   *            properties:
+   *              EDUCACION_CODIGO:
+   *                type: integer
+   *                description: Codigo del registro de educación
+   *            required:
+   *              - EDUCACION_CODIGO
+   *    responses:
+   *      200:
+   *        description: Registros eliminados de manera exitosa
+   *      401:
+   *        description: Error al eliminar el registro de educación
+   */
+   @route("/eliminarRegistro")
+   @POST()
+   public async eliminarRegistro(req: Request, res: Response) {
+     try {
+      const eliminarRegistro = await this.educacionService.eliminarRegistro(req.body);
+      res.status(200).json(eliminarRegistro);  
      } catch (e) {
       res.status(401).json({ message: e.message });  
      }

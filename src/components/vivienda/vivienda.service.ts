@@ -7,66 +7,71 @@ export class ViviendaService {
 
   public async consultarDatosVivienda({ EMP_CODIGO,NRO_DOCUMENTO }: ViviendaDto) {
     try {
-      const buscarDatos = await this.viviendaRepository.consultarDatosVivienda(EMP_CODIGO,NRO_DOCUMENTO);
-
+      let buscarDatos = await this.viviendaRepository.consultarDatosVivienda(EMP_CODIGO,NRO_DOCUMENTO);
+      if(!buscarDatos[0]){
+        buscarDatos = {"error":"No se encontraron datos"};
+      }
       return buscarDatos;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
   public async consultarDatosTipVivienda() {
     try {
-      const buscarDatosTipVivienda = await this.viviendaRepository.consultarDatosTipVivienda();
-
+      let buscarDatosTipVivienda = await this.viviendaRepository.consultarDatosTipVivienda();
+      if(!buscarDatosTipVivienda[0]){
+        buscarDatosTipVivienda = {"error":"No se encontraron datos"};
+      }
       return buscarDatosTipVivienda;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
   public async consultarDatosPerimetro() {
     try {
-      const buscarDatosPerimetro = await this.viviendaRepository.consultarDatosPerimetro();
-
+      let buscarDatosPerimetro = await this.viviendaRepository.consultarDatosPerimetro();
+      if(!buscarDatosPerimetro[0]){
+        buscarDatosPerimetro = {"error":"No se encontraron datos"};
+      }
       return buscarDatosPerimetro;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
   public async consultarDatosEstrato() {
     try {
-      const buscarDatosEstrato = await this.viviendaRepository.consultarDatosEstrato();
-
+      let buscarDatosEstrato = await this.viviendaRepository.consultarDatosEstrato();
+      if(!buscarDatosEstrato[0]){
+        buscarDatosEstrato = {"error":"No se encontraron datos"};
+      }
       return buscarDatosEstrato;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
   public async consultarDatosServicios() {
     try {
-      const buscarDatosServicio = await this.viviendaRepository.consultarDatosServicios();
-
+      let buscarDatosServicio = await this.viviendaRepository.consultarDatosServicios();
+      if(!buscarDatosServicio[0]){
+        buscarDatosServicio = {"error":"No se encontraron datos"};
+      }
       return buscarDatosServicio;
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
@@ -147,12 +152,11 @@ export class ViviendaService {
 
       }
 
-      return {"status":"ok"};
+      return {"ok":"Actualización exitosa"};
 
     } catch (error) {
-
-      throw new Error(error.message);
-
+      console.log("error: ",error.message);
+      throw new Error("No se pudo realizar el proceso");
     }
   }
 
