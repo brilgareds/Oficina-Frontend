@@ -37,9 +37,11 @@ public async formulariosCompletados(empresa: number, cedula: number): Promise<an
                      AND nm_contr.cod_empr = ESMAD_INFORMACION_BASICA.CODIGO_EMPRESA
                 LEFT JOIN dbo.ESMAD_EDUCACION
                   ON nm_contr.cod_empl = ESMAD_EDUCACION.INFORMACION_BASICA_CODIGO
+                     AND ESMAD_EDUCACION.ESTADO = 1
                 LEFT JOIN dbo.ESMAD_FAMILIARES
                   ON nm_contr.cod_empl = ESMAD_FAMILIARES.COD_EMPL
                      AND nm_contr.cod_empr = ESMAD_FAMILIARES.COD_EMPR
+                     AND ESMAD_FAMILIARES.ESTADO = 1
                 LEFT JOIN dbo.ESMAD_DATOS_ADICIONALES
                   ON nm_contr.cod_empl = ESMAD_DATOS_ADICIONALES.NRO_DOCUMENTO
                      AND nm_contr.cod_empr = ESMAD_DATOS_ADICIONALES.CODIGO_EMPRESA
