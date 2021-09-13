@@ -30,7 +30,7 @@ export class DatosAdicionalesService {
               if(value['DEUDAS_FUTURAS'] == 1){
                 arrayDeudasFuturas.push(value);
               }
-              if(value['DEUDAS'] == 0 && value['DEUDAS_FUTURAS'] == 0){
+              if(value['CONDICION_ESPECIAL'] == 0 && value['DEUDAS'] == 0 && value['DEUDAS_FUTURAS'] == 0){
                 arrayIntereses.push(value);
               }
             }
@@ -549,7 +549,6 @@ export class DatosAdicionalesService {
       actualizarRegistro = await this.datosAdicionalesRepository.existeRegistroDatosAdicionalesKactus(CODIGO_EMPRESA,NRO_DOCUMENTO);
       let CONDICION_ESPECIAL = "NULL";
       let CONDICION_ESPECIAL_LGTB = "'N'";
-      console.log("array: ",arrayCondicionEspecial);
       
       if(arrayCondicionEspecial.length>0){
         for (const value of arrayCondicionEspecial) {
