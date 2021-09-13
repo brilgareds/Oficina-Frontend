@@ -26,15 +26,12 @@ export class ActualizarRegistroDto {
   @IsNumber()
   ESTADO_ESTUDIO: number;
   
-  @IsNotEmpty()
   @IsNumber()
   FECHA_INICIO: string;
   
-  @IsNotEmpty()
   @IsString()
   FECHA_FINALIZACION: string
   
-  @IsNotEmpty()
   @IsString()
   FECHA_GRADO_TENTATIVO: string;
   

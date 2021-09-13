@@ -69,6 +69,11 @@ export class EducacionService {
     PAI_CODIGO,
     DTO_CODIGO}: EducacionCrearDto){
     try {
+
+      const FECHA_INICIO_string = (FECHA_INICIO)?FECHA_INICIO:`NULL`;
+      const FECHA_FINALIZACION_string = (FECHA_FINALIZACION)?FECHA_FINALIZACION:`NULL`;
+      const FECHA_GRADO_TENTATIVO_string = (FECHA_GRADO_TENTATIVO)?FECHA_GRADO_TENTATIVO:`NULL`;
+
       let crearRegistro = await this.educacionRepository.crearRegistro(MENU_CODIGO, 
         INFORMACION_BASICA_CODIGO,
         NIVEL_ESTUDIO,
@@ -76,15 +81,15 @@ export class EducacionService {
         INSTITUCION,
         CIUDAD,
         ESTADO_ESTUDIO,
-        FECHA_INICIO,
-        FECHA_FINALIZACION,
-        FECHA_GRADO_TENTATIVO,
+        FECHA_INICIO_string,
+        FECHA_FINALIZACION_string,
+        FECHA_GRADO_TENTATIVO_string,
         MODALIDAD_ESTUDIO,
         PROMEDIO,
         PAI_CODIGO,
         DTO_CODIGO);
       return {"ok":"registro creado"}
-    } catch (error) {
+    } catch (error: any) {
       console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");    }
   }
@@ -105,22 +110,26 @@ export class EducacionService {
     DTO_CODIGO}: ActualizarRegistroDto){
     try {
 
-      let crearRegistro = await this.educacionRepository.actualizarRegistro(
+      const FECHA_INICIO_string = (FECHA_INICIO)?FECHA_INICIO:"NULL";
+      const FECHA_FINALIZACION_string = (FECHA_FINALIZACION)?FECHA_FINALIZACION:"NULL";
+      const FECHA_GRADO_TENTATIVO_string = (FECHA_GRADO_TENTATIVO)?FECHA_GRADO_TENTATIVO:"NULL";
+
+      const actualizarRegistro = await this.educacionRepository.actualizarRegistro(
           EDUCACION_CODIGO,
           NIVEL_ESTUDIO,
           TITULO,
           INSTITUCION,
           CIUDAD,
           ESTADO_ESTUDIO,
-          FECHA_INICIO,
-          FECHA_FINALIZACION,
-          FECHA_GRADO_TENTATIVO,
+          FECHA_INICIO_string,
+          FECHA_FINALIZACION_string,
+          FECHA_GRADO_TENTATIVO_string,
           MODALIDAD_ESTUDIO,
           PROMEDIO,
           PAI_CODIGO,
           DTO_CODIGO);
       return {"ok":"registro actualizado"}
-    } catch (error) {
+    } catch (error: any) {
       console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");    }
   }
@@ -129,7 +138,7 @@ export class EducacionService {
     try {
       const eliminarRegistro = await this.educacionRepository.eliminarRegistro(EDUCACION_CODIGO);
       return {"ok":"Registro de educación eliminado"}
-    } catch (error) {
+    } catch (error: any) {
       console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");    }
   }
