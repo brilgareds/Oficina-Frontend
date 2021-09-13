@@ -60,7 +60,7 @@ export class FamiliarMssqlRepository implements FamiliarRepository {
 
   public async consultarFamiliares(COD_EMPL: number, COD_EMPR: number): Promise<any>{
     const pool = await mssqlEsmad;
-    const result = await pool.query`SELECT FAMILIARES_CODIGO,
+    const result = await pool.query`SELECT DISTINCT FAMILIARES_CODIGO,
                                     CASE
                                     WHEN ESMAD_FAMILIARES.COD_EMPL IS NOT NULL
                                     THEN ESMAD_FAMILIARES.COD_EMPL
