@@ -4,6 +4,10 @@ export class CiudadesDto {
   
   @IsNotEmpty()
   @IsNumber()
+  codPais: number;
+
+  @IsNotEmpty()
+  @IsNumber()
   codDepartamento: number;
 
 }

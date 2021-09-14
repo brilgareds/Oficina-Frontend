@@ -4,7 +4,7 @@ export interface InformacionBasicaRepository {
   consultarEstadoCivil(): Promise<any>;
   consultarPaises(): Promise<any>;
   consultarDepartamentos(codPais: number): Promise<any>;
-  consultarMunicipios(codDepartamento: number): Promise<any>;
+  consultarMunicipios(codPais: number, codDepartamento: number): Promise<any>;
   consultarNomenclatura(): Promise<any>;
   consultarAntiguedad(): Promise<any>;
   consultarTalla(): Promise<any>;

@@ -244,27 +244,26 @@ export class InformacionBasicaMSSQLRepository implements InformacionBasicaReposi
     return result.recordset;
   }
 
-  public async consultarMunicipios(codDepartamento: number): Promise<any> {
+  public async consultarMunicipios(codPais: number, codDepartamento: number): Promise<any> {
     const pool = await mssqlKactus;
     const result = await pool.query`
       SELECT * FROM (SELECT DISTINCT
                           Municipio.cod_mpio,
                           RTRIM(LTRIM(Municipio.nom_mpio)) as nom_mpio
                       FROM
-                              dbo.gn_divip Departamento
-                      INNER JOIN
-                              dbo.gn_paise
-                              ON (Departamento.cod_pais = dbo.gn_paise.cod_pais)
-                              INNER JOIN
-                              dbo.gn_divip Municipio
-                              ON (Departamento.cod_pais = Municipio.cod_pais)
-                                  AND (Departamento.cod_dpto = Municipio.cod_dpto)
-                                  AND Departamento.cod_dpto = ${codDepartamento}
+                        dbo.gn_divip Departamento
+                        INNER JOIN dbo.gn_paise
+                          ON (Departamento.cod_pais = dbo.gn_paise.cod_pais)
+                             AND gn_paise.cod_pais = ${codPais}
+                        INNER JOIN dbo.gn_divip Municipio
+                          ON (Departamento.cod_pais = Municipio.cod_pais)
+                             AND (Departamento.cod_dpto = Municipio.cod_dpto)
+                             AND Departamento.cod_dpto = ${codDepartamento}
                       WHERE
-                              Municipio.COD_LOCA = 0
-                              AND Municipio.ind_mpio <> 0
-                              AND Departamento.COD_LOCA = 0
-                              AND Departamento.cod_mpio = 0) AS listaMunicipios
+                        Municipio.COD_LOCA = 0
+                        AND Municipio.ind_mpio <> 0
+                        AND Departamento.COD_LOCA = 0
+                        AND Departamento.cod_mpio = 0) AS listaMunicipios
       ORDER BY listaMunicipios.nom_mpio
     `;
     

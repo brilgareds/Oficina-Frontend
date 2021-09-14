@@ -227,9 +227,12 @@ export class InformacionBasicaService {
     }
   }
 
-  public async consultarMunicipios({ codDepartamento }: CiudadesDto) {
+  public async consultarMunicipios({ codPais, codDepartamento }: CiudadesDto) {
     try {
-      let buscarMunicipios = await this.informacionBasicaRepository.consultarMunicipios(codDepartamento);
+      let buscarMunicipios = await this.informacionBasicaRepository.consultarMunicipios(
+        codPais,
+        codDepartamento
+      );
 
       if(!buscarMunicipios[0]){
         buscarMunicipios = {"error":"No se encontraron datos"};
