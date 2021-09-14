@@ -2,8 +2,10 @@ import { Request, Response } from "express";
 import { route, GET, POST, before } from "awilix-express";
 import validationMiddleware from "../common/middlewares/validation";
 import { SaludDatosDto } from "./dto/saludDatos.dto";
-import { CrearRegistroSaludDto } from "./dto/crearRegistroSalud.dto";
 import { SaludService } from "./salud.service";
+import { uploadFileBlob } from "../../services/azure-blob";
+import { uploadSingle } from "../common/middlewares/uploadFile";
+import { v4 } from "uuid";
 
 /**
  * @swagger
@@ -50,7 +52,7 @@ export class SaludController {
       const buscarDatos = await this.saludService.buscarDatos(req.body);
 
       res.status(200).json(buscarDatos);
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -74,7 +76,7 @@ export class SaludController {
        const buscarDatosGrupoSanguineo = await this.saludService.buscarDatosGrupoSanguineo();
  
        res.status(200).json(buscarDatosGrupoSanguineo);
-     } catch (e) {
+     } catch (e: any) {
        res.status(401).json({ message: e.message });
      }
    }
@@ -98,7 +100,7 @@ export class SaludController {
         const buscarDatosFactor = await this.saludService.buscarDatosFactor();
   
         res.status(200).json(buscarDatosFactor);
-      } catch (e) {
+      } catch (e: any) {
         res.status(401).json({ message: e.message });
       }
     }
@@ -122,7 +124,7 @@ export class SaludController {
         const buscarDatosRaza = await this.saludService.buscarDatosRaza();
   
         res.status(200).json(buscarDatosRaza);
-      } catch (e) {
+      } catch (e: any) {
         res.status(401).json({ message: e.message });
       }
     }
@@ -146,7 +148,7 @@ export class SaludController {
         const buscarDatosPlanSalud = await this.saludService.buscarDatosPlanSalud();
    
         res.status(200).json(buscarDatosPlanSalud);
-      } catch (e) {
+      } catch (e: any) {
         res.status(401).json({ message: e.message });
       }
     }
@@ -164,98 +166,101 @@ export class SaludController {
    *          schema:
    *            type: object
    *            properties:
-   *              EMPRESA:
-   *                type: integer
-   *                description: codigo de la empresa
-   *              NRO_DOCUMENTO:
-   *                type: integer
-   *                description: numero de documento del usuario
-   *              GRUPO_SANGUINEO:
-   *                type: string
-   *                description: siglas del grupo sanguineo
-   *              FACTOR:
-   *                type: string
-   *                description: RH factor sanguineo
-   *              ESTATURA:
-   *                type: string
-   *                description: estatura del usuario
-   *              PESO:
-   *                type: string
-   *                description: peso del usuario
-   *              RAZA:
-   *                type: string
-   *                description: raza del usuario
-   *              FUMADOR:
-   *                type: string
-   *                description: es o no funmador
-   *              BEBEDOR:
-   *                type: string
-   *                description: es o no bebedor
-   *              ANTEOJOS:
-   *                type: string
-   *                description: usa o no anteojos
-   *              ENFERMEDADES:
-   *                type: string
-   *                description: enfermedades que padece el usuario
-   *              RESTRICCIONES_MEDICAS:
-   *                type: string
-   *                description: restricciones médicas del usuario
-   *              FRECUENCIA_ASISTENCIA_MEDICA:
-   *                type: string
-   *                description: frecuencia con la que asiste al médico
-   *              SUFRE_ALERGIAS:
-   *                type: string
-   *                description: sufre si o no alergia
-   *              ALERGIAS:
-   *                type: string
-   *                description: alergias del usuario
-   *              CONTACTO_EMERGENCIA:
-   *                type: string
-   *                description: nombre del contacto de emergencia
-   *              NUMERO_CONTACTO_EMERGENCIA:
-   *                type: string
-   *                description: número del contacto de emergencia
-   *              ENFERMEDAD_LABORAL:
-   *                type: string
-   *                description: enfermedad laboral calificada
-   *              PERDIDA_CAPACIDAD_SALUD:
-   *                type: integer
-   *                description: porcentaje de perdida de capacidad de salud
-   *              PLAN_SALUD_NO_EPS:
-   *                type: string
-   *                description: si o no posee plan de salud aparte de la EPS
-   *              PLAN_SALUD:
-   *                type: string
-   *                description: cual plan salud posee aparte de la EPS
-   *              PLAN_SALUD_OTROS:
-   *                type: string
-   *                description: cual otro plan de salud tiene
-   *              ENTIDAD_OTROS:
-   *                type: string
-   *                description: entidad con la que posee el otro plan de salud
-   *              EMBARAZO_ALTO_RIESGO:
-   *                type: integer
-   *                description: Si(1) o No(0) es un embarazo de alto riesgo
-   *              FECHA_EXAMEN_EMBARAZO:
-   *                type: string
-   *                description: fecha del examen de embarazo
-   *              TIEMPO_GESTACION:
-   *                type: integer
-   *                description: tiempo de gestacion en semanas
-   *              FECHA_PARTO:
-   *                type: string
-   *                description: fecha probable de parto
-   *              OBSERVACION:
-   *                type: string
-   *                description: observacion del usuario
-   *            required:
-   *              - EMPRESA
-   *              - NRO_DOCUMENTO
-   *              - GRUPO_SANGUINEO
-   *              - FACTOR
-   *              - ESTATURA
-   *              - PESO
-   *              - RAZA
+   *              allData:
+   *                type: object
+   *                properties:
+   *                    dataForm:
+   *                        type: object
+   *                        properties:
+   *                            file:
+   *                              type: object
+   *                              description: Objeto de los archivos que se suben los certificados
+   *                            EMPRESA:
+   *                              type: integer
+   *                              description: codigo de la empresa
+   *                            NRO_DOCUMENTO:
+   *                              type: integer
+   *                              description: numero de documento del usuario
+   *                            GRUPO_SANGUINEO:
+   *                              type: string
+   *                              description: siglas del grupo sanguineo
+   *                            FACTOR:
+   *                              type: string
+   *                              description: RH factor sanguineo
+   *                            ESTATURA:
+   *                              type: string
+   *                              description: estatura del usuario
+   *                            PESO:
+   *                              type: string
+   *                              description: peso del usuario
+   *                            RAZA:
+   *                              type: string
+   *                              description: raza del usuario
+   *                            FUMADOR:
+   *                              type: string
+   *                              description: es o no funmador
+   *                            BEBEDOR:
+   *                              type: string
+   *                              description: es o no bebedor
+   *                            ANTEOJOS:
+   *                              type: string
+   *                              description: usa o no anteojos
+   *                            ENFERMEDADES:
+   *                              type: string
+   *                              description: enfermedades que padece el usuario
+   *                            RESTRICCIONES_MEDICAS:
+   *                              type: string
+   *                              description: restricciones médicas del usuario
+   *                            FRECUENCIA_ASISTENCIA_MEDICA:
+   *                              type: string
+   *                              description: frecuencia con la que asiste al médico
+   *                            SUFRE_ALERGIAS:
+   *                              type: string
+   *                              description: sufre si o no alergia
+   *                            ALERGIAS:
+   *                              type: string
+   *                              description: alergias del usuario
+   *                            CONTACTO_EMERGENCIA:
+   *                              type: string
+   *                              description: nombre del contacto de emergencia
+   *                            NUMERO_CONTACTO_EMERGENCIA:
+   *                              type: string
+   *                              description: número del contacto de emergencia
+   *                            ENFERMEDAD_LABORAL:
+   *                              type: string
+   *                              description: enfermedad laboral calificada
+   *                            PERDIDA_CAPACIDAD_SALUD:
+   *                              type: integer
+   *                              description: porcentaje de perdida de capacidad de salud
+   *                            PLAN_SALUD_NO_EPS:
+   *                              type: string
+   *                              description: si o no posee plan de salud aparte de la EPS
+   *                            PLAN_SALUD:
+   *                              type: string
+   *                              description: cual plan salud posee aparte de la EPS
+   *                            PLAN_SALUD_OTROS:
+   *                              type: string
+   *                              description: cual otro plan de salud tiene
+   *                            ENTIDAD_OTROS:
+   *                              type: string
+   *                              description: entidad con la que posee el otro plan de salud
+   *                            EMBARAZO_ALTO_RIESGO:
+   *                              type: integer
+   *                              description: Si(1) o No(0) es un embarazo de alto riesgo
+   *                            FECHA_EXAMEN_EMBARAZO:
+   *                              type: string
+   *                              description: fecha del examen de embarazo
+   *                            TIEMPO_GESTACION:
+   *                              type: integer
+   *                              description: tiempo de gestacion en semanas
+   *                            FECHA_PARTO:
+   *                              type: string
+   *                              description: fecha probable de parto
+   *                            OBSERVACION:
+   *                              type: string
+   *                              description: observacion del usuario
+   *                required:
+   *                 - allData
    *    responses:
    *      200:
    *        description: Creación exitosa del registro de salud
@@ -264,13 +269,21 @@ export class SaludController {
    */
    @route("/crearRegistroSalud")
    @POST()
-   @before([validationMiddleware(CrearRegistroSaludDto)])
+   @before([uploadSingle])
    public async crearRegistroSalud(req: Request, res: Response) {
      try {
-       const buscarDatosPlanSalud = await this.saludService.crearRegistroSalud(req.body);
+      const file = req.file as Express.Multer.File;
+      let url = "";
+      if(file){
+        const folder = "salud";
+        const fileName = `${folder}/${v4()}.${file.mimetype.split("/")[1]}`;
+        url = "/vumoffice"+"/"+fileName;
+        await uploadFileBlob(fileName, file.buffer);
+      }
+      const buscarDatosPlanSalud = await this.saludService.crearRegistroSalud(req.body, url);
  
-       res.status(200).json(buscarDatosPlanSalud);
-     } catch (e) {
+      res.status(200).json(buscarDatosPlanSalud);
+     } catch (e: any) {
        res.status(401).json({ message: e.message });
      }
    }

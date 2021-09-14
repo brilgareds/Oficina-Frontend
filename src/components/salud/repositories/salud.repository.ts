@@ -98,7 +98,8 @@ export interface SaludRepository {
     FECHA_EXAMEN_EMBARAZO: string,
     TIEMPO_GESTACION: string,
     FECHA_PARTO: string,
-    OBSERVACION: string
+    OBSERVACION: string,
+    URL: string
     ): Promise<any>;
   actualizarRegistroReporteEmbarazo(
     REPORTE_EMBARAZO_CODIGO: number,
@@ -106,6 +107,7 @@ export interface SaludRepository {
     FECHA_EXAMEN_EMBARAZO: string,
     TIEMPO_GESTACION: string,
     FECHA_PARTO: string,
-    OBSERVACION: string
+    OBSERVACION: string,
+    URL: string
     ): Promise<any>;
 }

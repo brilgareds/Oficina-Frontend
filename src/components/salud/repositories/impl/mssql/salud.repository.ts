@@ -99,7 +99,8 @@ export class SaludMSSQLRepository implements SaludRepository {
         ESMAD_REPORTE_EMBARAZO.FECHA_EXAMEN_EMBARAZO,
         ESMAD_REPORTE_EMBARAZO.TIEMPO_GESTACION,
         ESMAD_REPORTE_EMBARAZO.FECHA_PARTO,
-        ESMAD_REPORTE_EMBARAZO.OBSERVACION
+        ESMAD_REPORTE_EMBARAZO.OBSERVACION,
+        URL
     FROM
         SERVCLO09.kactus.dbo.nm_contr
         LEFT JOIN SERVCLO09.kactus.dbo.bi_datad
@@ -515,7 +516,8 @@ export class SaludMSSQLRepository implements SaludRepository {
     FECHA_EXAMEN_EMBARAZO: string,
     TIEMPO_GESTACION: string,
     FECHA_PARTO: string,
-    OBSERVACION: string
+    OBSERVACION: string,
+    URL: string
     ): Promise<any> {
     const pool = await mssqlEsmad;
     const sql = `
@@ -526,7 +528,8 @@ export class SaludMSSQLRepository implements SaludRepository {
       FECHA_EXAMEN_EMBARAZO,
       TIEMPO_GESTACION,
       FECHA_PARTO,
-      OBSERVACION
+      OBSERVACION,
+      URL
     ) VALUES (
       ${CODIGO_EMPRESA},
       ${NRO_DOCUMENTO},
@@ -534,12 +537,14 @@ export class SaludMSSQLRepository implements SaludRepository {
       ${FECHA_EXAMEN_EMBARAZO},
       ${TIEMPO_GESTACION},
       ${FECHA_PARTO},
-      ${OBSERVACION}
+      ${OBSERVACION},
+      ${URL}
     )
     `;
     
+    console.log(sql);
     const result = await pool.query(sql);
-
+    
     return result.recordset;
   }
 
@@ -549,7 +554,8 @@ export class SaludMSSQLRepository implements SaludRepository {
     FECHA_EXAMEN_EMBARAZO: string,
     TIEMPO_GESTACION: string,
     FECHA_PARTO: string,
-    OBSERVACION: string
+    OBSERVACION: string,
+    URL: string
     ): Promise<any> {
     const pool = await mssqlEsmad;
     const sql = `
@@ -559,10 +565,13 @@ export class SaludMSSQLRepository implements SaludRepository {
         FECHA_EXAMEN_EMBARAZO = ${FECHA_EXAMEN_EMBARAZO},
         TIEMPO_GESTACION = ${TIEMPO_GESTACION},
         FECHA_PARTO = ${FECHA_PARTO},
-        OBSERVACION = ${OBSERVACION}
+        OBSERVACION = ${OBSERVACION},
+        URL = ${URL}
     WHERE 
       REPORTE_EMBARAZO_CODIGO = ${REPORTE_EMBARAZO_CODIGO}
     `;
+    
+    console.log(sql);
     const result = await pool.query(sql);
 
     return result.recordset;
