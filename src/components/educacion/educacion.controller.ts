@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import { route, GET, POST, before } from "awilix-express";
 import validationMiddleware from "../common/middlewares/validation";
+import { uploadFileBlob } from "../../services/azure-blob";
+import { uploadFile, uploadSingle } from "../common/middlewares/uploadFile";
+import { v4 } from "uuid";
 
 import { EducacionService } from "./educacion.service";
 
@@ -125,11 +128,11 @@ import { EducacionService } from "./educacion.service";
      } 
    }
 
-   /**
+  /**
    * @swagger
-   * /api/v1/educacion/crearRegistro:
+   *  /api/v1/educacion/crearRegistro:
    *  post:
-   *    summary: Informacion basica del usuario
+   *    summary: Guardado de los estudios del usuario
    *    tags: [Educacion]
    *    requestBody:
    *      required: true
@@ -138,73 +141,83 @@ import { EducacionService } from "./educacion.service";
    *          schema:
    *            type: object
    *            properties:
-   *              MENU_CODIGO:
-   *                type: integer
-   *                description: Codigo del menu al cual pertenece
-   *              INFORMACION_BASICA_CODIGO:
-   *                type: integer
-   *                description: Cedula del usuario
-   *              NIVEL_ESTUDIO:
-   *                type: integer
-   *                description: Nivel de estudio alcanzado por el usuario
-   *              TITULO:
-   *                type: string
-   *                description: Titulo obtenido por el usuario
-   *              INSTITUCION:
-   *                type: string
-   *                description: Lugar de estudio
-   *              CIUDAD:
-   *                type: number
-   *                description: Ciudad donde estudio
-   *              ESTADO_ESTUDIO:
-   *                type: number
-   *                description: Estado en el que se encuentra el estudio del usuario
-   *              FECHA_INICIO:
-   *                type: string
-   *                description: Fecha de inicio de estudio
-   *              FECHA_FINALIZACION:
-   *                type: string
-   *                description: Fecha en que finaliza el estudio el usuario
-   *              FECHA_GRADO_TENTATIVO:
-   *                type: string
-   *                description: Posible fecha en la que el usuario se graduara
-   *              MODALIDAD_ESTUDIO:
-   *                type: number
-   *                description: Forma como realiza sus estudios el usuario
-   *              PROMEDIO:
-   *                type: string
-   *                description: Promedio
-   *              PAI_CODIGO:
-   *                type: number
-   *                description: Codigo del pais
-   *              DTO_CODIGO:
-   *                type: number
-   *                description: Codigo del departamento
+   *              allData:
+   *                 type: object
+   *                 properties:
+   *                     dataForm:
+   *                         type: object
+   *                         properties:
+   *                             file:
+   *                               type: object
+   *                               description: Objeto de los archivos que se suben los certificados
+   *                             MENU_CODIGO:
+   *                               type: integer
+   *                               description: Codigo del menu al cual pertenece
+   *                             INFORMACION_BASICA_CODIGO:
+   *                               type: integer
+   *                               description: Cedula del usuario
+   *                             NIVEL_ESTUDIO:
+   *                               type: integer
+   *                               description: Nivel de estudio alcanzado por el usuario
+   *                             TITULO:
+   *                               type: string
+   *                               description: Titulo obtenido por el usuario
+   *                             INSTITUCION:
+   *                               type: string
+   *                               description: Lugar de estudio
+   *                             CIUDAD:
+   *                               type: number
+   *                               description: Ciudad donde estudio
+   *                             ESTADO_ESTUDIO:
+   *                               type: number
+   *                               description: Estado en el que se encuentra el estudio del usuario
+   *                             FECHA_INICIO:
+   *                               type: string
+   *                               description: Fecha de inicio de estudio
+   *                             FECHA_FINALIZACION:
+   *                               type: string
+   *                               description: Fecha en que finaliza el estudio el usuario
+   *                             FECHA_GRADO_TENTATIVO:
+   *                               type: string
+   *                               description: Posible fecha en la que el usuario se graduara
+   *                             MODALIDAD_ESTUDIO:
+   *                               type: number
+   *                               description: Forma como realiza sus estudios el usuario
+   *                             PROMEDIO:
+   *                               type: string
+   *                               description: Promedio
+   *                             PAI_CODIGO:
+   *                               type: number
+   *                               description: Codigo del pais
+   *                             DTO_CODIGO:
+   *                               type: number
+   *                               description: Codigo del departamento
    *            required:
-   *              - NIVEL_ESTUDIO
-   *              - TITULO
-   *              - INSTITUCION
-   *              - CIUDAD
-   *              - ESTADO_ESTUDIO
-   *              - FECHA_INICIO
-   *              - FECHA_FINALIZACION
-   *              - FECHA_GRADO_TENTATIVO
-   *              - MODALIDAD_ESTUDIO
-   *              - PROMEDIO
-   *              - PAI_CODIGO
-   *              - DTO_CODIGO
+   *              - allData
    *    responses:
    *      200:
-   *        description: Registros Creados de manera exitosa
+   *        description: Información guardada correctamente
    *      401:
-   *        description: Error al insertar los registros del usuario
+   *        description: Error en la insercion
    */
    @route("/crearRegistro")
    @POST()
+   @before([uploadSingle])
    public async crearRegistro(req: Request, res: Response) {
      try {
-      const buscarMenu = await this.educacionService.crearRegistro(req.body);
-      res.status(200).json(buscarMenu);  
+      const file = req.file as Express.Multer.File;
+      let url = "";
+      if(file){
+        const folder = "educacion";
+        const fileName = `${folder}/${v4()}.${file.mimetype.split("/")[1]}`;
+        //console.log(fileName);
+        url = "https://controlfdata.blob.core.windows.net/vumoffice"+"/"+fileName;
+        //console.log(url);
+        await uploadFileBlob(fileName, file.buffer);
+      }
+      const buscarMenu = await this.educacionService.crearRegistro(req.body, url);
+      res.status(200).json(buscarMenu);
+      //res.status(200).json({ data: { message: "ok" } });  
      } catch (e) {
       res.status(401).json({ message: e.message });  
      }
@@ -214,7 +227,7 @@ import { EducacionService } from "./educacion.service";
    * @swagger
    * /api/v1/educacion/actualizarRegistro:
    *  post:
-   *    summary: Informacion basica del usuario
+   *    summary: Actualización de información de estudios
    *    tags: [Educacion]
    *    requestBody:
    *      required: true
@@ -223,66 +236,78 @@ import { EducacionService } from "./educacion.service";
    *          schema:
    *            type: object
    *            properties:
-   *              EDUCACION_CODIGO:
-   *                type: integer
-   *                description: Codigo del registro de educación
-   *              NIVEL_ESTUDIO:
-   *                type: integer
-   *                description: Nivel de estudio alcanzado por el usuario
-   *              TITULO:
-   *                type: string
-   *                description: Titulo obtenido por el usuario
-   *              INSTITUCION:
-   *                type: string
-   *                description: Lugar de estudio
-   *              CIUDAD:
-   *                type: number
-   *                description: Ciudad donde estudio
-   *              ESTADO_ESTUDIO:
-   *                type: number
-   *                description: Estado en el que se encuentra el estudio del usuario
-   *              FECHA_INICIO:
-   *                type: string
-   *                description: Fecha de inicio de estudio
-   *              FECHA_FINALIZACION:
-   *                type: string
-   *                description: Fecha en que finaliza el estudio el usuario
-   *              FECHA_GRADO_TENTATIVO:
-   *                type: string
-   *                description: Posible fecha en la que el usuario se graduara
-   *              MODALIDAD_ESTUDIO:
-   *                type: number
-   *                description: Forma como realiza sus estudios el usuario
-   *              PROMEDIO:
-   *                type: string
-   *                description: Promedio
-   *              PAI_CODIGO:
-   *                type: number
-   *                description: Codigo del pais
-   *              DTO_CODIGO:
-   *                type: number
-   *                description: Codigo del departamento
+   *              allData:
+   *                 type: object
+   *                 properties:
+   *                     dataForm:
+   *                         type: object
+   *                         properties:
+   *                             file:
+   *                               type: object
+   *                               description: Objeto de los archivos que se suben para los certificados
+   *                             EDUCACION_CODIGO:
+   *                               type: integer
+   *                               description: Codigo del registro de educación
+   *                             NIVEL_ESTUDIO:
+   *                               type: integer
+   *                               description: Nivel de estudio alcanzado por el usuario
+   *                             TITULO:
+   *                                type: string
+   *                                description: Titulo obtenido por el usuario
+   *                             INSTITUCION:
+   *                                type: string
+   *                                description: Lugar de estudio
+   *                             CIUDAD:
+   *                                type: number
+   *                                description: Ciudad donde estudio
+   *                             ESTADO_ESTUDIO:
+   *                                type: number
+   *                                description: Estado en el que se encuentra el estudio del usuario
+   *                             FECHA_INICIO:
+   *                                type: string
+   *                                description: Fecha de inicio de estudio
+   *                             FECHA_FINALIZACION:
+   *                                type: string
+   *                                description: Fecha en que finaliza el estudio el usuario
+   *                             FECHA_GRADO_TENTATIVO:
+   *                                type: string
+   *                                description: Posible fecha en la que el usuario se graduara
+   *                             MODALIDAD_ESTUDIO:
+   *                                type: number
+   *                                description: Forma como realiza sus estudios el usuario
+   *                             PROMEDIO:
+   *                                type: string
+   *                                description: Promedio
+   *                             PAI_CODIGO:
+   *                                type: number
+   *                                description: Codigo del pais
+   *                             DTO_CODIGO:
+   *                                type: number
+   *                                description: Codigo del departamento      
    *            required:
-   *              - NIVEL_ESTUDIO
-   *              - TITULO
-   *              - INSTITUCION
-   *              - CIUDAD
-   *              - ESTADO_ESTUDIO
-   *              - MODALIDAD_ESTUDIO
-   *              - PROMEDIO
-   *              - PAI_CODIGO
-   *              - DTO_CODIGO
+   *              - allData
    *    responses:
    *      200:
-   *        description: Registros Creados de manera exitosa
+   *        description: Información guardada correctamente
    *      401:
-   *        description: Error al insertar los registros del usuario
+   *        description: Error en la insercion
    */
    @route("/actualizarRegistro")
    @POST()
+   @before([uploadSingle])
    public async actualizarRegistro(req: Request, res: Response) {
      try {
-      const buscarMenu = await this.educacionService.actualizarRegistro(req.body);
+      const file = req.file as Express.Multer.File;
+      let url = "";
+      if(file){
+        const folder = "educacion";
+        const fileName = `${folder}/${v4()}.${file.mimetype.split("/")[1]}`;
+        url = "https://controlfdata.blob.core.windows.net/vumoffice"+"/"+fileName;
+        await uploadFileBlob(fileName, file.buffer);
+      }
+      console.log("body: ",req.body);
+      
+      const buscarMenu = await this.educacionService.actualizarRegistro(req.body, url);
       res.status(200).json(buscarMenu);  
      } catch (e) {
       res.status(401).json({ message: e.message });  
