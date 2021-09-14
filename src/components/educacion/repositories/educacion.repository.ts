@@ -17,7 +17,8 @@ export interface EducacionRepository {
                 MODALIDAD_ESTUDIO: number,
                 PROMEDIO: string,
                 PAI_CODIGO: number,
-                DTO_CODIGO: number): Promise<any>;
+                DTO_CODIGO: number,
+                URL: string): Promise<any>;
   actualizarRegistro(
     EDUCACION_CODIGO: number,
     NIVEL_ESTUDIO: number,
@@ -31,6 +32,7 @@ export interface EducacionRepository {
     MODALIDAD_ESTUDIO: number,
     PROMEDIO: string,
     PAI_CODIGO: number,
-    DTO_CODIGO: number): Promise<any>;
+    DTO_CODIGO: number,
+    URL: string): Promise<any>;
   eliminarRegistro(EDUCACION_CODIGO: number): Promise<any>;
 }

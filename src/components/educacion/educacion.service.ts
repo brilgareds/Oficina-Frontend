@@ -67,12 +67,14 @@ export class EducacionService {
     MODALIDAD_ESTUDIO,
     PROMEDIO,
     PAI_CODIGO,
-    DTO_CODIGO}: EducacionCrearDto){
+    DTO_CODIGO}: EducacionCrearDto,
+    url:string){
     try {
 
       const FECHA_INICIO_string = (FECHA_INICIO)?"'"+FECHA_INICIO+"'":"NULL";
       const FECHA_FINALIZACION_string = (FECHA_FINALIZACION)?"'"+FECHA_FINALIZACION+"'":"NULL";
       const FECHA_GRADO_TENTATIVO_string = (FECHA_GRADO_TENTATIVO)?"'"+FECHA_GRADO_TENTATIVO+"'":"NULL";
+      const URL_string = (url)?"'"+url+"'":"NULL";
 
       let crearRegistro = await this.educacionRepository.crearRegistro(MENU_CODIGO, 
         INFORMACION_BASICA_CODIGO,
@@ -87,7 +89,8 @@ export class EducacionService {
         MODALIDAD_ESTUDIO,
         PROMEDIO,
         PAI_CODIGO,
-        DTO_CODIGO);
+        DTO_CODIGO,
+        URL_string);
       return {"ok":"registro creado"}
     } catch (error: any) {
       console.log("error: ",error.message);
@@ -107,12 +110,14 @@ export class EducacionService {
     MODALIDAD_ESTUDIO,
     PROMEDIO,
     PAI_CODIGO,
-    DTO_CODIGO}: ActualizarRegistroDto){
+    DTO_CODIGO}: ActualizarRegistroDto,
+    URL: string){
     try {
-
+      
       const FECHA_INICIO_string = (FECHA_INICIO)?"'"+FECHA_INICIO+"'":"NULL";
       const FECHA_FINALIZACION_string = (FECHA_FINALIZACION)?"'"+FECHA_FINALIZACION+"'":"NULL";
       const FECHA_GRADO_TENTATIVO_string = (FECHA_GRADO_TENTATIVO)?"'"+FECHA_GRADO_TENTATIVO+"'":"NULL";
+      const URL_string = (URL)?"'"+URL+"'":"NULL";
 
       const actualizarRegistro = await this.educacionRepository.actualizarRegistro(
           EDUCACION_CODIGO,
@@ -127,7 +132,8 @@ export class EducacionService {
           MODALIDAD_ESTUDIO,
           PROMEDIO,
           PAI_CODIGO,
-          DTO_CODIGO);
+          DTO_CODIGO,
+          URL_string);
       return {"ok":"registro actualizado"}
     } catch (error: any) {
       console.log("error: ",error.message);

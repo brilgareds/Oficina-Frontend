@@ -34,7 +34,7 @@ export class EducacionMssqlRepository implements EducacionRepository {
                                     CIUDAD, ESTADO_ESTUDIO, ESTADO.TIP_NOMBRE AS ESTADO_NOMBRE, 
                                     FECHA_INICIO, FECHA_FINALIZACION, FECHA_GRADO_TENTATIVO, 
                                     MODALIDAD_ESTUDIO, MODALIDAD.TIP_NOMBRE AS MODALIDAD_NOMBRE, 
-                                    PROMEDIO, PAI_CODIGO, DTO_CODIGO
+                                    PROMEDIO, PAI_CODIGO, DTO_CODIGO, URL
                                     FROM ESMAD_EDUCACION LEFT JOIN dbo.ESMAD_TIPO AS MODALIDAD
                                     ON(ESMAD_EDUCACION.MODALIDAD_ESTUDIO = MODALIDAD.TIP_CODIGO) LEFT JOIN dbo.ESMAD_TIPO AS NIVEL
                                     ON(ESMAD_EDUCACION.NIVEL_ESTUDIO = NIVEL.TIP_CODIGO) LEFT JOIN dbo.ESMAD_TIPO AS ESTADO
@@ -56,17 +56,19 @@ export class EducacionMssqlRepository implements EducacionRepository {
                              MODALIDAD_ESTUDIO: number,
                              PROMEDIO: string,
                              PAI_CODIGO: number,
-                             DTO_CODIGO: number): Promise<any>{
+                             DTO_CODIGO: number,
+                             URL: string): Promise<any>{
                               const pool = await mssqlEsmad;
                               const sql = `INSERT INTO ESMAD_EDUCACION 
                                                               (MENU_CODIGO, INFORMACION_BASICA_CODIGO, 
                                                               NIVEL_ESTUDIO, TITULO, INSTITUCION, CIUDAD, ESTADO_ESTUDIO, 
                                                               FECHA_INICIO, FECHA_FINALIZACION, FECHA_GRADO_TENTATIVO, 
-                                                              MODALIDAD_ESTUDIO, PROMEDIO, ESTADO, PAI_CODIGO, DTO_CODIGO) 
+                                                              MODALIDAD_ESTUDIO, PROMEDIO, ESTADO, PAI_CODIGO, DTO_CODIGO, URL) 
                                                               VALUES (${MENU_CODIGO}, ${INFORMACION_BASICA_CODIGO}, ${NIVEL_ESTUDIO}, '${TITULO}', 
                                                                       '${INSTITUCION}', ${CIUDAD}, ${ESTADO_ESTUDIO}, ${FECHA_INICIO}, ${FECHA_FINALIZACION}, 
                                                                       ${FECHA_GRADO_TENTATIVO}, ${MODALIDAD_ESTUDIO}, '${PROMEDIO}', 1, ${PAI_CODIGO},
-                                                                      ${DTO_CODIGO})`;
+                                                                      ${DTO_CODIGO}, ${URL})`;
+                                               
                               const result = await pool.query(sql);                            
                               return result.recordset;
 
@@ -85,7 +87,8 @@ export class EducacionMssqlRepository implements EducacionRepository {
       MODALIDAD_ESTUDIO: number,
       PROMEDIO: string,
       PAI_CODIGO: number,
-      DTO_CODIGO: number): Promise<any>{
+      DTO_CODIGO: number,
+      URL: string): Promise<any>{
       const pool = await mssqlEsmad;
       const sql = `
         UPDATE dbo.ESMAD_EDUCACION 
@@ -101,10 +104,12 @@ export class EducacionMssqlRepository implements EducacionRepository {
             MODALIDAD_ESTUDIO = ${MODALIDAD_ESTUDIO},
             PROMEDIO = '${PROMEDIO}',
             PAI_CODIGO = ${PAI_CODIGO},
-            DTO_CODIGO = ${DTO_CODIGO}
+            DTO_CODIGO = ${DTO_CODIGO},
+            URL = ${URL}
         WHERE 
           EDUCACION_CODIGO = ${EDUCACION_CODIGO}
        `;
+       
        const result = await pool.query(sql);
        return result.recordset;
 
