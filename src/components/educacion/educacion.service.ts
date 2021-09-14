@@ -70,9 +70,9 @@ export class EducacionService {
     DTO_CODIGO}: EducacionCrearDto){
     try {
 
-      const FECHA_INICIO_string = (FECHA_INICIO)?FECHA_INICIO:`NULL`;
-      const FECHA_FINALIZACION_string = (FECHA_FINALIZACION)?FECHA_FINALIZACION:`NULL`;
-      const FECHA_GRADO_TENTATIVO_string = (FECHA_GRADO_TENTATIVO)?FECHA_GRADO_TENTATIVO:`NULL`;
+      const FECHA_INICIO_string = (FECHA_INICIO)?"'"+FECHA_INICIO+"'":"NULL";
+      const FECHA_FINALIZACION_string = (FECHA_FINALIZACION)?"'"+FECHA_FINALIZACION+"'":"NULL";
+      const FECHA_GRADO_TENTATIVO_string = (FECHA_GRADO_TENTATIVO)?"'"+FECHA_GRADO_TENTATIVO+"'":"NULL";
 
       let crearRegistro = await this.educacionRepository.crearRegistro(MENU_CODIGO, 
         INFORMACION_BASICA_CODIGO,
@@ -110,9 +110,9 @@ export class EducacionService {
     DTO_CODIGO}: ActualizarRegistroDto){
     try {
 
-      const FECHA_INICIO_string = (FECHA_INICIO)?FECHA_INICIO:"NULL";
-      const FECHA_FINALIZACION_string = (FECHA_FINALIZACION)?FECHA_FINALIZACION:"NULL";
-      const FECHA_GRADO_TENTATIVO_string = (FECHA_GRADO_TENTATIVO)?FECHA_GRADO_TENTATIVO:"NULL";
+      const FECHA_INICIO_string = (FECHA_INICIO)?"'"+FECHA_INICIO+"'":"NULL";
+      const FECHA_FINALIZACION_string = (FECHA_FINALIZACION)?"'"+FECHA_FINALIZACION+"'":"NULL";
+      const FECHA_GRADO_TENTATIVO_string = (FECHA_GRADO_TENTATIVO)?"'"+FECHA_GRADO_TENTATIVO+"'":"NULL";
 
       const actualizarRegistro = await this.educacionRepository.actualizarRegistro(
           EDUCACION_CODIGO,
