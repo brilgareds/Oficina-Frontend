@@ -217,6 +217,9 @@ export class InformacionBasicaController {
    *          schema:
    *            type: object
    *            properties:
+   *              codPais:
+   *                type: integer
+   *                description: codigo del pais
    *              codDepartamento:
    *                type: integer
    *                description: codigo del departamento
