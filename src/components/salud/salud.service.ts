@@ -1,6 +1,10 @@
 import { SaludDatosDto } from "./dto/saludDatos.dto";
 import { CrearRegistroSaludDto } from "./dto/crearRegistroSalud.dto";
 import { SaludRepository } from "./repositories/salud.repository";
+import dotenv from "dotenv";
+dotenv.config({
+  path: `${__dirname}/../../.env`,
+});
 
 export class SaludService {
   constructor(private readonly saludRepository: SaludRepository) {}
@@ -10,6 +14,10 @@ export class SaludService {
       let buscarDatos = await this.saludRepository.buscarDatos(cedula, empresa);
       if(!buscarDatos[0]){
         buscarDatos = {"error":"No se encontraron datos"};
+      }else{
+        if(buscarDatos[0]['URL']){
+          buscarDatos[0]['URL'] = process.env.AZURE_BLOB_URL+buscarDatos[0]['URL'];
+        }
       }
       return buscarDatos;
 
@@ -104,7 +112,8 @@ export class SaludService {
     TIEMPO_GESTACION,
     FECHA_PARTO,
     OBSERVACION
-   }: CrearRegistroSaludDto) {
+   }: CrearRegistroSaludDto,
+    URL: string) {
     try {
       let actualizarRegistroSalud = await this.saludRepository.tieneRegistroSalud(EMPRESA,NRO_DOCUMENTO);
 
@@ -132,6 +141,7 @@ export class SaludService {
       const TIEMPO_GESTACION_string = (TIEMPO_GESTACION || EMBARAZO_ALTO_RIESGO==0)?TIEMPO_GESTACION+"":"NULL";
       const FECHA_PARTO_string = (FECHA_PARTO)?"'"+FECHA_PARTO+"'":"NULL";
       const OBSERVACION_string = (OBSERVACION)?"'"+OBSERVACION+"'":"NULL";
+      const URL_string = (URL)?"'"+URL+"'":"NULL";
 
         if(!actualizarRegistroSalud[0]['SALUD_CODIGO']){
 
@@ -238,7 +248,8 @@ export class SaludService {
             );
 
         }
-
+      console.log(URL_string);
+      
       actualizarRegistroSalud = await this.saludRepository.tieneRegistroReporteEmbarazo(EMPRESA,NRO_DOCUMENTO);
       if(!actualizarRegistroSalud[0]['REPORTE_EMBARAZO_CODIGO']){
         actualizarRegistroSalud = await this.saludRepository.crearRegistroReporteEmbarazo(
@@ -248,7 +259,8 @@ export class SaludService {
           FECHA_EXAMEN_EMBARAZO_string,
           TIEMPO_GESTACION_string,
           FECHA_PARTO_string,
-          OBSERVACION_string
+          OBSERVACION_string,
+          URL_string
         );
       }else{
         actualizarRegistroSalud = await this.saludRepository.actualizarRegistroReporteEmbarazo(
@@ -257,7 +269,8 @@ export class SaludService {
           FECHA_EXAMEN_EMBARAZO_string,
           TIEMPO_GESTACION_string,
           FECHA_PARTO_string,
-          OBSERVACION_string
+          OBSERVACION_string,
+          URL_string
         );
       }
 
