@@ -174,12 +174,68 @@ export class SurveyMSSQLRepository implements SurveyRepository {
     throw new Error("Error de consulta");
   }
 
-  public async saveCovidSurveyAnswers(): Promise<any> {
+  public async saveCovidSurveyAnswers(
+    userIdentification: number,
+    userCompany: string
+  ): Promise<any> {
     const pool = await mssqlEsmad;
+
+    const result = await pool.query(`INSERT INTO dbo.ESMAD_OV_ENCUESTA_COVID ( 
+      ESMAD_OV_ENCUESTA_COVID.ENC_CEDULA, 
+      ESMAD_OV_ENCUESTA_COVID.USUARIO_CREACION, 
+      ESMAD_OV_ENCUESTA_COVID.FECHA_CREACION, 
+      ESMAD_OV_ENCUESTA_COVID.ESTADO,
+      ESMAD_OV_ENCUESTA_COVID.COD_EMPRESA,
+      ESMAD_OV_ENCUESTA_COVID.CASOS_COVID
+    ) VALUES (
+      ${userIdentification},
+      ${userIdentification},
+      getDate(),
+      1,
+      ${userCompany},
+      1
+    );SELECT SCOPE_IDENTITY() AS id`);
+
+    if (result.rowsAffected) {
+      return result.recordset[0];
+    }
+
+    if (result.rowsAffected) {
+      return result.recordset[0];
+    }
+
+    throw new Error("Error de consulta");
   }
 
-  public async saveEpidemiologicalFenceSurveyAnswers(): Promise<any> {
+  public async saveEpidemiologicalFenceSurveyAnswers(
+    identification: string,
+    name: string,
+    company: string
+  ): Promise<any> {
     const pool = await mssqlEsmad;
+
+    const result =
+      await pool.query(`INSERT INTO dbo.ESMAD_OV_CERCO_EPIDEMIOLOGICO (
+      ESMAD_OV_CERCO_EPIDEMIOLOGICO.CE_CEDULA_REPORTANTE, 
+      ESMAD_OV_CERCO_EPIDEMIOLOGICO.CE_NOMBRE_CONTACTO,
+      ESMAD_OV_CERCO_EPIDEMIOLOGICO.CE_EMPRESA, 
+      ESMAD_OV_CERCO_EPIDEMIOLOGICO.USUARIO_CREACION, 
+      ESMAD_OV_CERCO_EPIDEMIOLOGICO.FECHA_CREACION, 
+      ESMAD_OV_CERCO_EPIDEMIOLOGICO.ESTADO
+    ) VALUES (
+          '${identification}',
+          '${name}',
+          ${company},
+          '${identification}',
+          getDate(),
+          1
+    );SELECT SCOPE_IDENTITY() AS id`);
+
+    if (result.rowsAffected) {
+      return result.recordset[0];
+    }
+
+    throw new Error("Error de consulta");
   }
 
   public async saveHealthConditionSurveyAnswers(

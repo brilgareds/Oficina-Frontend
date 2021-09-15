@@ -1,11 +1,9 @@
-import { IsEmpty, IsNumber } from "class-validator";
+import { ArrayMinSize, IsArray, IsNotEmpty } from "class-validator";
+import { SurveyAnswersCreateDto } from "./surveyAnswerCreate.dto";
 
 export class EpidemiologicalFenceSurveyCreateDto {
-  @IsEmpty()
-  @IsNumber()
-  readonly code: number;
-
-  @IsEmpty()
-  @IsNumber()
-  readonly type: number;
+  @IsNotEmpty()
+  @IsArray()
+  @ArrayMinSize(1)
+  readonly answers: SurveyAnswersCreateDto[];
 }

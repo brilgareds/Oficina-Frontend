@@ -64,7 +64,8 @@ export class SurveyController {
   public async saveCovidSurveyAnswers(req: Request, res: Response) {
     try {
       const answers = await this.surveyService.saveCovidSurveyAnswers(
-        req.body as CovidSurveyCreateDto
+        req.body as CovidSurveyCreateDto,
+        req.user as JwtUserPayload
       );
 
       res.status(200).json({ data: answers });
@@ -131,7 +132,8 @@ export class SurveyController {
     try {
       const answers =
         await this.surveyService.saveEpidemiologicalFenceSurveyAnswers(
-          req.body as EpidemiologicalFenceSurveyCreateDto
+          req.body as EpidemiologicalFenceSurveyCreateDto,
+          req.user as JwtUserPayload
         );
 
       res.status(200).json({ data: answers });

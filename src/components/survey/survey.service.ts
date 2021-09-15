@@ -61,11 +61,37 @@ export class SurveyService {
     }
   }
 
-  public async saveCovidSurveyAnswers(data: CovidSurveyCreateDto) {
+  public async saveCovidSurveyAnswers(
+    data: CovidSurveyCreateDto,
+    user: JwtUserPayload
+  ) {
+    data.answers.map((answer) => {
+      if (!answer.codeER || !answer.value) {
+        throw new Error(
+          "El arreglo de respuestas debe contener el código y valor de la respuesta"
+        );
+      }
+    });
+
     const pool = await mssqlEsmad;
     const transaction = pool.transaction();
+
     try {
       transaction.begin();
+
+      const survey = await this.surveyRepository.saveCovidSurveyAnswers(
+        user.identification,
+        user.company
+      );
+
+      const modifiedAnswers = data.answers.map((answer) => {
+        return `('${answer.codeER}','${user.identification}',getDate(),1,'${answer.value}',NULL,${survey.id})`;
+      });
+
+      await this.surveyRepository.saveSurveyAnswers(
+        "ENCUESTA_COVID",
+        modifiedAnswers
+      );
 
       await transaction.commit();
     } catch (err) {
@@ -121,12 +147,51 @@ export class SurveyService {
   }
 
   public async saveEpidemiologicalFenceSurveyAnswers(
-    data: EpidemiologicalFenceSurveyCreateDto
+    data: EpidemiologicalFenceSurveyCreateDto,
+    user: JwtUserPayload
   ) {
+    let reporterIdentification: string = "";
+    let reporterName: string = "";
+
+    data.answers.map((answer) => {
+      if (!answer.codeER || !answer.value) {
+        throw new Error(
+          "El arreglo de respuestas debe contener el código y valor de la respuesta"
+        );
+      }
+    });
+
+    data.answers.map((answer) => {
+      if (answer.codeER === 58) {
+        reporterIdentification = answer.value;
+      }
+
+      if (answer.codeER === 59) {
+        reporterName = answer.value;
+      }
+    });
+
     const pool = await mssqlEsmad;
     const transaction = pool.transaction();
+
     try {
       transaction.begin();
+
+      const survey =
+        await this.surveyRepository.saveEpidemiologicalFenceSurveyAnswers(
+          reporterIdentification,
+          reporterName,
+          user.company
+        );
+
+      const modifiedAnswers = data.answers.map((answer) => {
+        return `('${answer.codeER}','${user.identification}',getDate(),1,'${answer.value}',NULL,${survey.id})`;
+      });
+
+      await this.surveyRepository.saveSurveyAnswers(
+        "ENCUESTA_CERCO_EPIDEMIOLOGICO",
+        modifiedAnswers
+      );
 
       await transaction.commit();
     } catch (err) {
