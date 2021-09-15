@@ -19,7 +19,7 @@ export const uploadFileBlob = async (path: string, content: Buffer) => {
   const stream = bufferToStream(content);
   const blockBlobClient = containerClient.getBlockBlobClient(path);
 
-  await blockBlobClient.uploadStream(stream);
+  return await blockBlobClient.uploadStream(stream);
 };
 
 const bufferToStream = (binary: any) => {

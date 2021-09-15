@@ -6,4 +6,5 @@ export interface IncapacityhRepository {
   saveIncapacityFile(lastIdInsert: number, ruta: string, cedula: string, codigoTipoArchivo: number): Promise<any>;
   getUserIncapacitiesFiles(numeroIncapacidad: number): Promise<any>;
   getUserDataIncapacity(numeroIncapacidad: number): Promise<any>;
+  updateFilesIncapacity(codigoArchivo: number, rutaArchivo: string, numeroIncapacidad: number): Promise<any>;
 }

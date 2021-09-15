@@ -186,7 +186,7 @@ export class IncapacityMSSQLRepository implements IncapacityhRepository {
       const result = await pool.query(query);
 
       if (result.rowsAffected) {
-        return result.recordset;
+        return true;
       }
 
       throw new Error("Error en la consulta");
@@ -273,6 +273,66 @@ export class IncapacityMSSQLRepository implements IncapacityhRepository {
       dataIncapacity: result.recordset,
       documentsIncapacity: documentsIncapacity
     });
+
+  }
+
+
+
+  public async updateFilesIncapacity(codigoArchivo: number, rutaArchivo: string, numeroIncapacidad: number): Promise<any> {
+
+    try {
+
+      const pool = await mssqlEsmad;
+      const query = `
+                              UPDATE 
+                                  ESMAD_INCAPACIDADES_ARCHIVOS
+                              SET 
+                                  ARCH_RUTA = '${rutaArchivo}', 
+                                  ARCH_ESTADO = 1
+                              WHERE 
+                                  ARCH_CODIGO = ${codigoArchivo}
+      `;
+
+      const result = await pool.query(query);
+
+      if (result.rowsAffected) {
+        return await this.actualizarEstadoIncapacidad(numeroIncapacidad);
+      }
+
+      throw new Error("Error en la consulta");
+
+    } catch (error) {
+      throw new Error(error.message);
+    }
+
+  }
+
+
+  private async actualizarEstadoIncapacidad(numeroIncapacidad: number): Promise<any> {
+
+    try {
+
+      const pool = await mssqlEsmad;
+      const query = `
+                              UPDATE 
+                                  dbo.ESMAD_INCAPACIDADES
+                              SET 
+                                  ESTADO = 1
+                              WHERE 
+                                  ESMAD_INCAPACIDADES.INCAP_CODIGO = ${numeroIncapacidad}
+      `;
+
+      const result = await pool.query(query);
+
+      if (result.rowsAffected) {
+        return true;
+      }
+
+      throw new Error("Error en la consulta");
+
+    } catch (error) {
+      throw new Error(error.message);
+    }
 
   }
 
