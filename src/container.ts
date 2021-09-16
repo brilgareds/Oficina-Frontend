@@ -35,6 +35,8 @@ import { IncapacityService } from "./components/incapacity/incapacity.service";
 import { SurveyService } from "./components/survey/survey.service";
 import { MyWalletMSSQLRepository } from "./components/myWallet/repositories/impl/mssql/myWallet.repository";
 import { MyWalletService } from "./components/myWallet/myWallet.service";
+import { BranchMSSQLRepository } from "./components/brach/repositories/impl/mssql/brach.repository";
+import { BranchService } from "./components/brach/brach.service";
 
 export default (app: express.Application): void => {
   const container = createContainer({
@@ -59,10 +61,13 @@ export default (app: express.Application): void => {
     viviendaRepository: asClass(ViviendaMSSQLRepository).scoped(),
     saludRepository: asClass(SaludMSSQLRepository).scoped(),
     familiarRepository: asClass(FamiliarMssqlRepository).scoped(),
-    datosAdicionalesRepository: asClass(DatosAdicionalesMSSQLRepository).scoped(),
+    datosAdicionalesRepository: asClass(
+      DatosAdicionalesMSSQLRepository
+    ).scoped(),
     incapacityRepository: asClass(IncapacityMSSQLRepository).scoped(),
     surveyRepository: asClass(SurveyMSSQLRepository).scoped(),
     myWalletRepository: asClass(MyWalletMSSQLRepository).scoped(),
+    branchRepository: asClass(BranchMSSQLRepository).scoped(),
 
     // services
     authService: asClass(AuthService).scoped(),
@@ -81,6 +86,7 @@ export default (app: express.Application): void => {
     incapacityService: asClass(IncapacityService).scoped(),
     surveyService: asClass(SurveyService).scoped(),
     myWalletService: asClass(MyWalletService).scoped(),
+    branchService: asClass(BranchService).scoped(),
   });
 
   app.use(scopePerRequest(container));
