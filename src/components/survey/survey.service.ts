@@ -418,7 +418,12 @@ export class SurveyService {
       } as ScoreHealthConditionDto);
 
       await transaction.commit();
-      return score;
+      return {
+        logo: logo,
+        survey: survey,
+        userData: userData,
+        score: score,
+      };
     } catch (err) {
       console.log(err);
       await transaction.rollback();
