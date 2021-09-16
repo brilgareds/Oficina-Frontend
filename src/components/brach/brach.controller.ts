@@ -29,7 +29,7 @@ export class BranchController {
   @route("/")
   @GET()
   @before([verifyJwt])
-  public async me(req: Request, res: Response) {
+  public async getAllBranches(req: Request, res: Response) {
     try {
       const userInformation = await this.branchService.getAllBranches();
 
