@@ -104,8 +104,8 @@ export class EducacionMssqlRepository implements EducacionRepository {
             MODALIDAD_ESTUDIO = ${MODALIDAD_ESTUDIO},
             PROMEDIO = '${PROMEDIO}',
             PAI_CODIGO = ${PAI_CODIGO},
-            DTO_CODIGO = ${DTO_CODIGO},
-            URL = ${URL}
+            DTO_CODIGO = ${DTO_CODIGO}
+            ${URL}
         WHERE 
           EDUCACION_CODIGO = ${EDUCACION_CODIGO}
        `;
