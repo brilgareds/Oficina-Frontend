@@ -54,3 +54,16 @@ export const biplus = {
     trustServerCertificate: false,
   },
 };
+
+export const vum = {
+  server: process.env.DB_VUM_SERVER as string,
+  database: process.env.DB_VUM_NAME as string,
+  user: process.env.DB_VUM_USER as string,
+  password: process.env.DB_VUM_PASS as string,
+  //  port: parseFloat(process.env.DB_VUM_PORT as string),
+  options: {
+    enableArithAbort: true,
+    encrypt: false,
+    trustServerCertificate: false,
+  },
+};
