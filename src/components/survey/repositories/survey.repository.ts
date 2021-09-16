@@ -1,3 +1,4 @@
+import { ScoreHealthConditionDto } from "../dto/ScoreHealthCondition.dto";
 import { SurveyAnswersDto } from "../dto/surveyAnswers.dto";
 import { SurveyHeadsDto } from "../dto/surveyHeads.dto";
 import { SurveyQuestionsDto } from "../dto/surveyQuestions.dto";
@@ -23,4 +24,10 @@ export interface SurveyRepository {
     userCompany: string
   ): Promise<any>;
   saveSurveyAnswers(surveyType: string, answers: string[]): Promise<any>;
+  getCompanyLogo(company: string): Promise<any>;
+  findExternalUserByIdentification(identification: number): Promise<any>;
+  getScoreHealthCondition(
+    scoreHealthConditionDto: ScoreHealthConditionDto
+  ): Promise<any>;
+  getMessage(company: string, head: string): Promise<any>;
 }

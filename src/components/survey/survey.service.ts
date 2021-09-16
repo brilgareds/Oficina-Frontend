@@ -1,9 +1,11 @@
 import moment from "moment";
 import { mssqlEsmad } from "../../services/mssql";
+import { AuthRepository } from "../auth/repositories/auth.repository";
 import { JwtUserPayload } from "../common/interfaces/jwtUserPayload";
 import { CovidSurveyCreateDto } from "./dto/covidSurveyCreate.dto";
 import { EpidemiologicalFenceSurveyCreateDto } from "./dto/epidemiologicalFenceSurveyCreate.dto";
 import { HealthConditionSurveyCreateDto } from "./dto/healthConditionSurveyCreate.dto";
+import { ScoreHealthConditionDto } from "./dto/ScoreHealthCondition.dto";
 import { SurveyAnswersDto } from "./dto/surveyAnswers.dto";
 import { SurveyHeadsDto } from "./dto/surveyHeads.dto";
 import { SurveyQuestionsDto } from "./dto/surveyQuestions.dto";
@@ -11,7 +13,10 @@ import { SurveyResponsesDto } from "./dto/surveyResponses.dto";
 import { SurveyRepository } from "./repositories/survey.repository";
 
 export class SurveyService {
-  constructor(private readonly surveyRepository: SurveyRepository) {}
+  constructor(
+    private readonly surveyRepository: SurveyRepository,
+    private readonly authRepository: AuthRepository
+  ) {}
 
   public async getCovidSurveyQuestions() {
     try {
@@ -365,6 +370,8 @@ export class SurveyService {
     data: HealthConditionSurveyCreateDto,
     user: JwtUserPayload
   ) {
+    const externalLogin = "";
+    let userData = {};
     data.answers.map((answer) => {
       if (!answer.codeER || !answer.value) {
         throw new Error(
@@ -385,7 +392,7 @@ export class SurveyService {
         );
 
       const modifiedAnswers = data.answers.map((answer) => {
-        return `('${answer.codeER}','${user.identification}',getDate(),1,'${answer.value}',NULL,${survey.id})`;
+        return `('${answer.codeER}','${user.identification}',getDate(),1,'${answer.value}',NULL,${survey.ENC_CODIGO})`;
       });
 
       await this.surveyRepository.saveSurveyAnswers(
@@ -393,11 +400,70 @@ export class SurveyService {
         modifiedAnswers
       );
 
+      const logo = await this.surveyRepository.getCompanyLogo(user.company);
+      if (externalLogin) {
+        userData = await this.surveyRepository.findExternalUserByIdentification(
+          user.identification
+        );
+      } else {
+        userData = await this.authRepository.findUserByIdentification(
+          user.identification
+        );
+      }
+      const score = await this.scoreLogic({
+        externalLogin: externalLogin,
+        company: user.company,
+        identification: user.identification,
+        date: survey.FECHA_CREACION,
+      } as ScoreHealthConditionDto);
+
       await transaction.commit();
+      return score;
     } catch (err) {
       console.log(err);
       await transaction.rollback();
     }
+  }
+
+  private async scoreLogic(scoreHealthConditionDto: ScoreHealthConditionDto) {
+    const scores = await this.surveyRepository.getScoreHealthCondition(
+      scoreHealthConditionDto
+    );
+    const response: any[] = [];
+
+    for (const score of scores) {
+      if (score.COD_EC == 10) {
+        const companyMessage = scoreHealthConditionDto.company
+          ? scoreHealthConditionDto.company
+          : "1";
+
+        const messages = await this.surveyRepository.getMessage(
+          companyMessage,
+          score.COD_EC
+        );
+
+        for (const message of messages) {
+          if (score.PUNTAJE == 1.0) {
+            response[0] = "(37, 179, 64)";
+            response[1] = "(255,255,255)";
+            response[2] = `${score.EC_NOMBRE}: ' . ${message.TIP_ATRIBUTO3}`;
+            break;
+          } else if (score.PUNTAJE == 2.0) {
+            response[0] = "(229, 178, 33)";
+            response[1] = "(0,0,0)";
+            response[2] = `${score.EC_NOMBRE}: Por favor póngase en contacto con su EPS lo antes posible. Reporte la situación a su jefe inmediato.`;
+            break;
+          } else if (score.PUNTAJE == 3.0) {
+            response[0] = "(206, 12, 16)";
+            response[1] = "(255,255,255)";
+            response[2] = `${score.EC_NOMBRE}: Por favor póngase en contacto con su EPS lo antes posible. Reporte la situación a su jefe inmediato.`;
+            break;
+          }
+        }
+      }
+    }
+
+    return response;
   }
 
   private daysPassed(date: Date) {

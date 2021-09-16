@@ -1,4 +1,5 @@
 import { mssqlEsmad } from "../../../../../services/mssql";
+import { ScoreHealthConditionDto } from "../../../dto/ScoreHealthCondition.dto";
 import { SurveyAnswersDto } from "../../../dto/surveyAnswers.dto";
 import { SurveyHeadsDto } from "../../../dto/surveyHeads.dto";
 import { SurveyQuestionsDto } from "../../../dto/surveyQuestions.dto";
@@ -258,7 +259,7 @@ export class SurveyMSSQLRepository implements SurveyRepository {
       1,
       ${userCompany},
       1
-    );SELECT SCOPE_IDENTITY() AS id`);
+    );SELECT * from dbo.ESMAD_OV_ENCUESTA_COVID WHERE ENC_CODIGO = SCOPE_IDENTITY()`);
 
     if (result.rowsAffected) {
       return result.recordset[0];
@@ -282,6 +283,121 @@ export class SurveyMSSQLRepository implements SurveyRepository {
         ESMAD_ENCUESTA_RESPUESTAS_CLIENTES.${surveyType}
       ) VALUES ${answersString}
     `;
+
+    const result = await pool.query(query);
+
+    if (result.rowsAffected) {
+      return result.recordset;
+    }
+
+    throw new Error("Error de consulta");
+  }
+
+  public async getCompanyLogo(company: string) {
+    if (!company) {
+      return null;
+    }
+
+    const pool = await mssqlEsmad;
+    const query = `SELECT 
+      ESMAD_EMPRESA.EMP_CODIGO_KACTUS, 
+      ESMAD_EMPRESA.EMP_NOMBRE, 
+      ESMAD_EMPRESA.EMP_LOGO
+    FROM dbo.ESMAD_EMPRESA
+    WHERE ESMAD_EMPRESA.ESTADO = 1 AND ESMAD_EMPRESA.EMP_CODIGO_KACTUS = ${company}`;
+
+    const result = await pool.query(query);
+
+    if (result.rowsAffected) {
+      return result.recordset;
+    }
+
+    throw new Error("Error de consulta");
+  }
+
+  public async findExternalUserByIdentification(identification: number) {
+    const pool = await mssqlEsmad;
+    const query = `SELECT 
+      DISTINCT ESMAD_OV_ENCUESTA_COVID.ENC_NOMBRE AS Nombres,
+      ESMAD_OV_ENCUESTA_COVID.ENC_APELLIDO AS Apellidos,
+      ESMAD_OV_ENCUESTA_COVID.TIPO_DOCUMENTO AS TIPO_DOCUMENTO,
+      ESMAD_OV_ENCUESTA_COVID.ENC_CEDULA AS Cedula,
+      ESMAD_OV_ENCUESTA_COVID.ENC_CORREO AS Mail,
+      ESMAD_OV_ENCUESTA_COVID.GENERO AS GENERO,
+      ESMAD_OV_ENCUESTA_COVID.ENC_TELEFONO AS Numero
+    FROM dbo.ESMAD_OV_ENCUESTA_COVID
+    WHERE ESMAD_OV_ENCUESTA_COVID.ENC_CEDULA = '${identification}'`;
+
+    const result = await pool.query(query);
+
+    if (result.rowsAffected) {
+      return result.recordset;
+    }
+
+    throw new Error("Error de consulta");
+  }
+
+  public async getScoreHealthCondition({
+    externalLogin,
+    company,
+    identification,
+    date,
+  }: ScoreHealthConditionDto) {
+    const pool = await mssqlEsmad;
+    let additionalValidations = "";
+
+    if (externalLogin) {
+      additionalValidations += `AND ESMAD_OV_ENCUESTA_COVID.COD_EMPRESA = ${company}`;
+    }
+
+    const query = `SELECT 
+      (CASE WHEN XX.PUNTAJE IS NULL THEN 0 ELSE XX.PUNTAJE END ) AS PUNTAJE, 
+      ESMAD_ENCUESTA_CABEZERAS.COD_EC, 
+      ESMAD_ENCUESTA_CABEZERAS.EC_NOMBRE
+    FROM dbo.ESMAD_ENCUESTA_CABEZERAS
+    LEFT JOIN (
+      SELECT  
+        MAX(ESMAD_ENCUESTA_RESPUESTAS.ER_PUNTOS) AS PUNTAJE, 
+        ESMAD_ENCUESTA_PREGUNTAS.EPR_TIPO_CLASIFICACION
+      FROM dbo.ESMAD_OV_ENCUESTA_COVID
+      INNER JOIN dbo.ESMAD_ENCUESTA_RESPUESTAS_CLIENTES ON ESMAD_OV_ENCUESTA_COVID.ENC_CODIGO = ESMAD_ENCUESTA_RESPUESTAS_CLIENTES.ENCUESTA_COVID
+      INNER JOIN dbo.ESMAD_ENCUESTA_RESPUESTAS ON ESMAD_ENCUESTA_RESPUESTAS.COD_ER = ESMAD_ENCUESTA_RESPUESTAS_CLIENTES.COD_ER
+      INNER JOIN dbo.ESMAD_ENCUESTA_PREGUNTAS ON ESMAD_ENCUESTA_RESPUESTAS.COD_EPR = ESMAD_ENCUESTA_PREGUNTAS.COD_EPR
+      WHERE ESMAD_OV_ENCUESTA_COVID.ESTADO = 1 
+      ${additionalValidations}
+      AND ESMAD_OV_ENCUESTA_COVID.ESTADO_SALUD = 1 
+      AND ESMAD_OV_ENCUESTA_COVID.CASOS_COVID IS NULL
+      AND ESMAD_OV_ENCUESTA_COVID.ENC_CEDULA = '${identification}'
+      AND ESMAD_OV_ENCUESTA_COVID.FECHA_CREACION BETWEEN '${date}' AND '${date} 23:59:59'
+      AND ESMAD_ENCUESTA_RESPUESTAS_CLIENTES.ESTADO = 1
+      AND ESMAD_ENCUESTA_RESPUESTAS.ESTADO = 1
+      AND ESMAD_ENCUESTA_PREGUNTAS.ESTADO = 1
+      GROUP BY ESMAD_ENCUESTA_PREGUNTAS.EPR_TIPO_CLASIFICACION 
+    ) AS XX 
+    ON XX.EPR_TIPO_CLASIFICACION = ESMAD_ENCUESTA_CABEZERAS.COD_EC
+    WHERE ESMAD_ENCUESTA_CABEZERAS.ESTADO = 1 AND ESMAD_ENCUESTA_CABEZERAS.COD_EN = 6`;
+
+    const result = await pool.query(query);
+
+    if (result.rowsAffected) {
+      return result.recordset;
+    }
+
+    throw new Error("Error de consulta");
+  }
+
+  public async getMessage(company: string, head: string) {
+    const pool = await mssqlEsmad;
+
+    const query = `SELECT 
+      ESMAD_TIPO.TIP_ATRIBUTO1, 
+      ESMAD_TIPO.TIP_ATRIBUTO2, 
+      ESMAD_TIPO.TIP_ATRIBUTO3
+    FROM dbo.ESMAD_TIPO 
+    INNER JOIN dbo.ESMAD_EMPRESA ON (ESMAD_EMPRESA.EMP_CODIGO = ESMAD_TIPO.EMP_CODIGO)
+    WHERE ESMAD_TIPO.CLT_CODIGO = 16 
+    AND ESMAD_EMPRESA.EMP_CODIGO_KACTUS = ${company} 
+    AND ESMAD_TIPO.TIP_ATRIBUTO1 = ${head}`;
 
     const result = await pool.query(query);
 
