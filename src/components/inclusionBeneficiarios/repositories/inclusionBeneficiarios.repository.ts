@@ -10,5 +10,5 @@ export interface InclusionBeneficiariosRepository {
   insertarAlertarAutomaticas(destinatario: any, copia: any, asunto: any, body: any, adjunto: any, bd: any): Promise<any>;
   consultarBeneficiarios(cedula: number): Promise<any>;
   consultarArchivosBenefactor(codigoBenefactor: number): Promise<any>;
-  updateArchivosInclusionBeneficiarios(codigoArchivo: any, urlFile: string): Promise<any>;
+  updateArchivosInclusionBeneficiarios(codigoArchivo: any, urlFile: string, beneficiarioCodigo: any): Promise<any>;
 }
