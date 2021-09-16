@@ -141,7 +141,8 @@ export class SaludService {
       const TIEMPO_GESTACION_string = (TIEMPO_GESTACION || EMBARAZO_ALTO_RIESGO==0)?TIEMPO_GESTACION+"":"NULL";
       const FECHA_PARTO_string = (FECHA_PARTO)?"'"+FECHA_PARTO+"'":"NULL";
       const OBSERVACION_string = (OBSERVACION)?"'"+OBSERVACION+"'":"NULL";
-      const URL_string = (URL)?",URL = '"+URL+"'":"";
+      const URL_string = (URL)?"'"+URL+"'":"NULL";
+      const URL_update = (URL)?",URL = '"+URL+"'":"";
 
         if(!actualizarRegistroSalud[0]['SALUD_CODIGO']){
 
@@ -270,7 +271,7 @@ export class SaludService {
           TIEMPO_GESTACION_string,
           FECHA_PARTO_string,
           OBSERVACION_string,
-          URL_string
+          URL_update
         );
       }
 
