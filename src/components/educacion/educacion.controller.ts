@@ -305,7 +305,6 @@ import { EducacionService } from "./educacion.service";
         url = "https://controlfdata.blob.core.windows.net/vumoffice"+"/"+fileName;
         await uploadFileBlob(fileName, file.buffer);
       }
-      console.log("body: ",req.body);
       
       const buscarMenu = await this.educacionService.actualizarRegistro(req.body, url);
       res.status(200).json(buscarMenu);  

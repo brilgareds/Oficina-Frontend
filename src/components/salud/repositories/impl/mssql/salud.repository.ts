@@ -565,8 +565,8 @@ export class SaludMSSQLRepository implements SaludRepository {
         FECHA_EXAMEN_EMBARAZO = ${FECHA_EXAMEN_EMBARAZO},
         TIEMPO_GESTACION = ${TIEMPO_GESTACION},
         FECHA_PARTO = ${FECHA_PARTO},
-        OBSERVACION = ${OBSERVACION},
-        URL = ${URL}
+        OBSERVACION = ${OBSERVACION}
+        ${URL}
     WHERE 
       REPORTE_EMBARAZO_CODIGO = ${REPORTE_EMBARAZO_CODIGO}
     `;

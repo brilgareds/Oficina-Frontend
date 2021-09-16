@@ -74,7 +74,7 @@ export class EducacionService {
       const FECHA_INICIO_string = (FECHA_INICIO)?"'"+FECHA_INICIO+"'":"NULL";
       const FECHA_FINALIZACION_string = (FECHA_FINALIZACION)?"'"+FECHA_FINALIZACION+"'":"NULL";
       const FECHA_GRADO_TENTATIVO_string = (FECHA_GRADO_TENTATIVO)?"'"+FECHA_GRADO_TENTATIVO+"'":"NULL";
-      const URL_string = (url)?"'"+url+"'":"NULL";
+      const URL_string = (url)?",URL = '"+url+"'":"";
 
       let crearRegistro = await this.educacionRepository.crearRegistro(MENU_CODIGO, 
         INFORMACION_BASICA_CODIGO,
