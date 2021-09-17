@@ -39,6 +39,12 @@ import { InclusionBeneficiariosMSSQLRepository } from "./components/inclusionBen
 import { InclusionBeneficiariosService } from "./components/inclusionBeneficiarios/inclusionBeneficiarios.service";
 import { PresentationCardMSSQLRepository } from "./components/presentationCard/repositories/impl/mssql/presentationCard.repository";
 import { PresentationCardService } from "./components/presentationCard/PresentationCard.service";
+import { BranchMSSQLRepository } from "./components/brach/repositories/impl/mssql/brach.repository";
+import { BranchService } from "./components/brach/brach.service";
+import { CityMSSQLRepository } from "./components/city/repositories/impl/mssql/city.repository";
+import { CityService } from "./components/city/city.service";
+import { SalePointMSSQLRepository } from "./components/salePoint/repositories/impl/mssql/salePoint.repository";
+import { SalePointService } from "./components/salePoint/salePoint.service";
 
 export default (app: express.Application): void => {
   const container = createContainer({
@@ -63,12 +69,17 @@ export default (app: express.Application): void => {
     viviendaRepository: asClass(ViviendaMSSQLRepository).scoped(),
     saludRepository: asClass(SaludMSSQLRepository).scoped(),
     familiarRepository: asClass(FamiliarMssqlRepository).scoped(),
-    datosAdicionalesRepository: asClass(DatosAdicionalesMSSQLRepository).scoped(),
+    datosAdicionalesRepository: asClass(
+      DatosAdicionalesMSSQLRepository
+    ).scoped(),
     incapacityRepository: asClass(IncapacityMSSQLRepository).scoped(),
     surveyRepository: asClass(SurveyMSSQLRepository).scoped(),
     myWalletRepository: asClass(MyWalletMSSQLRepository).scoped(),
     inclusionBeneficiariosRepository: asClass(InclusionBeneficiariosMSSQLRepository).scoped(),
     presentationCardRepository: asClass(PresentationCardMSSQLRepository).scoped(),
+    branchRepository: asClass(BranchMSSQLRepository).scoped(),
+    cityRepository: asClass(CityMSSQLRepository).scoped(),
+    salePointRepository: asClass(SalePointMSSQLRepository).scoped(),
 
     // services
     authService: asClass(AuthService).scoped(),
@@ -88,7 +99,10 @@ export default (app: express.Application): void => {
     surveyService: asClass(SurveyService).scoped(),
     myWalletService: asClass(MyWalletService).scoped(),
     inclusionBeneficiariosService: asClass(InclusionBeneficiariosService).scoped(),
-    presentationCardService: asClass(PresentationCardService).scoped()
+    presentationCardService: asClass(PresentationCardService).scoped(),
+    branchService: asClass(BranchService).scoped(),
+    cityService: asClass(CityService).scoped(),
+    salePointService: asClass(SalePointService).scoped(),
   });
 
   app.use(scopePerRequest(container));
