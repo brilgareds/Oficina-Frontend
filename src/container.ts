@@ -37,6 +37,8 @@ import { MyWalletMSSQLRepository } from "./components/myWallet/repositories/impl
 import { MyWalletService } from "./components/myWallet/myWallet.service";
 import { InclusionBeneficiariosMSSQLRepository } from "./components/inclusionBeneficiarios/repositories/impl/mssql/inclusionBeneficiarios.repository";
 import { InclusionBeneficiariosService } from "./components/inclusionBeneficiarios/inclusionBeneficiarios.service";
+import { PresentationCardMSSQLRepository } from "./components/presentationCard/repositories/impl/mssql/presentationCard.repository";
+import { PresentationCardService } from "./components/presentationCard/PresentationCard.service";
 
 export default (app: express.Application): void => {
   const container = createContainer({
@@ -66,6 +68,7 @@ export default (app: express.Application): void => {
     surveyRepository: asClass(SurveyMSSQLRepository).scoped(),
     myWalletRepository: asClass(MyWalletMSSQLRepository).scoped(),
     inclusionBeneficiariosRepository: asClass(InclusionBeneficiariosMSSQLRepository).scoped(),
+    presentationCardRepository: asClass(PresentationCardMSSQLRepository).scoped(),
 
     // services
     authService: asClass(AuthService).scoped(),
@@ -85,6 +88,7 @@ export default (app: express.Application): void => {
     surveyService: asClass(SurveyService).scoped(),
     myWalletService: asClass(MyWalletService).scoped(),
     inclusionBeneficiariosService: asClass(InclusionBeneficiariosService).scoped(),
+    presentationCardService: asClass(PresentationCardService).scoped()
   });
 
   app.use(scopePerRequest(container));

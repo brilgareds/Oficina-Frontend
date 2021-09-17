@@ -12,6 +12,27 @@ export const getDateToday = (getWithHours: boolean = false) => {
 
 }
 
+export const currentDate = (obj:any) => {
+
+  const { format='english', withTime=true } = obj;
+
+  const dateNow = new Date();
+  const year    = dateNow.getFullYear();
+  const day     = (`0${dateNow.getDate()}`).slice(-2);
+  const hour    = (`0${dateNow.getHours()}`).slice(-2);
+  const month   = (`0${dateNow.getMonth()+1}`).slice(-2);
+  const minutes = (`0${dateNow.getMinutes()}`).slice(-2);
+  const seconds = (`0${dateNow.getSeconds()}`).slice(-2);
+  const time    = (withTime) ? ` ${hour}:${minutes}:${seconds}` : '';
+
+  const fullDate = (
+      (format === 'english') ? `${year}-${month}-${day}${time}` :
+      (format === 'spanish') ? `${day}/${month}/${year}${time}` : ''
+  );
+
+  return fullDate;
+}
+
 export const getDatetime = () => {
 
   const dateFormat = new Date();
