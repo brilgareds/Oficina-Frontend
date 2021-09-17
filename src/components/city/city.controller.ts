@@ -18,7 +18,7 @@ export class BranchController {
    * /api/v1/cities:
    *  get:
    *    summary: Retorna las ciudades
-   *    tags: [Sedes]
+   *    tags: [Ciudades]
    *    security:
    *      - jwt: []
    *    responses:
