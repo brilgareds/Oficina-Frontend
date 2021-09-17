@@ -6,4 +6,3 @@ export const mssqlAuth = new ConnectionPool(seguridadAut).connect();
 export const mssqlKactus = new ConnectionPool(kactus).connect();
 export const mssqlBiplus = new ConnectionPool(biplus).connect();
 export const mssqlVum = new ConnectionPool(vum).connect();
-
