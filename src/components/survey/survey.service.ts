@@ -71,9 +71,9 @@ export class SurveyService {
     user: JwtUserPayload
   ) {
     data.answers.map((answer) => {
-      if (!answer.codeER || !answer.value) {
+      if (!answer.codeER) {
         throw new Error(
-          "El arreglo de respuestas debe contener el código y valor de la respuesta"
+          "El arreglo de respuestas debe contener el código de la respuesta"
         );
       }
     });
@@ -90,7 +90,7 @@ export class SurveyService {
       );
 
       const modifiedAnswers = data.answers.map((answer) => {
-        return `('${answer.codeER}','${user.identification}',getDate(),1,'${answer.value}',NULL,${survey.id})`;
+        return `('${answer.codeER}','${user.identification}',getDate(),1,'${answer.value}',NULL,'${survey.id}')`;
       });
 
       await this.surveyRepository.saveSurveyAnswers(
@@ -159,9 +159,9 @@ export class SurveyService {
     let reporterName: string = "";
 
     data.answers.map((answer) => {
-      if (!answer.codeER || !answer.value) {
+      if (!answer.codeER) {
         throw new Error(
-          "El arreglo de respuestas debe contener el código y valor de la respuesta"
+          "El arreglo de respuestas debe contener el código de la respuesta"
         );
       }
     });
@@ -190,7 +190,7 @@ export class SurveyService {
         );
 
       const modifiedAnswers = data.answers.map((answer) => {
-        return `('${answer.codeER}','${user.identification}',getDate(),1,'${answer.value}',NULL,${survey.id})`;
+        return `('${answer.codeER}','${user.identification}',getDate(),1,'${answer.value}',NULL,'${survey.id}')`;
       });
 
       await this.surveyRepository.saveSurveyAnswers(
@@ -373,9 +373,9 @@ export class SurveyService {
     const externalLogin = "";
     let userData = {};
     data.answers.map((answer) => {
-      if (!answer.codeER || !answer.value) {
+      if (!answer.codeER) {
         throw new Error(
-          "El arreglo de respuestas debe contener el código y valor de la respuesta"
+          "El arreglo de respuestas debe contener el código de la respuesta"
         );
       }
     });
@@ -392,7 +392,7 @@ export class SurveyService {
         );
 
       const modifiedAnswers = data.answers.map((answer) => {
-        return `('${answer.codeER}','${user.identification}',getDate(),1,'${answer.value}',NULL,${survey.ENC_CODIGO})`;
+        return `('${answer.codeER}','${user.identification}',getDate(),1,${(answer.value) ? `'${answer.value}'` : 'NULL' },NULL,'${survey.ENC_CODIGO}')`;
       });
 
       await this.surveyRepository.saveSurveyAnswers(
@@ -410,11 +410,12 @@ export class SurveyService {
           user.identification
         );
       }
+      const momentDate = moment(survey.FECHA_CREACION).format('YYYY-MM-DD')
       const score = await this.scoreLogic({
         externalLogin: externalLogin,
         company: user.company,
         identification: user.identification,
-        date: survey.FECHA_CREACION,
+        date: momentDate,
       } as ScoreHealthConditionDto);
 
       await transaction.commit();
@@ -437,7 +438,7 @@ export class SurveyService {
     const response: any[] = [];
 
     for (const score of scores) {
-      if (score.COD_EC == 10) {
+      if (score.COD_EC == 12) {
         const companyMessage = scoreHealthConditionDto.company
           ? scoreHealthConditionDto.company
           : "1";
