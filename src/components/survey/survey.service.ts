@@ -90,7 +90,7 @@ export class SurveyService {
       );
 
       const modifiedAnswers = data.answers.map((answer) => {
-        return `('${answer.codeER}','${user.identification}',getDate(),1,'${answer.value}',NULL,'${survey.id}')`;
+        return `('${answer.codeER}','${user.identification}',getDate(),1,${(answer.value) ? `'${answer.value}'` : 'NULL' },NULL,'${survey.id}')`;
       });
 
       await this.surveyRepository.saveSurveyAnswers(
@@ -190,7 +190,7 @@ export class SurveyService {
         );
 
       const modifiedAnswers = data.answers.map((answer) => {
-        return `('${answer.codeER}','${user.identification}',getDate(),1,'${answer.value}',NULL,'${survey.id}')`;
+        return `('${answer.codeER}','${user.identification}',getDate(),1,${(answer.value) ? `'${answer.value}'` : 'NULL' },NULL,'${survey.id}')`;
       });
 
       await this.surveyRepository.saveSurveyAnswers(
@@ -391,6 +391,8 @@ export class SurveyService {
           user.company
         );
 
+      console.log('id encuestaaa====', survey.ENC_CODIGO);
+      
       const modifiedAnswers = data.answers.map((answer) => {
         return `('${answer.codeER}','${user.identification}',getDate(),1,${(answer.value) ? `'${answer.value}'` : 'NULL' },NULL,'${survey.ENC_CODIGO}')`;
       });
@@ -438,7 +440,7 @@ export class SurveyService {
     const response: any[] = [];
 
     for (const score of scores) {
-      if (score.COD_EC == 12) {
+      if (score.COD_EC == 10) {
         const companyMessage = scoreHealthConditionDto.company
           ? scoreHealthConditionDto.company
           : "1";

@@ -284,6 +284,9 @@ export class SurveyMSSQLRepository implements SurveyRepository {
       ) VALUES ${answersString}
     `;
 
+    console.log('insert survey', query);
+    
+
     const result = await pool.query(query);
 
     if (result.rowsAffected) {
@@ -376,6 +379,8 @@ export class SurveyMSSQLRepository implements SurveyRepository {
     ) AS XX 
     ON XX.EPR_TIPO_CLASIFICACION = ESMAD_ENCUESTA_CABEZERAS.COD_EC
     WHERE ESMAD_ENCUESTA_CABEZERAS.ESTADO = 1 AND ESMAD_ENCUESTA_CABEZERAS.COD_EN = 6`;
+
+    console.log('Queryyy: ', query)
 
     const result = await pool.query(query);
 
