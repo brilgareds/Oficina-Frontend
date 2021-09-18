@@ -41,6 +41,10 @@ import { PresentationCardMSSQLRepository } from "./components/presentationCard/r
 import { PresentationCardService } from "./components/presentationCard/PresentationCard.service";
 import { BranchMSSQLRepository } from "./components/brach/repositories/impl/mssql/brach.repository";
 import { BranchService } from "./components/brach/brach.service";
+import { CityMSSQLRepository } from "./components/city/repositories/impl/mssql/city.repository";
+import { CityService } from "./components/city/city.service";
+import { SalePointMSSQLRepository } from "./components/salePoint/repositories/impl/mssql/salePoint.repository";
+import { SalePointService } from "./components/salePoint/salePoint.service";
 
 export default (app: express.Application): void => {
   const container = createContainer({
@@ -74,6 +78,8 @@ export default (app: express.Application): void => {
     inclusionBeneficiariosRepository: asClass(InclusionBeneficiariosMSSQLRepository).scoped(),
     presentationCardRepository: asClass(PresentationCardMSSQLRepository).scoped(),
     branchRepository: asClass(BranchMSSQLRepository).scoped(),
+    cityRepository: asClass(CityMSSQLRepository).scoped(),
+    salePointRepository: asClass(SalePointMSSQLRepository).scoped(),
 
     // services
     authService: asClass(AuthService).scoped(),
@@ -95,6 +101,8 @@ export default (app: express.Application): void => {
     inclusionBeneficiariosService: asClass(InclusionBeneficiariosService).scoped(),
     presentationCardService: asClass(PresentationCardService).scoped(),
     branchService: asClass(BranchService).scoped(),
+    cityService: asClass(CityService).scoped(),
+    salePointService: asClass(SalePointService).scoped(),
   });
 
   app.use(scopePerRequest(container));
