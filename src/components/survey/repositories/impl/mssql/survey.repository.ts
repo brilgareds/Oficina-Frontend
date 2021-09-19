@@ -239,27 +239,48 @@ export class SurveyMSSQLRepository implements SurveyRepository {
     throw new Error("Error de consulta");
   }
 
-  public async saveHealthConditionSurveyAnswers(
-    userIdentification: number,
-    userCompany: string
-  ): Promise<any> {
+  public async saveHealthConditionSurveyAnswers(user:any): Promise<any> {
     const pool = await mssqlEsmad;
 
-    const result = await pool.query(`INSERT INTO dbo.ESMAD_OV_ENCUESTA_COVID ( 
-      ESMAD_OV_ENCUESTA_COVID.ENC_CEDULA, 
-      ESMAD_OV_ENCUESTA_COVID.USUARIO_CREACION, 
-      ESMAD_OV_ENCUESTA_COVID.FECHA_CREACION, 
-      ESMAD_OV_ENCUESTA_COVID.ESTADO,
-      ESMAD_OV_ENCUESTA_COVID.COD_EMPRESA,
-      ESMAD_OV_ENCUESTA_COVID.CASOS_COVID
-    ) VALUES (
-      ${userIdentification},
-      ${userIdentification},
-      getDate(),
-      1,
-      ${userCompany},
-      1
-    );SELECT * from dbo.ESMAD_OV_ENCUESTA_COVID WHERE ENC_CODIGO = SCOPE_IDENTITY()`);
+    const query = `
+        INSERT INTO dbo.ESMAD_OV_ENCUESTA_COVID ( 
+            ESMAD_OV_ENCUESTA_COVID.ENC_CEDULA, 
+            ESMAD_OV_ENCUESTA_COVID.USUARIO_CREACION, 
+            ESMAD_OV_ENCUESTA_COVID.FECHA_CREACION, 
+            ESMAD_OV_ENCUESTA_COVID.ESTADO,
+            ESMAD_OV_ENCUESTA_COVID.COD_EMPRESA,
+            ESMAD_OV_ENCUESTA_COVID.ESTADO_SALUD,
+            ESMAD_OV_ENCUESTA_COVID.ENC_NOMBRE,
+            ESMAD_OV_ENCUESTA_COVID.ENC_APELLIDO,
+            ESMAD_OV_ENCUESTA_COVID.ENC_TELEFONO,
+            ESMAD_OV_ENCUESTA_COVID.ENC_CORREO,
+            ESMAD_OV_ENCUESTA_COVID.EPS,
+            ESMAD_OV_ENCUESTA_COVID.CARGO,
+            ESMAD_OV_ENCUESTA_COVID.AREA,
+            ESMAD_OV_ENCUESTA_COVID.TIPO_DOCUMENTO,
+            ESMAD_OV_ENCUESTA_COVID.GENERO
+        )
+        VALUES (
+            ${user.Cedula},
+            ${user.Cedula},
+            getDate(),
+            1,
+            ${user.Empresa},
+            1,
+            '${user.Nombres}',
+            '${user.Apellidos}',
+            '${user.Numero}',
+            '${user.Mail}',
+            '${user.Entidad}',
+            '${user.Cargo}',
+            '${user.Area}',
+            'C',
+            '${user.Genero}'
+        );
+        SELECT *, convert(varchar, FECHA_CREACION, 120) as formated_date from dbo.ESMAD_OV_ENCUESTA_COVID WHERE ENC_CODIGO = SCOPE_IDENTITY();
+    `;
+
+    const result = await pool.query(query);
 
     if (result.rowsAffected) {
       return result.recordset[0];
@@ -281,16 +302,14 @@ export class SurveyMSSQLRepository implements SurveyRepository {
         ESMAD_ENCUESTA_RESPUESTAS_CLIENTES.RESPUESTA_ABIERTA,
         ESMAD_ENCUESTA_RESPUESTAS_CLIENTES.COD_SE,
         ESMAD_ENCUESTA_RESPUESTAS_CLIENTES.${surveyType}
-      ) VALUES ${answersString}
+      ) VALUES ${answersString};
+      SELECT *, convert(varchar, FECHA_CREACION, 120) as formated_date from dbo.ESMAD_ENCUESTA_RESPUESTAS_CLIENTES WHERE COD_ERC = SCOPE_IDENTITY();
     `;
-
-    console.log('insert survey', query);
-    
 
     const result = await pool.query(query);
 
-    if (result.rowsAffected) {
-      return result.recordset;
+    if (result.rowsAffected && result.recordset[0]) {
+      return result.recordset[0];
     }
 
     throw new Error("Error de consulta");
@@ -371,7 +390,7 @@ export class SurveyMSSQLRepository implements SurveyRepository {
       AND ESMAD_OV_ENCUESTA_COVID.ESTADO_SALUD = 1 
       AND ESMAD_OV_ENCUESTA_COVID.CASOS_COVID IS NULL
       AND ESMAD_OV_ENCUESTA_COVID.ENC_CEDULA = '${identification}'
-      AND ESMAD_OV_ENCUESTA_COVID.FECHA_CREACION BETWEEN '${date}' AND '${date} 23:59:59'
+      AND ESMAD_OV_ENCUESTA_COVID.FECHA_CREACION BETWEEN '${date}' AND '${date.split(' ')[0]} 23:59:59'
       AND ESMAD_ENCUESTA_RESPUESTAS_CLIENTES.ESTADO = 1
       AND ESMAD_ENCUESTA_RESPUESTAS.ESTADO = 1
       AND ESMAD_ENCUESTA_PREGUNTAS.ESTADO = 1
@@ -379,8 +398,6 @@ export class SurveyMSSQLRepository implements SurveyRepository {
     ) AS XX 
     ON XX.EPR_TIPO_CLASIFICACION = ESMAD_ENCUESTA_CABEZERAS.COD_EC
     WHERE ESMAD_ENCUESTA_CABEZERAS.ESTADO = 1 AND ESMAD_ENCUESTA_CABEZERAS.COD_EN = 6`;
-
-    console.log('Queryyy: ', query)
 
     const result = await pool.query(query);
 

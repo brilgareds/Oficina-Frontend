@@ -19,10 +19,7 @@ export interface SurveyRepository {
     name: string,
     company: string
   ): Promise<any>;
-  saveHealthConditionSurveyAnswers(
-    userIdentification: number,
-    userCompany: string
-  ): Promise<any>;
+  saveHealthConditionSurveyAnswers(user:any): Promise<any>;
   saveSurveyAnswers(surveyType: string, answers: string[]): Promise<any>;
   getCompanyLogo(company: string): Promise<any>;
   findExternalUserByIdentification(identification: number): Promise<any>;

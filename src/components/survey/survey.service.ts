@@ -372,6 +372,18 @@ export class SurveyService {
   ) {
     const externalLogin = "";
     let userData = {};
+    
+    if (externalLogin) {
+      user.company = '1';
+      userData = await this.surveyRepository.findExternalUserByIdentification(
+        user.identification
+      );
+    } else {
+      userData = await this.authRepository.findUserByIdentification(
+        user.identification
+      );
+    }
+
     data.answers.map((answer) => {
       if (!answer.codeER) {
         throw new Error(
@@ -380,16 +392,12 @@ export class SurveyService {
       }
     });
 
-    const pool = await mssqlEsmad;
-    const transaction = pool.transaction();
+    const pool = await mssqlEsmad; 
+    const transaction = pool.transaction(); 
 
     try {
       await transaction.begin();
-      const survey =
-        await this.surveyRepository.saveHealthConditionSurveyAnswers(
-          user.identification,
-          user.company
-        );
+      const survey = await this.surveyRepository.saveHealthConditionSurveyAnswers(userData);
 
       console.log('id encuestaaa====', survey.ENC_CODIGO);
       
@@ -397,27 +405,17 @@ export class SurveyService {
         return `('${answer.codeER}','${user.identification}',getDate(),1,${(answer.value) ? `'${answer.value}'` : 'NULL' },NULL,'${survey.ENC_CODIGO}')`;
       });
 
-      await this.surveyRepository.saveSurveyAnswers(
+      const answersSaved = await this.surveyRepository.saveSurveyAnswers(
         "ENCUESTA_COVID",
         modifiedAnswers
       );
 
       const logo = await this.surveyRepository.getCompanyLogo(user.company);
-      if (externalLogin) {
-        userData = await this.surveyRepository.findExternalUserByIdentification(
-          user.identification
-        );
-      } else {
-        userData = await this.authRepository.findUserByIdentification(
-          user.identification
-        );
-      }
-      const momentDate = moment(survey.FECHA_CREACION).format('YYYY-MM-DD')
       const score = await this.scoreLogic({
         externalLogin: externalLogin,
         company: user.company,
         identification: user.identification,
-        date: momentDate,
+        date: survey.formated_date,
       } as ScoreHealthConditionDto);
 
       await transaction.commit();
@@ -430,6 +428,7 @@ export class SurveyService {
     } catch (err) {
       console.log(err);
       await transaction.rollback();
+      throw new Error(err);
     }
   }
 
@@ -443,7 +442,7 @@ export class SurveyService {
       if (score.COD_EC == 10) {
         const companyMessage = scoreHealthConditionDto.company
           ? scoreHealthConditionDto.company
-          : "1";
+          : '1';
 
         const messages = await this.surveyRepository.getMessage(
           companyMessage,
