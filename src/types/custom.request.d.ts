@@ -5,6 +5,7 @@ declare namespace Express {
       last_name: string;
       identification: number;
       status: string;
+      externo?: boolean;
       company: string;
     };
   }
