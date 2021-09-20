@@ -17,32 +17,34 @@ export class CategoryController {
 
 
   /**
- * @swagger
- * /api/v1/inclusionBeneficiarios/getBeneficiariesByUser:
- *  post:
- *    summary: Obtiene todas las incapacidades del usuario
- *    tags: [INCLUSION BENEFICIARIOS EPS/CAJA]
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            type: object
- *            properties:
- *              cedula:
- *                type: integer
- *                description: cedula del usuario
- *            required:
- *              - cedula
- *    responses:
- *      200:
- *        description: Consumo exitoso
- *      402:
- *        description: Error en el consumo / Token Invalido
- */
+   * @swagger
+   * /api/v1/inclusionBeneficiarios/getBeneficiariesByUser:
+   *  post:
+   *    summary: Obtiene todos los beneficiarios por medio del usuario logueado
+   *    tags: [INCLUSION BENEFICIARIOS EPS/CAJA]
+   *    security:
+   *      - jwt: []
+   *    requestBody:
+   *      required: true
+   *      content:
+   *        application/json:
+   *          schema:
+   *            type: object
+   *            properties:
+   *              cedula:
+   *                type: integer
+   *                description: cedula del usuario
+   *            required:
+   *              - cedula
+   *    responses:
+   *      200:
+   *        description: Consumo exitoso
+   *      402:
+   *        description: Error en el consumo / Token Invalido
+   */
   @route("/getBeneficiariesByUser")
   @POST()
-  // @before([verifyJwt])
+  @before([verifyJwt])
   public async getBeneficiariesByUser(req: Request, res: Response) {
     try {
 
@@ -59,8 +61,10 @@ export class CategoryController {
  * @swagger
  * /api/v1/inclusionBeneficiarios/getTipoDocumentoBeneficiario:
  *  get:
- *    summary: Obtiene todas las incapacidades del usuario
+ *    summary: Obtiene los tipos de documentos de personas para el beneficiario
  *    tags: [INCLUSION BENEFICIARIOS EPS/CAJA]
+ *    security:
+ *      - jwt: []
  *    responses:
  *      200:
  *        description: Consumo exitoso
@@ -69,7 +73,7 @@ export class CategoryController {
  */
   @route("/getTipoDocumentoBeneficiario")
   @GET()
-  // @before([verifyJwt])
+  @before([verifyJwt])
   public async getTipoDocumentoBeneficiario(req: Request, res: Response) {
     try {
 
@@ -88,8 +92,10 @@ export class CategoryController {
  * @swagger
  * /api/v1/inclusionBeneficiarios/getCajasBeneficiario:
  *  post:
- *    summary: Obtiene todas las incapacidades del usuario
+ *    summary: Obtiene todas las cajas de compensacion del sistema
  *    tags: [INCLUSION BENEFICIARIOS EPS/CAJA]
+ *    security:
+ *      - jwt: []
  *    requestBody:
  *      required: true
  *      content:
@@ -110,7 +116,7 @@ export class CategoryController {
  */
   @route("/getCajasBeneficiario")
   @POST()
-  // @before([verifyJwt])
+  @before([verifyJwt])
   public async getCajasBeneficiario(req: Request, res: Response) {
     try {
 
@@ -129,8 +135,10 @@ export class CategoryController {
  * @swagger
  * /api/v1/inclusionBeneficiarios/consultarParentesco:
  *  post:
- *    summary: Obtiene todas las incapacidades del usuario
+ *    summary: Obtiene todos los tipos de parentescos 
  *    tags: [INCLUSION BENEFICIARIOS EPS/CAJA]
+ *    security:
+ *      - jwt: []
  *    requestBody:
  *      required: true
  *      content:
@@ -151,7 +159,7 @@ export class CategoryController {
  */
   @route("/consultarParentesco")
   @POST()
-  // @before([verifyJwt])
+  @before([verifyJwt])
   public async consultarParentesco(req: Request, res: Response) {
     try {
 
@@ -171,8 +179,10 @@ export class CategoryController {
  * @swagger
  * /api/v1/inclusionBeneficiarios/consultarArchivosBeneficiarios:
  *  post:
- *    summary: Obtiene todas las incapacidades del usuario
+ *    summary: Obtiene todos los archivos disponibles dependiendo del tipo de parentesco y si el beneficio es para eps o caja de compensacion
  *    tags: [INCLUSION BENEFICIARIOS EPS/CAJA]
+ *    security:
+ *      - jwt: []
  *    requestBody:
  *      required: true
  *      content:
@@ -197,7 +207,7 @@ export class CategoryController {
  */
   @route("/consultarArchivosBeneficiarios")
   @POST()
-  // @before([verifyJwt])
+  @before([verifyJwt])
   public async consultarArchivosBeneficiarios(req: Request, res: Response) {
     try {
 
@@ -218,7 +228,9 @@ export class CategoryController {
    * /api/v1/inclusionBeneficiarios/saveInclusionBeneficios:
    *  post:
    *    summary: Guardado de información de los formularios de RRHH
-   *    tags: [INCAPACITY]
+   *    tags: [INCLUSION BENEFICIARIOS EPS/CAJA]
+   *    security:
+   *      - jwt: []
    *    requestBody:
    *      required: true
    *      content:
@@ -226,15 +238,18 @@ export class CategoryController {
    *          schema:
    *            type: object
    *            properties:
+   *              file:
+   *                type: array
+   *                description: Objeto de los archivos que se suben para constancia de la incapacidad
+   *                items:
+   *                 type: string
+   *                 format: binary
    *              allData:
    *                 type: object
    *                 properties:
    *                     dataForm:
    *                         type: object
    *                         properties:
-   *                             file:
-   *                               type: object
-   *                               description: Objeto de los archivos que se suben para constancia de la incapacidad
    *                             otraEntidad:
    *                               type: object
    *                               properties:
@@ -285,11 +300,11 @@ export class CategoryController {
    *      200:
    *        description: Información guardada correctamente
    *      401:
-   *        description: Error en la insercion
+   *        description: Error de credenciales
    */
   @route("/saveInclusionBeneficios")
   @POST()
-  @before([uploadFile])
+  @before([verifyJwt, uploadFile])
   public async saveInclusionBeneficios(req: Request, res: Response) {
     try {
 
@@ -309,8 +324,10 @@ export class CategoryController {
 * @swagger
 * /api/v1/inclusionBeneficiarios/consultarBeneficiarios:
 *  post:
-*    summary: Obtiene todas las incapacidades del usuario
+*    summary: Obtiene todos los beneficiarios por usuario
 *    tags: [INCLUSION BENEFICIARIOS EPS/CAJA]
+*    security:
+*      - jwt: []
 *    requestBody:
 *      required: true
 *      content:
@@ -331,7 +348,7 @@ export class CategoryController {
 */
   @route("/consultarBeneficiarios")
   @POST()
-  // @before([verifyJwt])
+  @before([verifyJwt])
   public async consultarBeneficiarios(req: Request, res: Response) {
     try {
 
@@ -348,8 +365,10 @@ export class CategoryController {
 * @swagger
 * /api/v1/inclusionBeneficiarios/consultarArchivosBenefactor:
 *  post:
-*    summary: Obtiene todas las incapacidades del usuario
+*    summary: Obtiene todos los archivos de relacionados al benefactor
 *    tags: [INCLUSION BENEFICIARIOS EPS/CAJA]
+*    security:
+*      - jwt: []
 *    requestBody:
 *      required: true
 *      content:
@@ -370,7 +389,7 @@ export class CategoryController {
 */
   @route("/consultarArchivosBenefactor")
   @POST()
-  // @before([verifyJwt])
+  @before([verifyJwt])
   public async consultarArchivosBenefactor(req: Request, res: Response) {
     try {
 
@@ -388,79 +407,41 @@ export class CategoryController {
    * @swagger
    * /api/v1/inclusionBeneficiarios/updateArchivosInclusionBeneficiarios:
    *  post:
-   *    summary: Guardado de información de los formularios de RRHH
-   *    tags: [INCAPACITY]
+   *    summary: actualiza todos los archivos de la inclusion del beneficiario
+   *    tags: [INCLUSION BENEFICIARIOS EPS/CAJA]
+   *    security:
+   *      - jwt: []
    *    requestBody:
-   *      required: true
    *      content:
-   *        application/json:
+   *        multipart/form-data:
    *          schema:
    *            type: object
    *            properties:
-   *              allData:
-   *                 type: object
-   *                 properties:
-   *                     dataForm:
-   *                         type: object
-   *                         properties:
-   *                             file:
-   *                               type: object
-   *                               description: Objeto de los archivos que se suben para constancia de la incapacidad
-   *                             otraEntidad:
-   *                               type: object
-   *                               properties:
-   *                                   status:
-   *                                     type: boolean
-   *                                     description: viene con otra entidad (true/false)
-   *                                   value:
-   *                                     type: string
-   *                                     description: id del otro tipo de entidad
-   *                             prorroga:
-   *                               type: boolean
-   *                               description: Si la incapacidad viene con prorroga (true/false)
-   *                             rangoFechas:
-   *                               type: object
-   *                               properties:
-   *                                   fechaFin:
-   *                                     type: string
-   *                                     description: fecha fin de la incapacidad
-   *                                     format: "yyyy-mm-dd"
-   *                                   value:
-   *                                     type: string
-   *                                     description: fecha inicial de la incapacidad
-   *                                     format: "yyyy-mm-dd"
-   *                             tipoIncapacidad:
-   *                               type: integer
-   *                               description: tipo de incapacidad que radica
-   *                     dataUser:
-   *                         type: object
-   *                         properties:
-   *                             cedula:
-   *                               type: string
-   *                               description: Número de identificación
-   *                             correoElectronico:
-   *                               type: string
-   *                               description: Correo del usuario
-   *                             eps:
-   *                               type: string
-   *                               description: Eps del usuario
-   *                             nombres:
-   *                               type: string
-   *                               description: Nombre y apellido del usuario
-   *                             telefono:
-   *                               type: string
-   *                               description: Número de telefóno del usuario
+   *              file:
+   *                description: Objeto con todos los archivos nuevos para la actualizacion
+   *              codigosArchivos:
+   *                description: tipo de codigo que le corresponde a cada archivo
+   *              beneficiarioCedula:
+   *                description: cedula del beneficiario
+   *              beneficiarioCodigo:
+   *                description: codigo del beneficiario
+   *              cedulaColaborador:
+   *                description: cedula del usuario logueado
    *            required:
-   *              - allData
+   *              - file
+   *              - codigosArchivos
+   *              - beneficiarioCedula
+   *              - beneficiarioCodigo
+   *              - cedulaColaborador
    *    responses:
    *      200:
    *        description: Información guardada correctamente
    *      401:
-   *        description: Error en la insercion
+   *        description: Error de credenciales
    */
   @route("/updateArchivosInclusionBeneficiarios")
   @POST()
-  @before([uploadFile])
+  @before([verifyJwt, uploadFile])
   public async updateArchivosInclusionBeneficiarios(req: Request, res: Response) {
     try {
 

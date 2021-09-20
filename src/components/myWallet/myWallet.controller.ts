@@ -18,8 +18,10 @@ export class CategoryController {
  * @swagger
  * /api/v1/mywallet/getConsultarDatosUsuarioBilletera:
  *  post:
- *    summary: Obtiene toda la información respecto a la billetera
+ *    summary: Obtiene toda la información respecto a la billetera del usuario
  *    tags: [MYWALLET]
+ *    security:
+ *      - jwt: []
  *    requestBody:
  *      required: true
  *      content:
@@ -40,7 +42,7 @@ export class CategoryController {
  */
   @route("/getConsultarDatosUsuarioBilletera")
   @POST()
-  // @before([verifyJwt])
+  @before([verifyJwt])
   public async getConsultarDatosUsuarioBilletera(req: Request, res: Response) {
     try {
 
@@ -56,8 +58,10 @@ export class CategoryController {
  * @swagger
  * /api/v1/mywallet/deleteGastoBilletera:
  *  post:
- *    summary: Obtiene toda la información respecto a la billetera
+ *    summary: Elimina un gasto en especifico de la billetera del usuario
  *    tags: [MYWALLET]
+ *    security:
+ *      - jwt: []
  *    requestBody:
  *      required: true
  *      content:
@@ -65,11 +69,15 @@ export class CategoryController {
  *          schema:
  *            type: object
  *            properties:
- *              cedula:
+ *              gastoId:
  *                type: integer
- *                description: cedula del usuario
+ *                description: Codigo del gasto de la billetera
+ *              billCod:
+ *                type: integer
+ *                description: Codigo de la billetera
  *            required:
- *              - cedula
+ *              - gastoId
+ *              - billCod
  *    responses:
  *      200:
  *        description: Consumo exitoso
@@ -78,7 +86,7 @@ export class CategoryController {
  */
   @route("/deleteGastoBilletera")
   @POST()
-  // @before([verifyJwt])
+  @before([verifyJwt])
   public async deleteGastoBilletera(req: Request, res: Response) {
     try {
 
@@ -94,8 +102,10 @@ export class CategoryController {
  * @swagger
  * /api/v1/mywallet/saveGastoBilletera:
  *  post:
- *    summary: Obtiene toda la información respecto a la billetera
+ *    summary: Guarda un gasto nuevo a la billetera del usuario
  *    tags: [MYWALLET]
+ *    security:
+ *      - jwt: []
  *    requestBody:
  *      required: true
  *      content:
@@ -103,9 +113,36 @@ export class CategoryController {
  *          schema:
  *            type: object
  *            properties:
+ *              billCod:
+ *                type: integer
+ *                description: codigo de la billetera del usuario
+ *              billeteraNueva:
+ *                type: boolean
+ *                description: Boleano para saber si es una billetera nueva o no
  *              cedula:
  *                type: integer
- *                description: cedula del usuario
+ *                description: cedula del usuario logueado
+ *              salario:
+ *                type: integer
+ *                description: salario del usuario
+ *              nombreUser:
+ *                type: string
+ *                description: nombre del usuario
+ *              userDispo:
+ *                type: integer
+ *                description: dinero disponible del usuario
+ *              userTotalGas:
+ *                type: integer
+ *                description: total de gastos del usuario
+ *              conceptos:
+ *                type: object
+ *                properties:
+ *                  gasto:
+ *                    type: string
+ *                    description: Nombre del tipo de gasto 
+ *                  valor:
+ *                    type: string
+ *                    description: valor monetario del tipo gasto 
  *            required:
  *              - cedula
  *    responses:
@@ -116,7 +153,7 @@ export class CategoryController {
  */
   @route("/saveGastoBilletera")
   @POST()
-  // @before([verifyJwt])
+  @before([verifyJwt])
   public async saveGastoBilletera(req: Request, res: Response) {
     try {
 
