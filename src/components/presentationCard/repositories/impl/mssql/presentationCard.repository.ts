@@ -120,5 +120,74 @@ export class PresentationCardMSSQLRepository implements PresentationCardReposito
 
     } catch(e:any) { throw new Error(e.message); }
   }
+
+  public async crearSolicitudCarta(TIPO: any, CEDULA: any, NOMBRE: any, APELLIDO: any, CIUDAD: any, COD_PUNVEN: any, CEDULAJEFE: any, NOMBREJEFE: any, APELLIDOJEFE: any, FECHAINI: any, FECHAFIN: any, 
+    USU: any, NOMBREARCHIVO: any, celularCreador: any, celularJefe: any, nombrePDV: any, centroCostos: any, noContrato: any, empresaCOD: any, date: any): Promise<any> {
+
+    try {
+
+      const pool = await mssqlEsmad;
+
+      const sql = `
+        INSERT INTO dbo.ESMAD_SOLICITUD_CARTA (
+          ESMAD_SOLICITUD_CARTA.TIPO,
+          ESMAD_SOLICITUD_CARTA.CEDULA_CREADOR,
+          ESMAD_SOLICITUD_CARTA.NOMBRE_CREADOR,
+          ESMAD_SOLICITUD_CARTA.APELLIDO_CREADOR,
+          ESMAD_SOLICITUD_CARTA.CIUDAD,
+          ESMAD_SOLICITUD_CARTA.COD_PUNTO_VENTA,
+          ESMAD_SOLICITUD_CARTA.CEDULA_JEFE,
+          ESMAD_SOLICITUD_CARTA.NOMBRE_JEFE,
+          ESMAD_SOLICITUD_CARTA.APELLIDO_JEFE,
+          ESMAD_SOLICITUD_CARTA.FECHA_INICIO,
+          ESMAD_SOLICITUD_CARTA.FECHA_FIN,
+          ESMAD_SOLICITUD_CARTA.ESTADO_APROBACION,
+          ESMAD_SOLICITUD_CARTA.USU_CREADOR,
+          ESMAD_SOLICITUD_CARTA.FECHA_CREACION,
+          ESMAD_SOLICITUD_CARTA.USU_MODIFICADOR,
+          ESMAD_SOLICITUD_CARTA.FECHA_MODIFICACION,
+          ESMAD_SOLICITUD_CARTA.ESTADO,
+          ESMAD_SOLICITUD_CARTA.NOMBRE_ARCHIVO,
+          ESMAD_SOLICITUD_CARTA.CELULAR_CREADOR,
+          ESMAD_SOLICITUD_CARTA.CELULAR_JEFE,
+          ESMAD_SOLICITUD_CARTA.NOMBRE_PUNTO_VENTA,
+          ESMAD_SOLICITUD_CARTA.CENTRO_COSTOS,
+          ESMAD_SOLICITUD_CARTA.CONTRATO_CREADOR,
+          ESMAD_SOLICITUD_CARTA.COD_EMPRESA
+          ) VALUES (
+            '${TIPO}',
+            '${CEDULA}',
+            '${NOMBRE}',
+            '${APELLIDO}',
+            '${CIUDAD}',
+            '${COD_PUNVEN}',
+            '${CEDULAJEFE}',
+            '${NOMBREJEFE}',
+            '${APELLIDOJEFE}',
+            '${FECHAINI}',
+            '${FECHAFIN}',
+            'PENDIENTE',
+            '${USU}',
+            '${date}',
+            '${USU}',
+            '${date}',
+            1,
+            '${NOMBREARCHIVO}',
+            '${celularCreador}',
+            '${celularJefe}',
+            '${nombrePDV}',
+            '${centroCostos}',
+            '${noContrato}',
+            '${empresaCOD}'
+          )
+      `;
+
+      const result = await pool.query(sql);
+
+      return result.recordset;
+
+    } catch(e:any) { throw new Error(e.message); }
+  }
+  
   
 }

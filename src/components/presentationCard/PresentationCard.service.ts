@@ -8,7 +8,7 @@ export class PresentationCardService {
 
   public async ResquestApprovalWithOutMaterials(data: any) {
 
-    const { city, typeCard, materials, genre, requiredApproval, workPosition, salesPoints, identification, company } = data;
+    const { city, typeCard, materials, genre, checkInTime, checkOutTime, requiredApproval, workPosition, salesPoints, identification, company } = data;
 
     const salesPointsInCity = await this.presentationCardRepository.getSalesPointsData({salesPoints});
     const contractLevel = (await this.presentationCardRepository.getContracLevel2({identification}) || [{}])[0];
@@ -19,12 +19,22 @@ export class PresentationCardService {
 
     const nameBoss  = `${nom_empl} ${ape_empl}`;
     const phoneBoss = `${tel_resi.trim()}-${tel_movi.trim()}`;
-    const dataCompany = (await this.presentationCardRepository.getCompanysData({company}) || [{}])[0]; // $this->conexionESMAD
+    const dataCompany = (await this.presentationCardRepository.getCompanysData({company}) || [{}])[0]; // ESMAD DB
     const nombreContrato = ((dataCompany?.EMP_CODIGO_KACTUS === 1) ? nom_nive4 : nom_nive2).trim();
     const date = currentDate({});
+    const title = (!!checkInTime) ? 'Carta de presentación a punto de venta con ingreso fuera de horario':'Carta de presentación a punto de venta';
+    let arrayIds = '';
+    const salesPointsFilter = salesPointsInCity.map((salePoint:any) => (salePoint.PDV_CODIGO)).join();
 
-    salesPointsInCity.forEach(() => {
+    salesPointsInCity.forEach((salePoint:any) => {
 
+      const resp = this.presentationCardRepository.crearSolicitudCarta(title, identification, data.name, data.lastName, data.city, salePoint?.PDV_CODIGO,
+      contractLevel.cod_empl, contractLevel.nom_empl, contractLevel.ape_empl, checkInTime, checkOutTime, `${data.name} ${data.lastName}`,
+      `cartaDePresentacion_${identification}_${salesPointsFilter?.replaceAll(' ', '_')}Pendiente.pdf`, 42332, contractLevel?.tel_movi,
+      salePoint?.PDV_NOMBRE, contractLevel?.cod_ccos, contractLevel?.nro_cont?.trim(), dataCompany?.EMP_CODIGO_KACTUS, date); // ESMAD DB
+
+      const idSolicitudCarta = (this.presentationCardRepository.getId('ESMAD_SOLICITUD_CARTA') || [{}])[0];
+      arrayIds += ((arrayIds == '') ? '' : ',') + idSolicitudCarta?.CODIGO;
     });
 
     return true;
@@ -37,16 +47,13 @@ export class PresentationCardService {
   public async ResquestApproval(data: any) {
     try {
 
-      const { city, typeCard, company, materials, salesPoints, identification, unrelatedsalesPoints } = data;
+      const { materials, salesPoints, unrelatedsalesPoints } = data;
 
       const newData = {
-        city,
-        company,
-        typeCard,
-        materials,
+        ...data,
         genre: 'M',
-        identification,
         requiredApproval: true,
+        lastName: data.last_name,
         workPosition: 'Desarrollador',
         salesPoints: [ ...salesPoints, ...unrelatedsalesPoints ]
       };
