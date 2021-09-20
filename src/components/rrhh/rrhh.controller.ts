@@ -76,6 +76,8 @@ export class CategoryController {
    *  post:
    *    summary: Guardado de información de los formularios de RRHH
    *    tags: [RRHH]
+   *    security:
+   *      - jwt: []
    *    requestBody:
    *      required: true
    *      content:
@@ -137,11 +139,11 @@ export class CategoryController {
    *      200:
    *        description: Información guardada correctamente
    *      401:
-   *        description: Error en la insercion
+   *        description: Error de credenciales
    */
   @route("/saveFormRRHH")
   @POST()
-  // @before([verifyJwt])
+  @before([verifyJwt])
   public async saveFormRRHH(req: Request, res: Response) {
     try {
       const login = await this.rrhhService.saveFormRRHH(req.body);

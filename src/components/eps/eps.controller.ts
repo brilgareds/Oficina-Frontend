@@ -28,7 +28,7 @@ export class EpsController {
    */
   @route("/get")
   @GET()
-  // @before([verifyJwt])
+  @before([verifyJwt])
   public async getEps(req: Request, res: Response) {
     try {
       const response = await this.epsService.getEps();
