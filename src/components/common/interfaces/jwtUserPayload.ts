@@ -3,5 +3,6 @@ export interface JwtUserPayload {
   last_name: string;
   identification: number;
   status: string;
+  externo?: boolean;
   company: string;
 }
