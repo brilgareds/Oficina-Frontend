@@ -70,7 +70,7 @@ import { PresentationCardService } from "./PresentationCard.service";
         $_SESSION['Cargo'];
         $_SESSION['Genero'];
         $_SESSION['necesitaAprovacion'];
-      */
+     */
 
      const response = await this.presentationCardService.ResquestApproval(data);
 
