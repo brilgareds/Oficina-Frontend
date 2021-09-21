@@ -8,7 +8,7 @@ export const signAccessToken = (payload: any) => {
     throw new Error("key no asignada");
   }
 
-  return jwt.sign(payload, jwtSecret, { expiresIn: "30m" });
+  return jwt.sign(payload, jwtSecret, { expiresIn: "1h" });
 };
 
 export const signRefreshToken = (payload: any) => {
