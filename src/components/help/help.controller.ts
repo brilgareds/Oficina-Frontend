@@ -48,6 +48,8 @@ export class HelpController {
    *  post:
    *    summary: Guardado de información de los formularios de Help
    *    tags: [HELP]
+   *    security:
+   *      - jwt: []
    *    requestBody:
    *      required: true
    *      content:
@@ -115,11 +117,11 @@ export class HelpController {
    *      200:
    *        description: Información guardada correctamente
    *      401:
-   *        description: Error en la insercion
+   *        description: Error de credenciales
    */
   @route("/saveFormHelp")
   @POST()
-  // @before([verifyJwt])
+  @before([verifyJwt])
   public async saveFormHelp(req: Request, res: Response) {
     try {
       const login = await this.helpService.saveFormHelp(req.body);

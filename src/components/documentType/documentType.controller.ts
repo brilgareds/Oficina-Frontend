@@ -28,7 +28,7 @@ export class DocumentTypeController {
    */
   @route("/get")
   @GET()
-  // @before([verifyJwt])
+  @before([verifyJwt])
   public async getDocumentType(req: Request, res: Response) {
     try {
       const response = await this.documentTypeService.getDocumentType();

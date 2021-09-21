@@ -14,9 +14,9 @@ export class IncapacityService {
     private readonly incapacityRepository: IncapacityhRepository
   ) { }
 
-  public async getEpsIncapacidad() {
+  public async getEpsIncapacidad(codigoEmpresaUsuario: number) {
     try {
-      return await this.epsRepository.getEpsIncapacidad();
+      return await this.epsRepository.getEpsIncapacidad(codigoEmpresaUsuario);
     } catch (error) {
       throw new Error(error.message);
     }
@@ -105,7 +105,7 @@ export class IncapacityService {
 
       }
 
-      return false;
+      throw new Error("Error en la insercion");
 
     } catch (error) {
       throw new Error(error.message);
