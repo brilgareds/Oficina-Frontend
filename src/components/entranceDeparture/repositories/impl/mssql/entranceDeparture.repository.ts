@@ -20,7 +20,7 @@ export class EntranceDepartureMSSQLRepository
       ESMAD_CONTROL_INGRESO.CIN_PDV_OTROS
     FROM 
       dbo.ESMAD_CONTROL_INGRESO
-    WHERE ESMAD_CONTROL_INGRESO.CIN_CEDULA = '${user.identification}'
+    WHERE ESMAD_CONTROL_INGRESO.ESTADO = 1 AND ESMAD_CONTROL_INGRESO.CIN_CEDULA = '${user.identification}'
     AND ESMAD_CONTROL_INGRESO.FECHA_CREACION BETWEEN '${date} 00:00:00' AND '${date} 23:59:59'`;
 
     const result = await pool.query(query);
