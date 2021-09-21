@@ -34,7 +34,7 @@ export class EntranceDepartureController {
    */
   @route("/entrance")
   @POST()
-  @before([verifyJwt, validationMiddleware(SaveEntranceDto)])
+  @before([verifyJwt])
   public async saveEntrance(req: Request, res: Response) {
     try {
       const entrance = await this.entranceDepartureService.saveEntrance(
@@ -93,7 +93,7 @@ export class EntranceDepartureController {
    */
   @route("/departure")
   @POST()
-  @before([verifyJwt, validationMiddleware(SaveDepartureDto)])
+  @before([verifyJwt])
   public async saveDeparture(req: Request, res: Response) {
     try {
       const departure = await this.entranceDepartureService.saveDeparture(
