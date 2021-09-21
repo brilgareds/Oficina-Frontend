@@ -18,8 +18,6 @@ export class DocumentTypeController {
    *  get:
    *    summary: Retorna los tipos de documento de las personas
    *    tags: [Document Type]
-   *    security:
-   *      - jwt: []
    *    responses:
    *      200:
    *        description: Retorna la información de los tipos de documento
@@ -28,7 +26,7 @@ export class DocumentTypeController {
    */
   @route("/get")
   @GET()
-  @before([verifyJwt])
+  // @before([verifyJwt])
   public async getDocumentType(req: Request, res: Response) {
     try {
       const response = await this.documentTypeService.getDocumentType();
