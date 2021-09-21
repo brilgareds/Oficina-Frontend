@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { JwtUserPayload } from "../common/interfaces/jwtUserPayload";
 import { verifyJwt } from "../common/middlewares/jwt";
 import validationMiddleware from "../common/middlewares/validation";
+import { SaveDepartureDto } from "./dto/saveDeparture.dto";
 import { SaveEntranceDto } from "./dto/saveEntrance.dto";
 import { EntranceDepartureService } from "./entranceDeparture.service";
 
@@ -42,6 +43,65 @@ export class EntranceDepartureController {
       );
 
       res.status(200).json(entrance);
+    } catch (e) {
+      res.status(400).json({ message: e.message });
+    }
+  }
+
+  /**
+   * @swagger
+   * /api/v1/entrance:
+   *  get:
+   *    summary: obtiene el ingreso
+   *    tags: [Ingreso/Salida]
+   *    security:
+   *      - jwt: []
+   *    responses:
+   *      200:
+   *        description: obtiene el ingreso del día en el sistema
+   *      402:
+   *        description: Token invalido
+   */
+  @route("/entrance")
+  @GET()
+  @before([verifyJwt])
+  public async getEntrance(req: Request, res: Response) {
+    try {
+      const entrance = await this.entranceDepartureService.getEntrance(
+        req.user as JwtUserPayload
+      );
+
+      res.status(200).json(entrance);
+    } catch (e) {
+      res.status(400).json({ message: e.message });
+    }
+  }
+
+  /**
+   * @swagger
+   * /api/v1/departure:
+   *  post:
+   *    summary: realiza la salida
+   *    tags: [Ingreso/Salida]
+   *    security:
+   *      - jwt: []
+   *    responses:
+   *      200:
+   *        description: Realiza la salida en el sistema
+   *      402:
+   *        description: Token invalido
+   */
+  @route("/departure")
+  @POST()
+  @before([verifyJwt, validationMiddleware(SaveDepartureDto)])
+  public async saveDeparture(req: Request, res: Response) {
+    try {
+      const departure = await this.entranceDepartureService.saveDeparture(
+        req.body as SaveEntranceDto,
+        req.user as JwtUserPayload
+      );
+
+      res.status(200).json(departure);
     } catch (e) {
       res.status(400).json({ message: e.message });
     }
