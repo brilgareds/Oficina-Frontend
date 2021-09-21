@@ -18,8 +18,6 @@ export class EpsController {
    *  get:
    *    summary: Retorna las EPS habilitadas en el sistema
    *    tags: [EPS]
-   *    security:
-   *      - jwt: []
    *    responses:
    *      200:
    *        description: Consumo exitoso
@@ -28,7 +26,7 @@ export class EpsController {
    */
   @route("/get")
   @GET()
-  @before([verifyJwt])
+  // @before([verifyJwt])
   public async getEps(req: Request, res: Response) {
     try {
       const response = await this.epsService.getEps();

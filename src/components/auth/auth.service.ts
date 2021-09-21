@@ -4,7 +4,7 @@ import { JwtUserPayload } from "../common/interfaces/jwtUserPayload";
 import { AuthRepository } from "./repositories/auth.repository";
 
 export class AuthService {
-  constructor(private readonly authRepository: AuthRepository) {}
+  constructor(private readonly authRepository: AuthRepository) { }
 
   public async login({ identification }: LoginDto) {
     try {
@@ -66,9 +66,14 @@ export class AuthService {
 
   public async userInformation(user: JwtUserPayload) {
     try {
-      return await this.authRepository.findUserByIdentification(
+      const data = await this.authRepository.findUserByIdentification(
         user.identification
       );
+
+      if (data) {
+        return data;
+      }
+
     } catch (error) {
       throw new Error(error.message);
     }
