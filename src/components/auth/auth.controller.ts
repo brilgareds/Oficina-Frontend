@@ -53,6 +53,83 @@ export class AuthController {
     }
   }
 
+
+
+  /**
+   * @swagger
+   * /api/v1/auth/loginContratista:
+   *  post:
+   *    summary: Login de la aplicación para un contratista
+   *    tags: [Auth]
+   *    requestBody:
+   *      required: true
+   *      content:
+   *        application/json:
+   *          schema:
+   *            type: object
+   *            properties:
+   *              apellidos:
+   *                type: string
+   *                description: apellidos del usuario
+   *              area:
+   *                type: string
+   *                description: area de trabajo del usuario
+   *              cargo:
+   *                type: string
+   *                description: cargo del usuario
+   *              cedula:
+   *                type: integer
+   *                description: cedula del usuario
+   *              eps:
+   *                type: string
+   *                description: eps del usuario
+   *              genero:
+   *                type: string
+   *                description: Genero del  usuario (F/M)
+   *              mail:
+   *                type: string
+   *                description: correo del usuario
+   *              nombres:
+   *                type: string
+   *                description: nombres del usuario
+   *              numeroCelular:
+   *                type: string
+   *                description: celular del usuario
+   *              tipoDocumento:
+   *                type: string
+   *                description: tipo de documento del usuario
+   *            required:
+   *              - identification
+   *              - apellidos
+   *              - area
+   *              - cargo
+   *              - cedula
+   *              - eps
+   *              - genero
+   *              - mail
+   *              - nombres
+   *              - numeroCelular
+   *              - tipoDocumento
+   *    responses:
+   *      200:
+   *        description: Creación del token para acceder a la aplicación
+   *      401:
+   *        description: Error en las credenciales
+   *      422:
+   *        description: Entidades no procesables
+   */
+  @route("/loginContratista")
+  @POST()
+  public async loginContratista(req: Request, res: Response) {
+    try {
+      const login = await this.authService.loginContratista(req.body);
+
+      res.status(200).json(login);
+    } catch (e) {
+      res.status(401).json({ message: e.message });
+    }
+  }
+
   /**
    * @swagger
    * /api/v1/auth/refresh:

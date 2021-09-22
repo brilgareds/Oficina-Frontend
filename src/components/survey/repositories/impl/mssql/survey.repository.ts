@@ -239,7 +239,7 @@ export class SurveyMSSQLRepository implements SurveyRepository {
     throw new Error("Error de consulta");
   }
 
-  public async saveHealthConditionSurveyAnswers(user:any): Promise<any> {
+  public async saveHealthConditionSurveyAnswers(user: any): Promise<any> {
     const pool = await mssqlEsmad;
 
     const query = `
@@ -265,20 +265,23 @@ export class SurveyMSSQLRepository implements SurveyRepository {
             ${user.Cedula},
             getDate(),
             1,
-            ${user.Empresa},
+            ${(user.Empresa !== undefined) ? user.Empresa : "''" },
             1,
             '${user.Nombres}',
             '${user.Apellidos}',
             '${user.Numero}',
             '${user.Mail}',
-            '${user.Entidad}',
-            '${user.Cargo}',
-            '${user.Area}',
+            '${(user.Entidad !== undefined) ? user.Entidad : ''}',
+            '${(user.Cargo !== undefined) ? user.Cargo : ''}',
+            '${(user.Area !== undefined) ? user.Area : ''}',
             'C',
-            '${user.Genero}'
+            '${(user.Genero !== undefined) ? user.Genero : ''}'
         );
         SELECT *, convert(varchar, FECHA_CREACION, 120) as formated_date from dbo.ESMAD_OV_ENCUESTA_COVID WHERE ENC_CODIGO = SCOPE_IDENTITY();
     `;
+
+    console.log("query.-......>", query);
+
 
     const result = await pool.query(query);
 
