@@ -2,6 +2,7 @@ import moment from "moment";
 import { mssqlEsmad } from "../../services/mssql";
 import { AuthRepository } from "../auth/repositories/auth.repository";
 import { JwtUserPayload } from "../common/interfaces/jwtUserPayload";
+import { JwtUserPayloadExternal } from "../common/interfaces/jwtUserPayloadExternal";
 import { CovidSurveyCreateDto } from "./dto/covidSurveyCreate.dto";
 import { EpidemiologicalFenceSurveyCreateDto } from "./dto/epidemiologicalFenceSurveyCreate.dto";
 import { HealthConditionSurveyCreateDto } from "./dto/healthConditionSurveyCreate.dto";
@@ -16,7 +17,7 @@ export class SurveyService {
   constructor(
     private readonly surveyRepository: SurveyRepository,
     private readonly authRepository: AuthRepository
-  ) {}
+  ) { }
 
   public async getCovidSurveyQuestions() {
     try {
@@ -90,7 +91,7 @@ export class SurveyService {
       );
 
       const modifiedAnswers = data.answers.map((answer) => {
-        return `('${answer.codeER}','${user.identification}',getDate(),1,${(answer.value) ? `'${answer.value}'` : 'NULL' },NULL,'${survey.id}')`;
+        return `('${answer.codeER}','${user.identification}',getDate(),1,${(answer.value) ? `'${answer.value}'` : 'NULL'},NULL,'${survey.id}')`;
       });
 
       await this.surveyRepository.saveSurveyAnswers(
@@ -190,7 +191,7 @@ export class SurveyService {
         );
 
       const modifiedAnswers = data.answers.map((answer) => {
-        return `('${answer.codeER}','${user.identification}',getDate(),1,${(answer.value) ? `'${answer.value}'` : 'NULL' },NULL,'${survey.id}')`;
+        return `('${answer.codeER}','${user.identification}',getDate(),1,${(answer.value) ? `'${answer.value}'` : 'NULL'},NULL,'${survey.id}')`;
       });
 
       await this.surveyRepository.saveSurveyAnswers(
@@ -368,16 +369,15 @@ export class SurveyService {
 
   public async saveHealthConditionSurveyAnswers(
     data: HealthConditionSurveyCreateDto,
-    user: JwtUserPayload
+    user: JwtUserPayloadExternal
   ) {
     const externalLogin = "";
     let userData = {};
-    
-    if (externalLogin) {
+
+    if (user.externo) {
       user.company = '1';
-      userData = await this.surveyRepository.findExternalUserByIdentification(
-        user.identification
-      );
+      userData = (await this.surveyRepository.findExternalUserByIdentification(user.identification))[0];
+      userData = { ...userData, status: user.status };
     } else {
       userData = await this.authRepository.findUserByIdentification(
         user.identification
@@ -392,17 +392,17 @@ export class SurveyService {
       }
     });
 
-    const pool = await mssqlEsmad; 
-    const transaction = pool.transaction(); 
+    const pool = await mssqlEsmad;
+    const transaction = pool.transaction();
 
     try {
       await transaction.begin();
       const survey = await this.surveyRepository.saveHealthConditionSurveyAnswers(userData);
 
       console.log('id encuestaaa====', survey.ENC_CODIGO);
-      
+
       const modifiedAnswers = data.answers.map((answer) => {
-        return `('${answer.codeER}','${user.identification}',getDate(),1,${(answer.value) ? `'${answer.value}'` : 'NULL' },NULL,'${survey.ENC_CODIGO}')`;
+        return `('${answer.codeER}','${user.identification}',getDate(),1,${(answer.value) ? `'${answer.value}'` : 'NULL'},NULL,'${survey.ENC_CODIGO}')`;
       });
 
       const answersSaved = await this.surveyRepository.saveSurveyAnswers(

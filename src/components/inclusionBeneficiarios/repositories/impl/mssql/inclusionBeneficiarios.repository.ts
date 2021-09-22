@@ -498,7 +498,7 @@ export class InclusionBeneficiariosMSSQLRepository implements InclusionBeneficia
                                     dbo.ESMAD_TIPO
                                 ON 
                                     ( 
-                                        ESMAD_BENEFICIARIOS_ARCHIVOS.ARCH_CODIGO = ESMAD_TIPO.TIP_CODIGO) 
+                                        ESMAD_BENEFICIARIOS_ARCHIVOS.ARCH_CODIGO_DOCUMENTO = ESMAD_TIPO.TIP_CODIGO) 
                                 LEFT JOIN 
                                     dbo.ESMAD_TIPO AS TIPO_RECHAZO
                                 ON 
