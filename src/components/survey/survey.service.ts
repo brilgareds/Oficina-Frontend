@@ -377,7 +377,7 @@ export class SurveyService {
     if (user.externo) {
       user.company = '1';
       userData = (await this.surveyRepository.findExternalUserByIdentification(user.identification))[0];
-      userData = { ...userData, status: user.status };
+      userData = { ...userData, ...user };
     } else {
       userData = await this.authRepository.findUserByIdentification(
         user.identification

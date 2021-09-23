@@ -12,6 +12,21 @@ export const getDateToday = (getWithHours: boolean = false) => {
 
 }
 
+export const DateInText = (date:any={}) => {
+  const dateNow = new Date();
+  const day = date?.day || dateNow.getDate();
+  const month = date?.month || dateNow.getMonth();
+  const year = date?.year || dateNow.getFullYear();
+
+  const months = ['error', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+  const nameMonth = months[parseFloat(month+1)];
+
+  const days = ['domingo', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
+  const dayInWeek = days[new Date(year, month, day).getDay()];
+
+  return `${dayInWeek}, ${day} de ${nameMonth} de ${year}`;
+};
+
 export const currentDate = (obj:any) => {
 
   const { format='english', withTime=true } = obj;

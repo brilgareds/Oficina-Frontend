@@ -63,7 +63,7 @@ import { PresentationCardService } from "./PresentationCard.service";
   @before([verifyJwt])
   public async ResquestApproval(req: Request, res: Response) {
    try {
-     console.log(req.user);
+     console.log('Test user', req.user);
      const data = { ...req.user, ...req.body };
 
      /*
