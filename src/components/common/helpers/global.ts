@@ -82,6 +82,25 @@ export const CreateOrValidateFolder = (path: string) => {
   return true;
 }
 
+export const capitalizarPalabras = (val:any) => {
+
+  return val.toLowerCase()
+      .trim()
+      .split(' ')
+      .map((v:any) => {
+          if (v === 'de' || v === 'del' || v === 'la' || v === 'las' || v === 'los') return v;
+
+          const positionToChange = parseFloat(v.search(/[a-z]/i));
+
+          const firstPart  = v.substring(0, positionToChange);
+          const secondPart = v.substring(positionToChange, positionToChange+1).toUpperCase();
+          const thirdPart  = v.substring(positionToChange+1);
+
+          return firstPart + secondPart + thirdPart;
+      })
+      .join(' ');
+};
+
 export const AlertaHtml = (titulo: any, cuerpoMensaje: any) => {
   let body = `
         <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
