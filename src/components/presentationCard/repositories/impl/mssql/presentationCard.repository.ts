@@ -354,6 +354,33 @@ export class PresentationCardMSSQLRepository implements PresentationCardReposito
   }
 
 
+
+  public async insertarAlertarAutomaticas(destinatario: any, copia: any, asunto: any, body: any, adjunto: any, bd: any): Promise<any> {
+
+    const pool = await bd;
+    const queryLastId = `select MAX(id) + 1 as id from dbo.alertas_automaticas2`;
+    const resultLastId: any = await pool.query(queryLastId);
+
+    if (resultLastId.rowsAffected) {
+
+      const queryInsertAlert = `
+            INSERT INTO alertas_automaticas2
+              (destinatario, copia, asunto, body, estado, id, adjunto)
+            VALUES 
+              ('${destinatario}', '${copia}', '${asunto}', '${body}', 0, ${resultLastId.recordset[0].id}, '${adjunto}');
+      `;
+
+      const resultInsertAlert = await pool.query(queryInsertAlert);
+
+      return (resultInsertAlert.rowsAffected) ? true : false;
+
+    }
+
+    return false;
+
+  }
+
+
   public async crearSolicitudCarta(TIPO: any, CEDULA: any, NOMBRE: any, APELLIDO: any, CIUDAD: any, COD_PUNVEN: any, CEDULAJEFE: any, NOMBREJEFE: any, APELLIDOJEFE: any, FECHAINI: any, FECHAFIN: any, 
     USU: any, NOMBREARCHIVO: any, celularCreador: any, celularJefe: any, nombrePDV: any, centroCostos: any, noContrato: any, empresaCOD: any, date: any): Promise<any> {
 
@@ -424,9 +451,5 @@ export class PresentationCardMSSQLRepository implements PresentationCardReposito
 
     } catch(e:any) { throw new Error(e.message); }
   }
-
-
-  p
-  
   
 }

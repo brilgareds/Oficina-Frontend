@@ -79,4 +79,38 @@ import { PresentationCardService } from "./PresentationCard.service";
      res.status(400).json({ message: e.message });
    }
   }
+
+
+  /**
+   * @swagger
+   * /api/v1/presentationCard/acceptOrRejectCard/{data}:
+   *  get:
+   *    summary:
+   *    tags: [presentationCard]
+   *    security:
+   *      - jwt: []
+   *    responses:
+   *      200:
+   *        description:
+   *      401:
+   *        description: Error en las credenciales
+   */
+   @route('/acceptOrRejectCard/:data')
+   @GET()
+   public async acceptOrRejectCard(req: Request, res: Response) {
+      try {
+          const data = JSON.parse(req?.params?.data || '{}');
+          const response = ((data?.accept) ?
+              await this.presentationCardService.acceptCard(data) :
+              await this.presentationCardService.rejectCard(data)
+          );
+
+          console.log('Response is: ', response);
+
+          res.status(200).json(true);
+      }
+      catch (e){
+          res.status(400).json({ message: e.message });
+      }
+  }
 }
