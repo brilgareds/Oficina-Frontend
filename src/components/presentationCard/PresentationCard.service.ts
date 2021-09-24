@@ -466,13 +466,13 @@ public async rejectCard(data: any) {
       const descripcion = 'Creación de carta';
       const pdfFile = await pdfToBase64(response);
       
-      const celularJefe = '3142272228';
+      const celularJefe = '3156165648';
       const nombre_archivo = response.split('/')?.[response.split('/').length-1];
 
       const responseMessage = await this.alertaMensajeWhatsApp(textoWhatsapp, `+57${celularJefe}`);
       const responseFile    = await this.alertaArchivoWhatsApp(`data:application/pdf;base64,${pdfFile}`, `+57${celularJefe}`, nombre_archivo, descripcion);
 
-      const correo = 'gabriel.angarita@visionymarketing.com.co'; // data.Mail
+      const correo = 'andres.sanchez@visionymarketing.com.co'; // data.Mail
       const copia = '';
       const asunto = 'Solicitud Carta Presentación';
       const body = AlertaHtml('Solicitud Carta Presentación', textoEmail);
