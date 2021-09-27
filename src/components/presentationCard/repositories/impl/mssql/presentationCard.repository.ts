@@ -24,23 +24,25 @@ export class PresentationCardMSSQLRepository implements PresentationCardReposito
       const { salesPoints } = data;
       const pool = await mssqlVum;
 
-      const result = await pool.query`
-        SELECT
-            SIM_PUNTO_VENTA.PDV_CODIGO,
-            SIM_PUNTO_VENTA.PDV_NOMBRE,
-            SIM_CIUDAD.CIU_NOMBRE
+      const sql = `
+          SELECT
+              SIM_PUNTO_VENTA.PDV_CODIGO,
+              SIM_PUNTO_VENTA.PDV_NOMBRE,
+              SIM_CIUDAD.CIU_NOMBRE
 
-        FROM dbo.SIM_PUNTO_VENTA
+          FROM dbo.SIM_PUNTO_VENTA
 
-        INNER JOIN dbo.SIM_CIUDAD ON
-            (SIM_PUNTO_VENTA.CIU_CODIGO = SIM_CIUDAD.CIU_CODIGO)
+          INNER JOIN dbo.SIM_CIUDAD ON
+              (SIM_PUNTO_VENTA.CIU_CODIGO = SIM_CIUDAD.CIU_CODIGO)
 
-        WHERE
-            SIM_PUNTO_VENTA.PDV_CODIGO IN (${salesPoints})
-                
-        ORDER BY
-            SIM_PUNTO_VENTA.PDV_NOMBRE
+          WHERE
+              SIM_PUNTO_VENTA.PDV_CODIGO IN (${salesPoints})
+                  
+          ORDER BY
+              SIM_PUNTO_VENTA.PDV_NOMBRE
       `;
+
+      const result = await pool.query(sql);
         
       return result.recordset;
 
@@ -95,8 +97,6 @@ export class PresentationCardMSSQLRepository implements PresentationCardReposito
 
       const result = await pool.query(sql);
 
-      console.log('Sql getContracLevel2 : ', sql);
-
       return result.recordset;
 
     } catch(e:any) { throw new Error(e.message); }
@@ -132,8 +132,6 @@ export class PresentationCardMSSQLRepository implements PresentationCardReposito
       const pool = await mssqlEsmad;
 
       const sql = `SELECT DISTINCT IDENT_CURRENT('${tableName}') CODIGO FROM ${tableName}`;
-
-      console.log('Sql getId: ', sql);
 
       const result = await pool.query(sql);
 
@@ -196,8 +194,6 @@ export class PresentationCardMSSQLRepository implements PresentationCardReposito
     ORDER BY SIM_CIUDAD.CIU_NOMBRE`;
 
     const result = await pool.query(query);
-
-    console.log('\nNew sql: ', query);
 
     if (result.rowsAffected) {
       return result.recordset;
@@ -355,6 +351,33 @@ export class PresentationCardMSSQLRepository implements PresentationCardReposito
 
 
 
+  public async cambiarEstadoAprobacion(data:any) {
+
+    try {
+
+      const pool = await mssqlEsmad;
+
+      const sql = `
+          UPDATE ESMAD_SOLICITUD_CARTA SET 
+              ESTADO_APROBACION = '${data.status}',
+              FECHA_APROBACION = getDate(),
+              FECHA_MODIFICACION = getDate()
+
+          WHERE CEDULA_CREADOR = '${data.Cedula}'
+              AND CODIGO_SOLCAR IN (${data.solicitudCarta})
+              AND ESTADO = 1
+              AND ESTADO_APROBACION = 'PENDIENTE'
+      `;
+
+      const response = await pool.query(sql);
+
+      return response.rowsAffected;
+
+    } catch (e) { console.log('Error: ', e) }
+  }
+
+
+
   public async insertarAlertarAutomaticas(destinatario: any, copia: any, asunto: any, body: any, adjunto: any, bd: any): Promise<any> {
 
     const pool = await bd;
@@ -378,6 +401,29 @@ export class PresentationCardMSSQLRepository implements PresentationCardReposito
 
     return false;
 
+  }
+
+
+
+  public async consultarEstadoAprobacion(data:any) {
+
+    const pool = await mssqlEsmad;
+
+    const sql = `
+        SELECT
+            CODIGO_SOLCAR
+
+        FROM
+            dbo.ESMAD_SOLICITUD_CARTA
+
+        WHERE
+            CODIGO_SOLCAR IN (${data.SOLICITUD_CARTA_IDS}) AND
+            ESTADO_APROBACION = 'PENDIENTE'
+    `;
+
+    const result = await pool.query(sql);
+
+    return result.recordset;
   }
 
 

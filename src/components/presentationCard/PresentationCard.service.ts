@@ -128,11 +128,10 @@ export class PresentationCardService {
 
     html += `</body></html>`;
 
-    console.log('Html is: ', html);
-
     if (!resp) throw new Error('Error al crear solicitud de carta');
 
-    htmlPdf.create(html).toFile(pdfPath, ()=>{}); //    pdfPath
+    const responsePdf = await new Promise(resolve => htmlPdf.create(html).toFile(pdfPath, err=>resolve(true)));
+    if (!responsePdf) throw new Error('Error al crear el Pdf!');
 
     const ruta = pdfPath;
     const title2 = "Carta de ingreso de materiales";
@@ -250,12 +249,134 @@ export class PresentationCardService {
       <body>
 `;
 
-public async acceptCard(data: any) {
 
-    const { checkInTime, checkOutTime, salesPoints, identification, company } = data;
+public async acceptCardWithOutMaterials(data:any) {
 
-    const salesPointsInCity = await this.presentationCardRepository.getSalesPointsData({salesPoints});
-    const salesPointsInCityText = (salesPointsInCity.map((salePoint:any) => salePoint))?.join();
+    const { identification, company, salesPointsInCity } = data;
+
+    let html = this.encabezadoHtml;
+
+    const mencion = (data.GENERO === 'M') ? 'al Sr.' : 'a la Sra.';
+
+    data.DateInText
+
+    data.salesPointsInCityText
+
+    const contractLevel = (await this.presentationCardRepository.getContracLevel2({identification}) || [{}])[0];
+
+    if (!contractLevel || !Object.keys(contractLevel).length) throw new Error('El usuario no tiene un jefe asignado');
+
+    const { nom_empl, ape_empl, tel_resi, tel_movi, nom_nive2, nom_nive4, box_mail:emailBoss } = contractLevel;
+
+    const dataCompany = (await this.presentationCardRepository.getCompanysData({company}) || [{}])[0];
+
+
+    const nameBoss  = `${nom_empl} ${ape_empl}`;
+    const phoneBoss = `${tel_resi.trim()}-${tel_movi.trim()}`;
+    const nombreContrato = ((dataCompany?.EMP_CODIGO_KACTUS === 1) ? nom_nive4 : nom_nive2).trim();
+    const date = currentDate({});
+    
+    let arrayIds = '';
+    let resp = '';
+    const pdfPath = `cartaDePresentacion_${identification}_${data.salesPointsFilter}Pendiente.pdf`;
+
+    for (const salePoint of salesPointsInCity) {
+
+        const QRCODE = await QRCode.toDataURL(`Carta de ingreso de materiales a punto de venta creada por - ${data.name} ${data.lastName}, Cedula - ${identification}, Fecha - ${data.DateInText}, Punto de venta - ${salePoint?.PDV_NOMBRE}, Estado de aprobación: 'PENDIENTE'`, {scale: 2});
+  
+        html += `
+            <div class="page">
+                <div class="line">
+                    <div style="text-align: center;">
+                        <img src="https://controlfdata.blob.core.windows.net/vumoffice/MicrosoftTeams-image%20(10).png" style='height: 7rem; margin-top: 2rem;' alt='Logo'>
+                    </div>
+                </div>
+  
+                <div class="line" style="text-align: center;">NIT ${dataCompany.EMP_NIT.toString()}</div>
+  
+                <div class="line" style='margin-top: 1rem; margin-bottom: 2rem'>${capitalizarPalabras(data.nameCity || '')}, ${data.DateInText}</div>
+  
+                <div class="group" style='line-height: 1.2rem;'>
+                    <div><b>SEÑORES</b></div>
+                    <div><b>${salePoint.PDV_NOMBRE}</b></div>
+                    <div><b>${salePoint.CIU_NOMBRE}</b></div>
+                </div>
+  
+                <div class="group" style='margin-top: 2rem; margin-bottom: 2rem'>
+                    <b>ASUNTO: CARTA DE PRESENTACIÓN</b>
+                </div>
+  
+                <div class="group">
+                    <p style='text-align: justify; line-height: 1.4rem;'>
+                        Por medio de la presente nos permitimos presentar ${mencion} ${data.name} ${data.lastName}
+                        quien se identifica con cédula de ciudadanía No. ${data.identification}, quien se desempeña como
+                        ${data.Cargo}, y presta servicio para la marca ${nombreContrato}, el
+                        colaborador deberá portar el uniforme de la marca que representa y su carné de ARL en un lugar
+                        visible.
+                    </p>
+                </div>
+  
+                <div class="group" style='margin-top: 2rem; margin-bottom: 1.5rem'>
+                    <p style='text-align: justify;'>
+                        Solicitamos autorización para el ingreso de su dispositivo móvil, el cual es una herramienta de trabajo y
+                        se utilizará solamente para fines laborales.
+                    </p>
+                </div>
+  
+                <div class="group">
+                    <p>${ (data.checkInTime) ? `El horario de permanencia en el punto será de ${data.checkInTime} a ${data.checkOutTime}.`: '' }</p>
+                </div>
+  
+                <div class="group" style='margin-top: 1.5rem; margin-bottom: 1rem;'>
+                    <p>Jefe inmediato: ${nameBoss}, número de contacto ${phoneBoss}</p>
+                </div>
+  
+                <div class="group" style='margin-top: 4rem; margin-bottom: 1rem;'>
+                    <div style="width: 49%; display: inline-block">
+                        <div>Cordialmente,</div>
+                        <div><img src='https://controlfdata.blob.core.windows.net/vumoffice/MicrosoftTeams-image%20(9).png' style='width: 7rem;' /></div>
+                        <div>Recursos Humanos.</div>
+                    </div>
+                    <div style="width: 49%; display: inline-block; text-align: right;">
+                      <div style='text-align: right;margin-right: 0.4rem;'>
+                          <span style='text-align: center'>Verificar valides<br/>Escaneando QR</span>
+                      </div>
+                      <div style='text-align: right'>
+                        <img src='${QRCODE}'/>
+                      </div>
+                    </div>
+                </div>
+  
+                <div style='margin-bottom: 1rem;'>
+                    
+                </div>
+            </div>
+        `;
+  
+        resp = await (this.presentationCardRepository.crearSolicitudCarta(data.title, identification, data.name, data.lastName, data.city, salePoint?.PDV_CODIGO,
+        contractLevel.cod_empl, contractLevel.nom_empl, contractLevel.ape_empl, data.checkInTime, data.checkOutTime, `${data.name} ${data.lastName}`,
+        pdfPath, data.phone, contractLevel?.tel_movi,
+        salePoint?.PDV_NOMBRE, contractLevel?.cod_ccos, contractLevel?.nro_cont?.trim(), dataCompany?.EMP_CODIGO_KACTUS, date));
+  
+        const idSolicitudCarta = (await this.presentationCardRepository.getId('ESMAD_SOLICITUD_CARTA') || [{}])[0];
+        arrayIds += ((arrayIds == '') ? '' : ',') + idSolicitudCarta?.CODIGO;
+  
+      }
+  
+      html += `</body></html>`;
+  
+      if (!resp) throw new Error('Error al crear solicitud de carta');
+
+
+    return true;
+}
+
+
+
+public async acceptCardWithMaterials(data:any) {
+
+
+
 
 
 
@@ -263,14 +384,81 @@ public async acceptCard(data: any) {
 }
 
 
-public async rejectCard(data: any) {
+public async acceptCard(data: any) {
 
     const { checkInTime, checkOutTime, salesPoints, identification, company } = data;
+    
+    const hasMaterials = !!(data?.materiales?.length);
+    const salesPointsText = salesPoints.join();
+    data.salesPointsInCity = await this.presentationCardRepository.getSalesPointsData({salesPoints: salesPointsText});
+    data.salesPointsInCityText = (data.salesPointsInCity.map(({PDV_NOMBRE}:any) => PDV_NOMBRE))?.join();
 
-    const salesPointsInCity = await this.presentationCardRepository.getSalesPointsData({salesPoints});
-    const salesPointsInCityText = (salesPointsInCity.map((salePoint:any) => salePoint))?.join();
+    const cardAccept = ((!hasMaterials) ?
+        await this.ResquestApprovalWithOutMaterials(data) :
+        await this.ResquestApprovalWithMaterials(data)
+    );
 
-    return true;
+    if (!cardAccept) throw new Error('Al intentar aceptar la carta de presentación!')
+
+    data.status = 'Aprobado';
+    
+    const result = await this.presentationCardRepository.consultarEstadoAprobacion({SOLICITUD_CARTA_IDS: data.solicitudCarta});
+    const correoJefe = data.Mail; // andres.sanchez@visionymarketing.com.co
+    const celularJefe = data.Numero.trim(); // 3156165648
+    const pdfFile = (await pdfToBase64(cardAccept?.[0]) || false);
+    const urlbase64 = (pdfFile) ? `data:application/pdf;base64,${pdfFile}` : '';
+    const textWhatsapp = `Señor(a) ${data.name} ${data.lastName}, se le informa que la ${data.typeCard} para el punto de venta ${data.salesPointsInCityText} ha sido aprobada.`;
+    const descripcionPdf = 'Creación de carta';
+
+    if (result?.length) {
+        const estadoCambiado  = await this.presentationCardRepository.cambiarEstadoAprobacion(data);
+        const responseMessage = await this.alertaMensajeWhatsApp(textWhatsapp, `+57${celularJefe}`);
+        const responseFile    = await this.alertaArchivoWhatsApp(urlbase64, `+57${celularJefe}`, cardAccept?.[0], descripcionPdf);
+    }
+
+    const mensajeAprobacion = ((!result?.length) ?
+        `La ${data.typeCard} solicitada por ${data.name} ${data.lastName} ya habia sido aprobada o rechazada` :
+        `La ${data.typeCard} solicitada por ${data.name} ${data.lastName} para el punto de venta ${data.salesPointsInCityText} ha sido aprobada`
+    );
+    
+    const asunto = 'Solicitud Carta Presentación';
+    const body = AlertaHtml(asunto, mensajeAprobacion);
+    const correoEnviado = await (this.presentationCardRepository.insertarAlertarAutomaticas(correoJefe, '', asunto, body, data.rutaCorreo, mssqlBiplus));
+
+    return mensajeAprobacion;
+}
+
+
+public async rejectCard(data: any) {
+
+    const { salesPoints } = data;
+    
+    const salesPointsText = salesPoints.join();
+    data.salesPointsInCity = await this.presentationCardRepository.getSalesPointsData({salesPoints: salesPointsText});
+    data.salesPointsInCityText = (data.salesPointsInCity.map(({PDV_NOMBRE}:any) => PDV_NOMBRE))?.join();
+
+    data.status = 'RECHAZADO';
+    
+    const result = await this.presentationCardRepository.consultarEstadoAprobacion({SOLICITUD_CARTA_IDS: data.solicitudCarta});
+    const correoUsuario = data.Mail;   //  data.Mail
+    const celularUsuario = data.Numero.trim(); //  data.Numero.trim()
+    const textWhatsapp = `Señor(a) ${data.name} ${data.lastName}, se le informa que la ${data.typeCard} para el punto de venta ${data.salesPointsInCityText} ha sido rechazada.`;
+
+    if (result?.length) {
+        const estadoCambiado  = await this.presentationCardRepository.cambiarEstadoAprobacion(data);
+        const responseMessage = await this.alertaMensajeWhatsApp(textWhatsapp, `+57${celularUsuario}`);
+    }
+
+    const mensajeAprobacion = ((!result?.length) ?
+        `La ${data.typeCard} solicitada por ${data.name} ${data.lastName} ya habia sido aprobada o rechazada` :
+        `La ${data.typeCard} solicitada por ${data.name} ${data.lastName} para el punto de venta ${data.salesPointsInCityText} ha sido rechazada`
+    );
+
+    const asunto = 'Solicitud Carta Presentación';
+    const body = AlertaHtml(asunto, mensajeAprobacion);
+    const correoEnviado = await (this.presentationCardRepository.insertarAlertarAutomaticas(correoUsuario, '', asunto, body, data.rutaCorreo, mssqlBiplus));
+
+    return mensajeAprobacion;
 }
 
 
@@ -394,7 +582,8 @@ public async rejectCard(data: any) {
 
     if (!resp) throw new Error('Error al crear solicitud de carta');
 
-    htmlPdf.create(html).toFile(pdfPath, ()=>{}); //    pdfPath
+    const responsePdf = await new Promise(resolve => htmlPdf.create(html).toFile(pdfPath, err=>resolve(true)));
+    if (!responsePdf) throw new Error('Error al crear el Pdf!');
 
     const ruta = pdfPath;
     const title2 = (checkInTime) ? "Carta de presentación con ingreso fuera de horario":"Carta de presentación";
@@ -402,6 +591,18 @@ public async rejectCard(data: any) {
 
     return [ruta, contractLevel.tel_movi, arrayIds, contractLevel.box_mail, title2, filePath];
   }
+
+
+  public existFile(path:string) {
+        let response = false;
+
+        try {
+            if (fs.existsSync(path)) response = true;
+        } catch(e:any) {}
+
+        return response;
+  }
+
 
   public async enviarAlertaWhatapp(data:any, salesPoints:any, response:any, response2:any, city:any, checkInTime:any, checkOutTime:any, response3:any, hasMaterials:any, materials:any, response4:any, response5:any) {
     try {
@@ -416,63 +617,38 @@ public async rejectCard(data: any) {
 
       // const nombreUrl = (`${data?.NOMBRE || ''}_${data?.APELLIDO || ''}`)?.replaceAll(' ', '_');
 
-      const datosEnvioAprobar = {
-        Cedula: data.Cedula,
-        NombreArchivo: data.nombre_archivo,
-        Numero: (data.Numero || '').trim(),
+      const datosEnvio = {
+        ...data,
         Nombre: '', // nombreUrl
-        PuntoVenta: salesPointsFilter,
-        Ciudad: data.city,
-        horaInicio: data.checkInTime,
-        horaFin: data.checkOutTime,
+        arrayIds: response2,
+        salesPoints,
+        salesPointsFilter,
         solicitudCarta: response3,
-        ingresoMaterial: data.hasMaterials,
-        materiales: JSON.stringify(materials || {}),
-        correo: data.Mail,
-        rutaCorreo: response,
-        tipoCarta: data.tipoCarta,
-        EMPRESA_COD: data.EMPRESA_COD,
-        NombreUsu: data.NOMBRE,
-        ApellidoUsu: data.APELLIDO,
-        GENERO: data.GENERO,
-        CARGO: data.CARGO
+        materiales: materials || [],
+        rutaCorreo: response
       };
-        
-      const datosEnvioDesaprobar = {
-        Cedula: data.Cedula,
-        Numero: (data.Numero || '').trim(),
-        Nombre: '', // nombreUrl
-        PuntoVenta: salesPointsFilter,
-        solicitudCarta: response3,
-        correo: data.Mail,
-        tipoCarta: data.tipoCarta
-      };
-
       
-      const firtBase   = Buffer.from(JSON.stringify(datosEnvioAprobar)).toString('base64');
-      const SecondBase = Buffer.from(JSON.stringify(datosEnvioDesaprobar)).toString('base64');
-      const access_token = 'b197035dd4bfe1ada950ec645337d46d0c8c98ab';
+      const firtBase   = Buffer.from(JSON.stringify({ ...datosEnvio, accion: 'Accept' })).toString('base64');
+      const SecondBase = Buffer.from(JSON.stringify({ ...datosEnvio, accion: 'Reject' })).toString('base64');
 
-      const linkAprobar    = `http://www.listos.com.co:8080/oficinaVirtualPrueba/controlador/utilidades/redireccionesProcesos.php?Action=aprobarCarta&datosEnvio=${firtBase}`;
-      const linkDesaprobar = `http://www.listos.com.co:8080/oficinaVirtualPrueba/controlador/utilidades/redireccionesProcesos.php?Action=rechazarCarta&datosEnvio=${SecondBase}`;
+      const linkAprobar    = await this.recortarUrl(`${data.backendUrl}acceptOrRejectCard/${firtBase}`);
+      const linkDesaprobar = await this.recortarUrl(`${data.backendUrl}acceptOrRejectCard/${SecondBase}`);
 
-      // const linkCortoAprobar = ($utilidades->recortarUrl($linkAprobar))['data']['url'];
-      // const linkCortoDesaprobar = ($utilidades->recortarUrl($linkDesaprobar))['data']['url'];
-      const linkCortoAprobar = '';
-      const linkCortoDesaprobar = '';
-
-      const textoWhatsapp = `Se le informa que ${data.name} ${data.lastName} ha solicitado la creación de una ${data.typeCard} para ${moreThanOneSalePoint ? 'los puntos de venta:' : 'el punto de venta:'}\n${salesPointsInCityWhatsapp}\n\n*APROBAR*: ${linkCortoAprobar}\n\n*RECHAZAR*: ${linkCortoDesaprobar}`;
-      const textoEmail = `Se le informa que ${data.name} ${data.lastName} ha solicitado la creación de una ${data.typeCard} para ${moreThanOneSalePoint ? 'los puntos de venta:' : 'el punto de venta:'}<br/>${salesPointsInCityEmail}<br/><br/><br/>APROBAR: ${linkCortoAprobar}<br/><br/>RECHAZAR: ${linkCortoDesaprobar}`;
+      const textoWhatsapp = `Se le informa que ${data.name} ${data.lastName} ha solicitado la creación de una ${data.typeCard} para ${moreThanOneSalePoint ? 'los puntos de venta:' : 'el punto de venta:'}\n${salesPointsInCityWhatsapp}\n\n*APROBAR*: ${linkAprobar}\n\n*RECHAZAR*: ${linkDesaprobar}`;
+      const textoEmail = `Se le informa que ${data.name} ${data.lastName} ha solicitado la creación de una ${data.typeCard} para ${moreThanOneSalePoint ? 'los puntos de venta:' : 'el punto de venta:'}<br/>${salesPointsInCityEmail}<br/><br/><br/>APROBAR: ${linkAprobar}<br/><br/>RECHAZAR: ${linkDesaprobar}`;
       const descripcion = 'Creación de carta';
+
+      const existPdf = (response && this.existFile(response));
+      if (!existPdf) throw new Error('Pdf no existe!');
+
       const pdfFile = await pdfToBase64(response);
-      
-      const celularJefe = '3156165648';
+      const celularJefe = response2; // response2    //   3156165648
       const nombre_archivo = response.split('/')?.[response.split('/').length-1];
 
       const responseMessage = await this.alertaMensajeWhatsApp(textoWhatsapp, `+57${celularJefe}`);
       const responseFile    = await this.alertaArchivoWhatsApp(`data:application/pdf;base64,${pdfFile}`, `+57${celularJefe}`, nombre_archivo, descripcion);
 
-      const correo = 'andres.sanchez@visionymarketing.com.co'; // data.Mail
+      const correo = response4; // response4  //    andres.sanchez@visionymarketing.com.co
       const copia = '';
       const asunto = 'Solicitud Carta Presentación';
       const body = AlertaHtml('Solicitud Carta Presentación', textoEmail);
@@ -503,6 +679,32 @@ public async rejectCard(data: any) {
 
       return response;    //    result = file_get_contents(url, false, options);
   }
+
+
+  public async recortarUrl(longUrl:any) {
+
+    const url = `http://tinyurl.com/api-create.php?url=${longUrl}`;
+    const headers = { 'accept': '*/*', 'Content-Type': 'application/json' };
+
+    //se invoca el archivo con parametro url
+    const result = await axios.get(url, { headers });
+
+    /*
+
+    if($fp) {
+        $tinyurl = fgets($fp);
+
+        if($tinyurl && !empty($tinyurl)) {
+            // si responde el servidor se anexa la url
+            $results = $tinyurl;
+            fclose($fp);
+        }
+    }
+
+    */
+
+    return result?.data || '';
+}
   
 
 
@@ -553,15 +755,15 @@ public async rejectCard(data: any) {
 
       const hasMaterials = (materials && materials.length);
 
-      const responseApproval = await ((!hasMaterials) ?
-        this.ResquestApprovalWithOutMaterials(newData) :
-        this.ResquestApprovalWithMaterials(newData)
+      const responseApproval = ((!hasMaterials) ?
+        await this.ResquestApprovalWithOutMaterials(newData) :
+        await this.ResquestApprovalWithMaterials(newData)
       );
 
       let response = responseApproval[5];
 
       if (requiredApproval || hasMaterials || data.checkInTime || unrelatedsalesPoints.length) {
-          this.enviarAlertaWhatapp(newData, salesPoints, responseApproval[0], responseApproval[1], data.city, data.checkInTime, data.checkOutTime, responseApproval[2], hasMaterials, data.materials, responseApproval[3], responseApproval[4]);
+          const sentMessage = await this.enviarAlertaWhatapp(newData, salesPoints, responseApproval[0], responseApproval[1], data.city, data.checkInTime, data.checkOutTime, responseApproval[2], hasMaterials, data.materials, responseApproval[3], responseApproval[4]);
           response = { error: 'La solicitud se ha creado exitosamente.' };
       }
 
