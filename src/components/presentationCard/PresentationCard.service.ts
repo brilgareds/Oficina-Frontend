@@ -26,7 +26,7 @@ export class PresentationCardService {
     const nameCity = await this.presentationCardRepository.getCity({city: data.city});
     const mencion = (data.Genero === 'M') ? 'al Sr.' : 'a la Sra.';
 
-    const salesPointsFilter = ((salesPoints.map((salePoint:any) => salePoint)) || [''])?.join()?.replaceAll(' ', '_');
+    const salesPointsFilter = ((salesPoints.map((salePoint:any) => salePoint)) || [''])?.join()?.replace(' ', '_');
     const salesPointsInCity = await this.presentationCardRepository.getSalesPointsData({salesPoints});
     const contractLevel = (await this.presentationCardRepository.getContracLevel2({identification}) || [{}])[0];
 
@@ -471,7 +471,7 @@ public async rejectCard(data: any) {
 
     const { checkInTime, checkOutTime, salesPoints, identification, company } = data;
 
-    const salesPointsFilter = ((salesPoints.map((salePoint:any) => salePoint)) || [''])?.join()?.replaceAll(' ', '_');
+    const salesPointsFilter = ((salesPoints.map((salePoint:any) => salePoint)) || [''])?.join()?.replace(' ', '_');
 
     const mencion = (data.Genero === 'M') ? 'al Sr.' : 'a la Sra.';
     const salesPointsInCity = await this.presentationCardRepository.getSalesPointsData({salesPoints});
@@ -608,14 +608,14 @@ public async rejectCard(data: any) {
     try {
       
 
-      const salesPointsFilter = ((salesPoints.map((salePoint:any) => salePoint)) || [''])?.join()?.replaceAll(' ', '_');
+      const salesPointsFilter = ((salesPoints.map((salePoint:any) => salePoint)) || [''])?.join()?.replace(' ', '_');
       const moreThanOneSalePoint = (salesPointsFilter?.length || 0) > 1;
       const salesPointsInCity = (await this.presentationCardRepository.getSalesPointsData({salesPoints}) || []).map(({PDV_NOMBRE}:any) => capitalizarPalabras(PDV_NOMBRE));
       const salesPointsInCityWhatsapp = `. ${salesPointsInCity.join('\n. ')}`;
       const salesPointsInCityEmail    = `. ${salesPointsInCity.join('<br/>. ')}`;
-      // const salesPointsInCityUrl      = (salesPointsInCity || [''])?.join()?.replaceAll(' ', '_');
+      // const salesPointsInCityUrl      = (salesPointsInCity || [''])?.join()?.replace(' ', '_');
 
-      // const nombreUrl = (`${data?.NOMBRE || ''}_${data?.APELLIDO || ''}`)?.replaceAll(' ', '_');
+      // const nombreUrl = (`${data?.NOMBRE || ''}_${data?.APELLIDO || ''}`)?.replace(' ', '_');
 
       const datosEnvio = {
         ...data,
