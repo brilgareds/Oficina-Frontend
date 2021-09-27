@@ -95,7 +95,7 @@ import { DateInText } from "../common/helpers/global";
    @GET()
    public async acceptOrRejectCard(req: Request, res: Response) {
       try {
-          const data = { ...JSON.parse(Buffer.from(req?.params?.data || '', 'base64').toString('ascii')), DateInText: DateInText() };
+          const data = { ...JSON.parse(Buffer.from(req?.params?.data || '', 'base64').toString('utf8')), DateInText: DateInText() };
           const response = (
               (data?.accion === 'Accept') ?
                   await this.presentationCardService.acceptCard(data) :
@@ -103,8 +103,6 @@ import { DateInText } from "../common/helpers/global";
                   await this.presentationCardService.rejectCard(data) :
               false
           );
-
-          console.log('Response is: ', response);
 
           if (!response) throw new Error('Error al procesar la carta!');
 
