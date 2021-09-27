@@ -185,7 +185,7 @@ export class SurveyService {
 
       const survey =
         await this.surveyRepository.saveEpidemiologicalFenceSurveyAnswers(
-          reporterIdentification,
+          `${user.identification}`,
           reporterName,
           user.company
         );
@@ -451,17 +451,17 @@ export class SurveyService {
 
         for (const message of messages) {
           if (score.PUNTAJE == 1.0) {
-            response[0] = "(37, 179, 64)";
-            response[1] = "(255,255,255)";
-            response[2] = `${score.EC_NOMBRE}: ' . ${message.TIP_ATRIBUTO3}`;
+            response[0] = "(154, 241, 133)";
+            response[1] = "(15,79,128)";
+            response[2] = `${score.EC_NOMBRE}: ${message.TIP_ATRIBUTO3}`;
             break;
           } else if (score.PUNTAJE == 2.0) {
-            response[0] = "(229, 178, 33)";
+            response[0] = "(241, 198, 125)";
             response[1] = "(0,0,0)";
             response[2] = `${score.EC_NOMBRE}: Por favor póngase en contacto con su EPS lo antes posible. Reporte la situación a su jefe inmediato.`;
             break;
           } else if (score.PUNTAJE == 3.0) {
-            response[0] = "(206, 12, 16)";
+            response[0] = "(241, 160, 155)";
             response[1] = "(255,255,255)";
             response[2] = `${score.EC_NOMBRE}: Por favor póngase en contacto con su EPS lo antes posible. Reporte la situación a su jefe inmediato.`;
             break;
