@@ -56,4 +56,6 @@ export interface FamiliarRepository {
                       DTO_FAMI: number): Promise<any>;
   consultarFamiliaresIndividual(COD_FAMI: number):Promise<any>;                    
   eliminarFamiliaresIndividual(COD_FAMI: number): Promise<any>;
+  consultarFamiliarKactus(COD_EMPL: number,
+                      COD_EMPR: number): Promise<any>;
 }
