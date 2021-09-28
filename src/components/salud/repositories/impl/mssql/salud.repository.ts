@@ -112,6 +112,7 @@ export class SaludMSSQLRepository implements SaludRepository {
         LEFT JOIN dbo.ESMAD_REPORTE_EMBARAZO
           ON nm_contr.cod_empl = ESMAD_REPORTE_EMBARAZO.NRO_DOCUMENTO
              AND nm_contr.cod_empr = ESMAD_REPORTE_EMBARAZO.CODIGO_EMPRESA
+             AND ESMAD_REPORTE_EMBARAZO.ESTADO = 1
     WHERE
         nm_contr.cod_empl = ${cedula}
         AND nm_contr.cod_empr = ${empresa}
@@ -499,6 +500,7 @@ export class SaludMSSQLRepository implements SaludRepository {
         LEFT JOIN dbo.ESMAD_REPORTE_EMBARAZO
           ON nm_contr.cod_empr = ESMAD_REPORTE_EMBARAZO.CODIGO_EMPRESA
              AND nm_contr.cod_empl = ESMAD_REPORTE_EMBARAZO.NRO_DOCUMENTO
+             AND ESMAD_REPORTE_EMBARAZO.ESTADO = 1
     WHERE
         nm_contr.cod_empr = ${empresa}
         AND nm_contr.cod_empl = ${cedula}
@@ -529,7 +531,8 @@ export class SaludMSSQLRepository implements SaludRepository {
       TIEMPO_GESTACION,
       FECHA_PARTO,
       OBSERVACION,
-      URL
+      URL,
+      ESTADO
     ) VALUES (
       ${CODIGO_EMPRESA},
       ${NRO_DOCUMENTO},
@@ -538,7 +541,8 @@ export class SaludMSSQLRepository implements SaludRepository {
       ${TIEMPO_GESTACION},
       ${FECHA_PARTO},
       ${OBSERVACION},
-      ${URL}
+      ${URL},
+      1
     )
     `;
     
@@ -555,7 +559,8 @@ export class SaludMSSQLRepository implements SaludRepository {
     TIEMPO_GESTACION: string,
     FECHA_PARTO: string,
     OBSERVACION: string,
-    URL: string
+    URL: string,
+    ESTADO: number
     ): Promise<any> {
     const pool = await mssqlEsmad;
     const sql = `
@@ -565,13 +570,13 @@ export class SaludMSSQLRepository implements SaludRepository {
         FECHA_EXAMEN_EMBARAZO = ${FECHA_EXAMEN_EMBARAZO},
         TIEMPO_GESTACION = ${TIEMPO_GESTACION},
         FECHA_PARTO = ${FECHA_PARTO},
-        OBSERVACION = ${OBSERVACION}
+        OBSERVACION = ${OBSERVACION},
+        ESTADO = ${ESTADO}
         ${URL}
     WHERE 
       REPORTE_EMBARAZO_CODIGO = ${REPORTE_EMBARAZO_CODIGO}
     `;
     
-    console.log(sql);
     const result = await pool.query(sql);
 
     return result.recordset;

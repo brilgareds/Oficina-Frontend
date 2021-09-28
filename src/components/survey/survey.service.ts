@@ -17,7 +17,7 @@ export class SurveyService {
   constructor(
     private readonly surveyRepository: SurveyRepository,
     private readonly authRepository: AuthRepository
-  ) { }
+  ) {}
 
   public async getCovidSurveyQuestions() {
     try {
@@ -72,9 +72,9 @@ export class SurveyService {
     user: JwtUserPayload
   ) {
     data.answers.map((answer) => {
-      if (!answer.codeER) {
+      if (!answer.codeER || !answer.value) {
         throw new Error(
-          "El arreglo de respuestas debe contener el código de la respuesta"
+          "El arreglo de respuestas debe contener el código y valor de la respuesta"
         );
       }
     });
@@ -160,9 +160,9 @@ export class SurveyService {
     let reporterName: string = "";
 
     data.answers.map((answer) => {
-      if (!answer.codeER) {
+      if (!answer.codeER || !answer.value) {
         throw new Error(
-          "El arreglo de respuestas debe contener el código de la respuesta"
+          "El arreglo de respuestas debe contener el código y valor de la respuesta"
         );
       }
     });
@@ -462,6 +462,47 @@ export class SurveyService {
             break;
           } else if (score.PUNTAJE == 3.0) {
             response[0] = "(241, 160, 155)";
+            response[1] = "(255,255,255)";
+            response[2] = `${score.EC_NOMBRE}: Por favor póngase en contacto con su EPS lo antes posible. Reporte la situación a su jefe inmediato.`;
+            break;
+          }
+        }
+      }
+    }
+
+    return response;
+  }
+
+  private async scoreLogic(scoreHealthConditionDto: ScoreHealthConditionDto) {
+    const scores = await this.surveyRepository.getScoreHealthCondition(
+      scoreHealthConditionDto
+    );
+    const response: any[] = [];
+
+    for (const score of scores) {
+      if (score.COD_EC == 10) {
+        const companyMessage = scoreHealthConditionDto.company
+          ? scoreHealthConditionDto.company
+          : "1";
+
+        const messages = await this.surveyRepository.getMessage(
+          companyMessage,
+          score.COD_EC
+        );
+
+        for (const message of messages) {
+          if (score.PUNTAJE == 1.0) {
+            response[0] = "(37, 179, 64)";
+            response[1] = "(255,255,255)";
+            response[2] = `${score.EC_NOMBRE}: ' . ${message.TIP_ATRIBUTO3}`;
+            break;
+          } else if (score.PUNTAJE == 2.0) {
+            response[0] = "(229, 178, 33)";
+            response[1] = "(0,0,0)";
+            response[2] = `${score.EC_NOMBRE}: Por favor póngase en contacto con su EPS lo antes posible. Reporte la situación a su jefe inmediato.`;
+            break;
+          } else if (score.PUNTAJE == 3.0) {
+            response[0] = "(206, 12, 16)";
             response[1] = "(255,255,255)";
             response[2] = `${score.EC_NOMBRE}: Por favor póngase en contacto con su EPS lo antes posible. Reporte la situación a su jefe inmediato.`;
             break;
