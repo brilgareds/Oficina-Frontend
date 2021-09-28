@@ -393,7 +393,7 @@ export class CategoryController {
   public async consultarArchivosBenefactor(req: Request, res: Response) {
     try {
 
-      const response = await this.inclusionBeneficiariosService.consultarArchivosBenefactor(req.body.codigoBenefactor);
+      const response = await this.inclusionBeneficiariosService.consultarArchivosBenefactor(Number(req.body.codigoBenefactor));
 
       res.status(200).json(response);
     } catch (e) {

@@ -78,6 +78,8 @@ export class CrearRegistroSaludDto {
   @IsString()
   ENTIDAD_OTROS: string;
 
+  EMBARAZO: number;
+
   EMBARAZO_ALTO_RIESGO: number;
 
   @IsString()

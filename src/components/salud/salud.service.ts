@@ -21,7 +21,7 @@ export class SaludService {
       }
       return buscarDatos;
 
-    } catch (error) {
+    } catch (error: any) {
       console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");
     }
@@ -35,7 +35,7 @@ export class SaludService {
       }
       return buscarDatosGrupoSanguineo;
 
-    } catch (error) {
+    } catch (error: any) {
       console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");
     }
@@ -49,7 +49,7 @@ export class SaludService {
       }
       return buscarDatosFactor;
 
-    } catch (error) {
+    } catch (error: any) {
       console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");
     }
@@ -63,7 +63,7 @@ export class SaludService {
       }
       return buscarDatosRaza;
 
-    } catch (error) {
+    } catch (error: any) {
       console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");
     }
@@ -77,7 +77,7 @@ export class SaludService {
       }
       return buscarDatosPlanSalud;
 
-    } catch (error) {
+    } catch (error: any) {
       console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");
     }
@@ -107,6 +107,7 @@ export class SaludService {
     PLAN_SALUD,
     PLAN_SALUD_OTROS,
     ENTIDAD_OTROS,
+    EMBARAZO,
     EMBARAZO_ALTO_RIESGO,
     FECHA_EXAMEN_EMBARAZO,
     TIEMPO_GESTACION,
@@ -136,6 +137,7 @@ export class SaludService {
       const ENTIDAD_OTROS_string = (ENTIDAD_OTROS)?"'"+ENTIDAD_OTROS+"'":"NULL";
 
       //REPORTE EMBARAZO
+      const EMBARAZO_string = (EMBARAZO)?1:0;
       const EMBARAZO_ALTO_RIESGO_string = (EMBARAZO_ALTO_RIESGO || EMBARAZO_ALTO_RIESGO==0)?EMBARAZO_ALTO_RIESGO+"":"NULL";
       const FECHA_EXAMEN_EMBARAZO_string = (FECHA_EXAMEN_EMBARAZO)?"'"+FECHA_EXAMEN_EMBARAZO+"'":"NULL";
       const TIEMPO_GESTACION_string = (TIEMPO_GESTACION || EMBARAZO_ALTO_RIESGO==0)?TIEMPO_GESTACION+"":"NULL";
@@ -249,7 +251,6 @@ export class SaludService {
             );
 
         }
-      console.log(URL_string);
       
       actualizarRegistroSalud = await this.saludRepository.tieneRegistroReporteEmbarazo(EMPRESA,NRO_DOCUMENTO);
       if(!actualizarRegistroSalud[0]['REPORTE_EMBARAZO_CODIGO']){
@@ -271,13 +272,14 @@ export class SaludService {
           TIEMPO_GESTACION_string,
           FECHA_PARTO_string,
           OBSERVACION_string,
-          URL_update
+          URL_update,
+          EMBARAZO_string
         );
       }
 
       return {"ok":"Actualización exitosa"};
 
-    } catch (error) {
+    } catch (error: any) {
       console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");
     }

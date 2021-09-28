@@ -18,7 +18,7 @@ export class InformacionBasicaService {
       }
       return buscarDatos;
 
-    } catch (error) {
+    } catch (error: any) {
       console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");
     }
@@ -34,7 +34,7 @@ export class InformacionBasicaService {
 
       return buscarTipDocumento;
 
-    } catch (error) {
+    } catch (error: any) {
       console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");
     }
@@ -49,7 +49,7 @@ export class InformacionBasicaService {
       }
       return buscarEstadoCivil;
 
-    } catch (error) {
+    } catch (error: any) {
       console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");
     }
@@ -64,7 +64,7 @@ export class InformacionBasicaService {
       }
       return buscarPaises;
 
-    } catch (error) {
+    } catch (error: any) {
       console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");
     }
@@ -79,7 +79,7 @@ export class InformacionBasicaService {
       }
       return buscarLabels;
 
-    } catch (error) {
+    } catch (error: any) {
       console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");
     }
@@ -191,7 +191,7 @@ export class InformacionBasicaService {
 
       return listaNomenclaturas;
 
-    } catch (error) {
+    } catch (error: any) {
       console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");
     }
@@ -206,7 +206,7 @@ export class InformacionBasicaService {
       }
       return buscarEstadoCivil;
 
-    } catch (error) {
+    } catch (error: any) {
       console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");
     }
@@ -221,7 +221,7 @@ export class InformacionBasicaService {
       }
       return buscarDepartamento;
 
-    } catch (error) {
+    } catch (error: any) {
       console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");
     }
@@ -239,7 +239,7 @@ export class InformacionBasicaService {
       }
       return buscarMunicipios;
 
-    } catch (error) {
+    } catch (error: any) {
       console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");
     }
@@ -258,14 +258,39 @@ export class InformacionBasicaService {
           if(tallaUniforme.TIP_CODIGO2 == 1319){
             arrayCamisa.push(tallaUniforme);
           }else if(tallaUniforme.TIP_CODIGO2 == 1327){
+            
             arrayPantalonMujer.push(tallaUniforme);
           }else if(tallaUniforme.TIP_CODIGO2 == 1328){
+
             arrayPantalonHombre.push(tallaUniforme);
           }else if(tallaUniforme.TIP_CODIGO2 == 1354){
             arrayCalzado.push(tallaUniforme);
           }
 
         }
+
+        arrayPantalonMujer.sort(function (a, b) {
+          if (parseInt(a.TIP_NOMBRE) > parseInt(b.TIP_NOMBRE)) {
+            return 1;
+          }
+          if (parseInt(a.TIP_NOMBRE) < parseInt(b.TIP_NOMBRE)) {
+            return -1;
+          }
+          // a must be equal to b
+          return 0;
+        });
+
+        arrayPantalonHombre.sort(function (a, b) {
+          if (parseInt(a.TIP_NOMBRE) > parseInt(b.TIP_NOMBRE)) {
+            return 1;
+          }
+          if (parseInt(a.TIP_NOMBRE) < parseInt(b.TIP_NOMBRE)) {
+            return -1;
+          }
+          // a must be equal to b
+          return 0;
+        });
+
         buscarTallaUniformes = {'tallaCamisa': arrayCamisa, 'tallaPantalonMujer': arrayPantalonMujer, 
                                 'tallaPantalonHombre':arrayPantalonHombre,'tallaCalzado':arrayCalzado};
       }else{
@@ -274,7 +299,7 @@ export class InformacionBasicaService {
 
       return buscarTallaUniformes;
 
-    } catch (error) {
+    } catch (error: any) {
       console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");
     }
@@ -431,7 +456,7 @@ export class InformacionBasicaService {
 
       return {"ok":"Actualización de datos exitosa"};
 
-    } catch (error) {
+    } catch (error: any) {
       console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");
     }

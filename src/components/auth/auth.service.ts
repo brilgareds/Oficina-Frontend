@@ -37,6 +37,42 @@ export class AuthService {
     }
   }
 
+  public async loginContratista(dataExterno: any) {
+
+    console.log("dataExterno--------->", dataExterno.params.nombres);
+
+
+    try {
+
+      const accessToken = signAccessToken({
+        name: dataExterno.params.nombres,
+        last_name: dataExterno.params.apellidos,
+        identification: dataExterno.params.cedula,
+        externo: true,
+        status: "A",
+        company: 1,
+      });
+
+      const refreshToken = signRefreshToken({
+        name: dataExterno.params.nombres,
+        last_name: dataExterno.params.apellidos,
+        identification: dataExterno.params.cedula,
+        externo: true,
+        status: "A",
+        company: 1,
+      });
+
+      return {
+        access_token: accessToken,
+        refresh_token: refreshToken,
+      };
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+
+
   public async refreshToken(user: JwtUserPayload) {
     try {
       const accessToken = signAccessToken({

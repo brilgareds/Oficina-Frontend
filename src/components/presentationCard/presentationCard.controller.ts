@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { route, GET, POST, before } from "awilix-express";
 import { verifyJwt } from "../common/middlewares/jwt";
 import { PresentationCardService } from "./PresentationCard.service";
+import { DateInText } from "../common/helpers/global";
 
 /**
  * @swagger
@@ -63,14 +64,9 @@ import { PresentationCardService } from "./PresentationCard.service";
   @before([verifyJwt])
   public async ResquestApproval(req: Request, res: Response) {
    try {
-     console.log(req.user);
-     const data = { ...req.user, ...req.body };
-
-     /*
-        $_SESSION['Cargo'];
-        $_SESSION['Genero'];
-        $_SESSION['necesitaAprovacion'];
-     */
+     const backendUrl = `${req.protocol}://${req.get('host')}${req.path.split('/', 4).join('/')}/`;
+     const data = { ...req.user, ...req.body, backendUrl };
+     console.log('\nUrl is : ', data.backendUrl);
 
      const response = await this.presentationCardService.ResquestApproval(data);
 
@@ -78,5 +74,44 @@ import { PresentationCardService } from "./PresentationCard.service";
    } catch (e:any) {
      res.status(400).json({ message: e.message });
    }
+  }
+
+
+  /**
+   * @swagger
+   * /api/v1/presentationCard/acceptOrRejectCard/{data}:
+   *  get:
+   *    summary:
+   *    tags: [presentationCard]
+   *    security:
+   *      - jwt: []
+   *    responses:
+   *      200:
+   *        description:
+   *      401:
+   *        description: Error en las credenciales
+   */
+   @route('/acceptOrRejectCard/:data')
+   @GET()
+   public async acceptOrRejectCard(req: Request, res: Response) {
+      try {
+          const data = { ...JSON.parse(Buffer.from(req?.params?.data || '', 'base64').toString('utf8')), DateInText: DateInText() };
+          const response = (
+              (data?.accion === 'Accept') ?
+                  await this.presentationCardService.acceptCard(data) :
+              (data?.accion === 'Reject') ?
+                  await this.presentationCardService.rejectCard(data) :
+              false
+          );
+
+          if (!response) throw new Error('Error al procesar la carta!');
+
+          const html = `<script>alert('${response}');javascript:;window.close()</script>`;
+          res.status(200).send(html);
+      }
+      catch (e:any){
+          console.log(e)
+          res.status(400).json({ message: e.message });
+      }
   }
 }
