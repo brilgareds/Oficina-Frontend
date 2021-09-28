@@ -244,6 +244,9 @@ export class SaludController {
    *                            ENTIDAD_OTROS:
    *                              type: string
    *                              description: entidad con la que posee el otro plan de salud
+   *                            EMBARAZO:
+   *                              type: integer
+   *                              description: Si(1) o No(0) esta embarazado
    *                            EMBARAZO_ALTO_RIESGO:
    *                              type: integer
    *                              description: Si(1) o No(0) es un embarazo de alto riesgo

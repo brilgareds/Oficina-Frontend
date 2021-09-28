@@ -108,6 +108,7 @@ export interface SaludRepository {
     TIEMPO_GESTACION: string,
     FECHA_PARTO: string,
     OBSERVACION: string,
-    URL: string
+    URL: string,
+    ESTADO: number
     ): Promise<any>;
 }
