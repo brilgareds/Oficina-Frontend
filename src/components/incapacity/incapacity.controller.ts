@@ -23,6 +23,18 @@ export class CategoryController {
    *    tags: [INCAPACITY]
    *    security:
    *      - jwt: []
+   *    requestBody:
+   *      required: true
+   *      content:
+   *        application/json:
+   *          schema:
+   *            type: object
+   *            properties:
+   *              codigoEmpresaUsuario:
+   *                type: integer
+   *                description: Codigo empresa del usuario del usuario 
+   *            required:
+   *              - codigoEmpresaUsuario
    *    responses:
    *      200:
    *        description: Consumo exitoso
@@ -30,12 +42,12 @@ export class CategoryController {
    *        description: Error en el consumo / Token Invalido
    */
   @route("/getEpsIncapacidad")
-  @GET()
-  // @before([verifyJwt])
+  @POST()
+  @before([verifyJwt])
   public async getEpsIncapacidad(req: Request, res: Response) {
     try {
 
-      const response = await this.incapacityService.getEpsIncapacidad();
+      const response = await this.incapacityService.getEpsIncapacidad(req.body.codigoEmpresaUsuario);
 
       res.status(200).json(response);
     } catch (e) {
@@ -48,8 +60,10 @@ export class CategoryController {
  * @swagger
  * /api/v1/incapacity/getTypesIncapacity:
  *  post:
- *    summary: Optiene el tipo de incapacidades
+ *    summary: Obtiene todos los tipos de incapacidades que tiene el sistema
  *    tags: [INCAPACITY]
+ *    security:
+ *      - jwt: []
  *    requestBody:
  *      required: true
  *      content:
@@ -70,7 +84,7 @@ export class CategoryController {
  */
   @route("/getTypesIncapacity")
   @POST()
-  // @before([verifyJwt])
+  @before([verifyJwt])
   public async getTypesIncapacity(req: Request, res: Response) {
     try {
 
@@ -87,8 +101,10 @@ export class CategoryController {
  * @swagger
  * /api/v1/incapacity/getDocumentsIncapacity:
  *  post:
- *    summary: Optioene el tipo de documentos para incapacidades
+ *    summary: Obtiene todos los tipos de coumentos de incapacidad por parametros
  *    tags: [INCAPACITY]
+ *    security:
+ *      - jwt: []
  *    requestBody:
  *      required: true
  *      content:
@@ -113,7 +129,7 @@ export class CategoryController {
  */
   @route("/getDocumentsIncapacity")
   @POST()
-  // @before([verifyJwt])
+  @before([verifyJwt])
   public async getDocumentsIncapacity(req: Request, res: Response) {
     try {
 
@@ -133,6 +149,8 @@ export class CategoryController {
    *  post:
    *    summary: Guardado de información de los formularios de RRHH
    *    tags: [INCAPACITY]
+   *    security:
+   *      - jwt: []
    *    requestBody:
    *      required: true
    *      content:
@@ -140,15 +158,15 @@ export class CategoryController {
    *          schema:
    *            type: object
    *            properties:
+   *              file:
+   *                type: array
+   *                description: Objeto de los archivos que se suben para constancia de la incapacidad
    *              allData:
    *                 type: object
    *                 properties:
    *                     dataForm:
    *                         type: object
    *                         properties:
-   *                             file:
-   *                               type: object
-   *                               description: Objeto de los archivos que se suben para constancia de la incapacidad
    *                             otraEntidad:
    *                               type: object
    *                               properties:
@@ -199,11 +217,11 @@ export class CategoryController {
    *      200:
    *        description: Información guardada correctamente
    *      401:
-   *        description: Error en la insercion
+   *        description: Error en el procedimientos
    */
   @route("/saveDisabilityFiling")
   @POST()
-  @before([uploadFile])
+  @before([verifyJwt, uploadFile])
   public async saveDisabilityFiling(req: Request, res: Response) {
     try {
 
@@ -222,8 +240,10 @@ export class CategoryController {
    * @swagger
    * /api/v1/incapacity/updateDisabilityFiling:
    *  post:
-   *    summary: Guardado de información de los formularios de RRHH
+   *    summary: Actualización de los datos para la incapacidad
    *    tags: [INCAPACITY]
+   *    security:
+   *      - jwt: []
    *    requestBody:
    *      required: true
    *      content:
@@ -231,70 +251,32 @@ export class CategoryController {
    *          schema:
    *            type: object
    *            properties:
-   *              allData:
-   *                 type: object
-   *                 properties:
-   *                     dataForm:
-   *                         type: object
-   *                         properties:
-   *                             file:
-   *                               type: object
-   *                               description: Objeto de los archivos que se suben para constancia de la incapacidad
-   *                             otraEntidad:
-   *                               type: object
-   *                               properties:
-   *                                   status:
-   *                                     type: boolean
-   *                                     description: viene con otra entidad (true/false)
-   *                                   value:
-   *                                     type: string
-   *                                     description: id del otro tipo de entidad
-   *                             prorroga:
-   *                               type: boolean
-   *                               description: Si la incapacidad viene con prorroga (true/false)
-   *                             rangoFechas:
-   *                               type: object
-   *                               properties:
-   *                                   fechaFin:
-   *                                     type: string
-   *                                     description: fecha fin de la incapacidad
-   *                                     format: "yyyy-mm-dd"
-   *                                   value:
-   *                                     type: string
-   *                                     description: fecha inicial de la incapacidad
-   *                                     format: "yyyy-mm-dd"
-   *                             tipoIncapacidad:
-   *                               type: integer
-   *                               description: tipo de incapacidad que radica
-   *                     dataUser:
-   *                         type: object
-   *                         properties:
-   *                             cedula:
-   *                               type: string
-   *                               description: Número de identificación
-   *                             correoElectronico:
-   *                               type: string
-   *                               description: Correo del usuario
-   *                             eps:
-   *                               type: string
-   *                               description: Eps del usuario
-   *                             nombres:
-   *                               type: string
-   *                               description: Nombre y apellido del usuario
-   *                             telefono:
-   *                               type: string
-   *                               description: Número de telefóno del usuario
+   *              file:
+   *                type: object
+   *                description: Objeto de los archivos que se suben para constancia de la incapacidad
+   *              numeroIncapacidad:
+   *                type: integer
+   *                description: numero de la incapacidad que se actualiza
+   *              correoUsuario:
+   *                type: string
+   *                description: correo del usuario
+   *              cedulaUsuario:
+   *                type: integer
+   *                description: cedula del usuario
+   *              codigosArchivos:
+   *                type: object
+   *                description: codigo de los archivos que se suben para constancia de la incapacidad
    *            required:
    *              - allData
    *    responses:
    *      200:
    *        description: Información guardada correctamente
    *      401:
-   *        description: Error en la insercion
+   *        description: Error de credenciales
    */
   @route("/updateDisabilityFiling")
   @POST()
-  @before([uploadFile])
+  @before([verifyJwt, uploadFile])
   public async updateDisabilityFiling(req: Request, res: Response) {
     try {
 
@@ -313,8 +295,10 @@ export class CategoryController {
  * @swagger
  * /api/v1/incapacity/getUserIncapacities:
  *  post:
- *    summary: Obtiene todas las incapacidades del usuario
+ *    summary: Obtiene todos las incapacidades del usuario
  *    tags: [INCAPACITY]
+ *    security:
+ *      - jwt: []
  *    requestBody:
  *      required: true
  *      content:
@@ -335,7 +319,7 @@ export class CategoryController {
  */
   @route("/getUserIncapacities")
   @POST()
-  // @before([verifyJwt])
+  @before([verifyJwt])
   public async getUserIncapacities(req: Request, res: Response) {
     try {
 
@@ -354,6 +338,8 @@ export class CategoryController {
  *  post:
  *    summary: Obtiene todas los archivos de una incapacidad
  *    tags: [INCAPACITY]
+ *    security:
+ *      - jwt: []
  *    requestBody:
  *      required: true
  *      content:
@@ -374,7 +360,7 @@ export class CategoryController {
  */
   @route("/getUserIncapacitiesFiles")
   @POST()
-  // @before([verifyJwt])
+  @before([verifyJwt])
   public async getUserIncapacitiesFiles(req: Request, res: Response) {
     try {
 
@@ -393,6 +379,8 @@ export class CategoryController {
  *  post:
  *    summary: Obtiene todas los datos de la incapacidad
  *    tags: [INCAPACITY]
+ *    security:
+ *      - jwt: []
  *    requestBody:
  *      required: true
  *      content:
@@ -413,7 +401,7 @@ export class CategoryController {
  */
   @route("/getUserDataIncapacity")
   @POST()
-  // @before([verifyJwt])
+  @before([verifyJwt])
   public async getUserDataIncapacity(req: Request, res: Response) {
     try {
 

@@ -18,8 +18,6 @@ export class DocumentTypeController {
    *  get:
    *    summary: Retorna los tipos de documento de las personas
    *    tags: [Document Type]
-   *    security:
-   *      - jwt: []
    *    responses:
    *      200:
    *        description: Retorna la información de los tipos de documento

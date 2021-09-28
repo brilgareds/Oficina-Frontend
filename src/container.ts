@@ -45,6 +45,10 @@ import { CityMSSQLRepository } from "./components/city/repositories/impl/mssql/c
 import { CityService } from "./components/city/city.service";
 import { SalePointMSSQLRepository } from "./components/salePoint/repositories/impl/mssql/salePoint.repository";
 import { SalePointService } from "./components/salePoint/salePoint.service";
+import { CheckInAndCheckOutMSSQLRepository } from "./components/checkInAndCheckOut/repositories/impl/checkInAndCheckOut.repository";
+import { CheckInAndCheckOutService } from "./components/checkInAndCheckOut/checkInAndCheckOut.services";
+import { EntranceDepartureMSSQLRepository } from "./components/entranceDeparture/repositories/impl/mssql/entranceDeparture.repository";
+import { EntranceDepartureService } from "./components/entranceDeparture/entranceDeparture.service";
 
 export default (app: express.Application): void => {
   const container = createContainer({
@@ -80,6 +84,10 @@ export default (app: express.Application): void => {
     branchRepository: asClass(BranchMSSQLRepository).scoped(),
     cityRepository: asClass(CityMSSQLRepository).scoped(),
     salePointRepository: asClass(SalePointMSSQLRepository).scoped(),
+    checkInAndCheckOutRepository: asClass(CheckInAndCheckOutMSSQLRepository).scoped(),
+    entranceDepartureRepository: asClass(
+      EntranceDepartureMSSQLRepository
+    ).scoped(),
 
     // services
     authService: asClass(AuthService).scoped(),
@@ -103,6 +111,8 @@ export default (app: express.Application): void => {
     branchService: asClass(BranchService).scoped(),
     cityService: asClass(CityService).scoped(),
     salePointService: asClass(SalePointService).scoped(),
+    checkInAndCheckOutService: asClass(CheckInAndCheckOutService).scoped(),
+    entranceDepartureService: asClass(EntranceDepartureService).scoped(),
   });
 
   app.use(scopePerRequest(container));

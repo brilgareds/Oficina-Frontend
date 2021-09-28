@@ -1,8 +1,8 @@
-export interface JwtUserPayload {
+export interface JwtUserPayloadExternal {
   name: string;
   last_name: string;
   identification: number;
   status: string;
-  externo?: boolean;
+  externo: boolean;
   company: string;
 }

@@ -18,8 +18,6 @@ export class EpsController {
    *  get:
    *    summary: Retorna las EPS habilitadas en el sistema
    *    tags: [EPS]
-   *    security:
-   *      - jwt: []
    *    responses:
    *      200:
    *        description: Consumo exitoso

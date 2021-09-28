@@ -4,4 +4,7 @@ export interface PresentationCardRepository {
   getSalesPointsData(data:any): Promise<any>;
   getContracLevel2(data:any): Promise<any>;
   getCompanysData(data:any): Promise<any>;
+  getId(data:any): Promise<any>;
+  crearSolicitudCarta(TIPO: any, CEDULA: any, NOMBRE: any, APELLIDO: any, CIUDAD: any, COD_PUNVEN: any, CEDULAJEFE: any, NOMBREJEFE: any, APELLIDOJEFE: any, FECHAINI: any, FECHAFIN: any, 
+    USU: any, NOMBREARCHIVO: any, celularCreador: any, celularJefe: any, nombrePDV: any, centroCostos: any, noContrato: any, empresaCOD: any, date: any): Promise<any>;
 }

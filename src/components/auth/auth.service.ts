@@ -4,7 +4,7 @@ import { JwtUserPayload } from "../common/interfaces/jwtUserPayload";
 import { AuthRepository } from "./repositories/auth.repository";
 
 export class AuthService {
-  constructor(private readonly authRepository: AuthRepository) {}
+  constructor(private readonly authRepository: AuthRepository) { }
 
   public async login({ identification }: LoginDto) {
     try {
@@ -37,6 +37,42 @@ export class AuthService {
     }
   }
 
+  public async loginContratista(dataExterno: any) {
+
+    console.log("dataExterno--------->", dataExterno.params.nombres);
+
+
+    try {
+
+      const accessToken = signAccessToken({
+        name: dataExterno.params.nombres,
+        last_name: dataExterno.params.apellidos,
+        identification: dataExterno.params.cedula,
+        externo: true,
+        status: "A",
+        company: 1,
+      });
+
+      const refreshToken = signRefreshToken({
+        name: dataExterno.params.nombres,
+        last_name: dataExterno.params.apellidos,
+        identification: dataExterno.params.cedula,
+        externo: true,
+        status: "A",
+        company: 1,
+      });
+
+      return {
+        access_token: accessToken,
+        refresh_token: refreshToken,
+      };
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+
+
   public async refreshToken(user: JwtUserPayload) {
     try {
       const accessToken = signAccessToken({
@@ -66,9 +102,14 @@ export class AuthService {
 
   public async userInformation(user: JwtUserPayload) {
     try {
-      return await this.authRepository.findUserByIdentification(
+      const data = await this.authRepository.findUserByIdentification(
         user.identification
       );
+
+      if (data) {
+        return data;
+      }
+
     } catch (error) {
       throw new Error(error.message);
     }

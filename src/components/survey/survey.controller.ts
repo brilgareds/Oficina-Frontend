@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
 import { before, GET, POST, route } from "awilix-express";
-import { verifyJwt } from "../common/middlewares/jwt";
+import { verifyJwt, verifyJwtExternal } from "../common/middlewares/jwt";
 import validationMiddleware from "../common/middlewares/validation";
 import { CovidSurveyCreateDto } from "./dto/covidSurveyCreate.dto";
 import { SurveyService } from "./survey.service";
 import { HealthConditionSurveyCreateDto } from "./dto/healthConditionSurveyCreate.dto";
 import { EpidemiologicalFenceSurveyCreateDto } from "./dto/epidemiologicalFenceSurveyCreate.dto";
 import { JwtUserPayload } from "../common/interfaces/jwtUserPayload";
+import { JwtUserPayloadExternal } from "../common/interfaces/jwtUserPayloadExternal";
 
 /**
  * @swagger
@@ -15,7 +16,7 @@ import { JwtUserPayload } from "../common/interfaces/jwtUserPayload";
  */
 @route("/api/v1/surveys")
 export class SurveyController {
-  constructor(private readonly surveyService: SurveyService) {}
+  constructor(private readonly surveyService: SurveyService) { }
 
   /**
    * @swagger
@@ -188,12 +189,12 @@ export class SurveyController {
    */
   @route("/healthCondition")
   @POST()
-  @before([verifyJwt, validationMiddleware(HealthConditionSurveyCreateDto)])
+  @before([verifyJwtExternal, validationMiddleware(HealthConditionSurveyCreateDto)])
   public async saveHealthConditionSurveyAnswers(req: Request, res: Response) {
     try {
       const answers = await this.surveyService.saveHealthConditionSurveyAnswers(
         req.body as HealthConditionSurveyCreateDto,
-        req.user as JwtUserPayload
+        req.user as JwtUserPayloadExternal
       );
 
       res.status(200).json({ data: answers });
