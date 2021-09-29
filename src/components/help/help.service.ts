@@ -35,8 +35,7 @@ export class HelpService {
 
       if (responseSaveInfo) {
 
-        // let correo = dataUser.correoEnvioRespuesta;
-        const correo = `jose.avila@visionymarketing.com.co`;
+        let correo = dataUser.correoEnvioRespuesta;
         const asunto = validarCategoria.cuerpoCorreo.asunto;
         const titulo = validarCategoria.cuerpoCorreo.titulo;
         const mensaje = validarCategoria.cuerpoCorreo.cuerpo;

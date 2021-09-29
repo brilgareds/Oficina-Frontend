@@ -110,13 +110,11 @@ export class InclusionBeneficiariosService {
 
           if (posibleError === 0) {
 
-            // const correo = correoElectronico;
-            const correo = `jose.avila@visionymarketing.com.co`;
+            const correo = correoElectronico;
             const asunto = `RADICACIÓN DOCUMENTOS`;
             const titulo = `RADICACIÓN DOCUMENTOS`;
             const mensaje = `Su solicitud para la inclusion del usuario ${nombreBeneficiario} ${apellidoBeneficiario} con numero de cedula ${cedulaBeneficiario}." a ${inclusion}.", fue radicada con exito. Al correo se le estara informando del avance de este proceso.`;
-            const copia = `jose.avila@visionymarketing.com.co`;
-            // const copia = `info.visionymarketing@visionymarketing.com.co`;
+            const copia = `info.visionymarketing@visionymarketing.com.co`;
             const body = AlertaHtml(titulo, mensaje);
 
             const responseSendCorreo = this.inclusionBeneficiariosRepository.insertarAlertarAutomaticas(correo, copia, asunto, body, '', mssqlBiplus);
