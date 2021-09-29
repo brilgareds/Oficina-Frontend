@@ -49,8 +49,8 @@ export class RrhhService {
       if (responseSaveInfo) {
         const mensajeCorreo = this.validarMensajeCorreo(dataForm.tipoContacto, dataUser.numeroCelular, dataForm.correoEnvioRespuesta);
 
-        // const correo = `andres.latorre@visionymarketing.com.co;cis.neiva@visionymarketing.com.co;Alexander.escobar@listos.com.co`;
-        const correo = `jose.avila@visionymarketing.com.co`;
+        // const correo = `andres.latorre@visionymarketing.com.co;cis.neiva@visionymarketing.com.co;Alexander.escobar@listos.com.co`; 
+        const correo = `${dataForm.correoEnvioRespuesta}`;
         const asunto = `Solicitud - Oficina Virtual`;
         const titulo = `Solicitud de ${tipoSolicitud.tipoSol}`;
         const mensaje = `<p>El empleado  ${dataUser.nombres} ${dataUser.apellidos} identificado con la cédula: ${dataUser.cedula} ha generado una solicitud de:  ${tipoSolicitud.tipoSol} desde la oficina virtual.</p> <p>Descripción: ${dataForm.descripcion} </p> ${mensajeCorreo}`;

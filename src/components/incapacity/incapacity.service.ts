@@ -89,13 +89,11 @@ export class IncapacityService {
 
         if (posibleError === 0) {
 
-          // const correo = dataUser.correoElectronico;
-          const correo = `jose.avila@visionymarketing.com.co`;
+          const correo = dataUser.correoElectronico;
           const asunto = `RADICACIÓN DOCUMENTOS`;
           const titulo = `RADICACIÓN DOCUMENTOS`;
           const mensaje = `Su incapacidad ha sido radicada con el numero de consecutivo #${lastIdInsert}. la Cual se encuentra pendiente por aprobacion.<br> Al momento de que su Incapacidad sea aprobada o rechazada se le informara por correo electronico.`;
-          const copia = `jose.avila@visionymarketing.com.co`;
-          // const copia = `info.visionymarketing@visionymarketing.com.co`;
+          const copia = `info.visionymarketing@visionymarketing.com.co`;
           const body = AlertaHtml(titulo, mensaje);
 
           const responseSendCorreo = this.insertarAlertarAutomaticas(correo, copia, asunto, body, '', mssqlBiplus);
@@ -149,13 +147,11 @@ export class IncapacityService {
 
       if (posibleError === 0) {
 
-        // const correo = correoUsuario;
-        const correo = `jose.avila@visionymarketing.com.co`;
+        const correo = correoUsuario;
         const asunto = `RADICACIÓN DOCUMENTOS`;
         const titulo = `RADICACIÓN DOCUMENTOS`;
-        const mensaje = `Lo documentos para su incapacidad radicada con el número #${numeroIncapacidad} fueron subidos nuevamente para su aprobación.`;
-        const copia = `jose.avila@visionymarketing.com.co`;
-        // const copia = `info.visionymarketing@visionymarketing.com.co`;
+        const mensaje = `Los documentos para su incapacidad radicada con el número #${numeroIncapacidad} fueron subidos nuevamente para su aprobación.`;
+        const copia = `info.visionymarketing@visionymarketing.com.co`;
         const body = AlertaHtml(titulo, mensaje);
 
         const responseSendCorreo = this.insertarAlertarAutomaticas(correo, copia, asunto, body, '', mssqlBiplus);
