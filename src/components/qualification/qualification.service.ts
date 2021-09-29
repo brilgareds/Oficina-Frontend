@@ -21,13 +21,13 @@ export class QualificationService {
           findUserData['eee_mail'] = input_add;
         }
 
-        let OVT_MEDIO_SOLICITUD = 'NULL';
-        let OVT_RESPUESTA_ALTERNA = 'NULL';
+        let OVT_MEDIO_SOLICITUD = "NULL";
+        let OVT_RESPUESTA_ALTERNA = "NULL";
         
         if(sendNotification == "W"){
-          OVT_RESPUESTA_ALTERNA = sendNotification;
+          OVT_RESPUESTA_ALTERNA = "'"+sendNotification+"'";
         }else{
-          OVT_MEDIO_SOLICITUD = sendNotification;
+          OVT_MEDIO_SOLICITUD = "'"+sendNotification+"'";
         }
 
         const saveQualification = await this.qualificationRepository.crearRegistroQualification(
