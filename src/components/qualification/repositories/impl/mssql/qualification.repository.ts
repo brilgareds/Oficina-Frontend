@@ -42,7 +42,7 @@ export class QualificationMSSQLRepository implements QualificationRepository {
     ): Promise<any> {
     const pool = await mssqlEsmad;
     const sql = `
-    INSERT INTO dbo.ESMAD_REPORTE_EMBARAZO (
+    INSERT INTO dbo.ESMAD_OV_TICKETS (
       OVT_CEDULA, 
       OVT_NOMBRE, 
       OVT_CORREO, 
@@ -70,12 +70,12 @@ export class QualificationMSSQLRepository implements QualificationRepository {
       '${OVT_CELULAR}',
       'ACTIVO',
       ${OVT_EMPRESA},
-      '${OVT_CENTRO_COSTOS}'
+      '${OVT_CENTRO_COSTOS}',
       1297,
       1297,
       '',
-      '${OVT_MEDIO_SOLICITUD}',
-      '${OVT_RESPUESTA_ALTERNA}',
+      ${OVT_MEDIO_SOLICITUD},
+      ${OVT_RESPUESTA_ALTERNA},
       getDate(),
       '${OVT_CEDULA}',
       getDate(),
