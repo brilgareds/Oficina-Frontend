@@ -8,7 +8,8 @@ export class MenuOVMSSQLRepository implements MenuOVRepository {
                         MENU_CODIGO,
                         MENU_NOMBRE,
                         MENU_POSICION,
-                        ESTADO
+                        ESTADO,
+                        MENU_ICONO
                       FROM
                         ESMAD_MENU_OV 
                       WHERE
