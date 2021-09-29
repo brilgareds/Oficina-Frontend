@@ -368,8 +368,8 @@ export class SurveyService {
   }
 
   public async saveHealthConditionSurveyAnswers(
-    data: HealthConditionSurveyCreateDto,
-    user: JwtUserPayloadExternal
+    data:any,
+    user:any
   ) {
     const externalLogin = "";
     let userData = {};
