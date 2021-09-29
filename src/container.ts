@@ -49,6 +49,8 @@ import { CheckInAndCheckOutMSSQLRepository } from "./components/checkInAndCheckO
 import { CheckInAndCheckOutService } from "./components/checkInAndCheckOut/checkInAndCheckOut.services";
 import { EntranceDepartureMSSQLRepository } from "./components/entranceDeparture/repositories/impl/mssql/entranceDeparture.repository";
 import { EntranceDepartureService } from "./components/entranceDeparture/entranceDeparture.service";
+import { QualificationMSSQLRepository } from "./components/qualification/repositories/impl/mssql/qualification.repository";
+import { QualificationService } from "./components/qualification/qualification.service";
 
 export default (app: express.Application): void => {
   const container = createContainer({
@@ -65,17 +67,13 @@ export default (app: express.Application): void => {
     menuOVRepository: asClass(MenuOVMSSQLRepository).scoped(),
     rrhhRepository: asClass(RrhhMSSQLRepository).scoped(),
     sendAlertEmailRepository: asClass(SendAlertEmailMSSQLRepository).scoped(),
-    informacionBasicaRepository: asClass(
-      InformacionBasicaMSSQLRepository
-    ).scoped(),
+    informacionBasicaRepository: asClass(InformacionBasicaMSSQLRepository).scoped(),
     helpRepository: asClass(HelpMSSQLRepository).scoped(),
     educacionRepository: asClass(EducacionMssqlRepository).scoped(),
     viviendaRepository: asClass(ViviendaMSSQLRepository).scoped(),
     saludRepository: asClass(SaludMSSQLRepository).scoped(),
     familiarRepository: asClass(FamiliarMssqlRepository).scoped(),
-    datosAdicionalesRepository: asClass(
-      DatosAdicionalesMSSQLRepository
-    ).scoped(),
+    datosAdicionalesRepository: asClass(DatosAdicionalesMSSQLRepository).scoped(),
     incapacityRepository: asClass(IncapacityMSSQLRepository).scoped(),
     surveyRepository: asClass(SurveyMSSQLRepository).scoped(),
     myWalletRepository: asClass(MyWalletMSSQLRepository).scoped(),
@@ -85,9 +83,8 @@ export default (app: express.Application): void => {
     cityRepository: asClass(CityMSSQLRepository).scoped(),
     salePointRepository: asClass(SalePointMSSQLRepository).scoped(),
     checkInAndCheckOutRepository: asClass(CheckInAndCheckOutMSSQLRepository).scoped(),
-    entranceDepartureRepository: asClass(
-      EntranceDepartureMSSQLRepository
-    ).scoped(),
+    entranceDepartureRepository: asClass(EntranceDepartureMSSQLRepository).scoped(),
+    qualificationRepository: asClass(QualificationMSSQLRepository).scoped(),
 
     // services
     authService: asClass(AuthService).scoped(),
@@ -113,6 +110,8 @@ export default (app: express.Application): void => {
     salePointService: asClass(SalePointService).scoped(),
     checkInAndCheckOutService: asClass(CheckInAndCheckOutService).scoped(),
     entranceDepartureService: asClass(EntranceDepartureService).scoped(),
+    qualificationService: asClass(QualificationService).scoped(),
+    
   });
 
   app.use(scopePerRequest(container));
