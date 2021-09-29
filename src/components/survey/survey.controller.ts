@@ -193,8 +193,8 @@ export class SurveyController {
   public async saveHealthConditionSurveyAnswers(req: Request, res: Response) {
     try {
       const answers = await this.surveyService.saveHealthConditionSurveyAnswers(
-        req.body as HealthConditionSurveyCreateDto,
-        req.user as JwtUserPayloadExternal
+        req.body as any,
+        req.user as any
       );
 
       res.status(200).json({ data: answers });
