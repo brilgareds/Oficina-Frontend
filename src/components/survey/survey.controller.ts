@@ -40,7 +40,7 @@ export class SurveyController {
       const questions = await this.surveyService.getCovidSurveyQuestions();
 
       res.status(200).json({ data: questions });
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -70,7 +70,7 @@ export class SurveyController {
       );
 
       res.status(200).json({ data: answers });
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -101,7 +101,7 @@ export class SurveyController {
         await this.surveyService.getEpidemiologicalFenceSurveyQuestions();
 
       res.status(200).json({ data: questions });
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -138,7 +138,7 @@ export class SurveyController {
         );
 
       res.status(200).json({ data: answers });
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -168,7 +168,7 @@ export class SurveyController {
         );
 
       res.status(200).json({ data: questions });
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -198,7 +198,7 @@ export class SurveyController {
       );
 
       res.status(200).json({ data: answers });
-    } catch (e) {
+    } catch (e: any) {
       res.status(400).json({ message: e.message });
     }
   }

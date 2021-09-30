@@ -10,30 +10,16 @@ export interface SurveyRepository {
   getSurveyResponses(surveyResponses: SurveyResponsesDto): Promise<any>;
   getSurveyAnswers(surveyAnswers: SurveyAnswersDto): Promise<any>;
   getSurveyFrecuency(): Promise<any>;
-  saveCovidSurveyAnswers(
-    userIdentification: number,
-    userCompany: string
-  ): Promise<any>;
-  saveEpidemiologicalFenceSurveyAnswers(
-    identification: string,
-    name: string,
-    company: string
-  ): Promise<any>;
-  saveHealthConditionSurveyAnswers(
-    userIdentification: number,
-    userCompany: string
-  ): Promise<any>;
-  saveEpidemiologicalFenceSurveyAnswers(
-    identification: string,
-    name: string,
-    company: string
-  ): Promise<any>;
-  saveHealthConditionSurveyAnswers(user:any): Promise<any>;
+  saveCovidSurveyAnswers(userIdentification: number, userCompany: string): Promise<any>;
+  
+  saveEpidemiologicalFenceSurveyAnswers(identification: string, name: string, company: string): Promise<any>;
+  // saveEpidemiologicalFenceSurveyAnswers(identification: string, name: string, company: string): Promise<any>;
+  saveHealthConditionSurveyAnswers0(userIdentification: number, userCompany: string): Promise<any>;
+  saveHealthConditionSurveyAnswers(user: any): Promise<any>;
+
   saveSurveyAnswers(surveyType: string, answers: string[]): Promise<any>;
   getCompanyLogo(company: string): Promise<any>;
   findExternalUserByIdentification(identification: number): Promise<any>;
-  getScoreHealthCondition(
-    scoreHealthConditionDto: ScoreHealthConditionDto
-  ): Promise<any>;
+  getScoreHealthCondition(scoreHealthConditionDto: ScoreHealthConditionDto): Promise<any>;
   getMessage(company: string, head: string): Promise<any>;
 }

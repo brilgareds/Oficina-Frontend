@@ -17,7 +17,7 @@ export class SurveyService {
   constructor(
     private readonly surveyRepository: SurveyRepository,
     private readonly authRepository: AuthRepository
-  ) {}
+  ) { }
 
   public async getCovidSurveyQuestions() {
     try {
@@ -62,7 +62,7 @@ export class SurveyService {
       });
 
       return newHeads;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -147,7 +147,7 @@ export class SurveyService {
       });
 
       return newHeads;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -362,7 +362,7 @@ export class SurveyService {
       });
 
       return newHeads;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -377,7 +377,13 @@ export class SurveyService {
     if (user.externo) {
       user.company = '1';
       userData = (await this.surveyRepository.findExternalUserByIdentification(user.identification))[0];
-      userData = { ...userData, ...user };
+      // userData = { ...userData, ...user };
+      userData = {
+        Nombres: user.name,
+        Apellidos: user.last_name,
+        Cedula: user.identification,
+        Empresa: user.company,
+      };
     } else {
       userData = await this.authRepository.findUserByIdentification(
         user.identification
@@ -425,7 +431,7 @@ export class SurveyService {
         userData: userData,
         score: score,
       };
-    } catch (err) {
+    } catch (err: any) {
       console.log(err);
       await transaction.rollback();
       throw new Error(err);
@@ -462,47 +468,6 @@ export class SurveyService {
             break;
           } else if (score.PUNTAJE == 3.0) {
             response[0] = "(241, 160, 155)";
-            response[1] = "(255,255,255)";
-            response[2] = `${score.EC_NOMBRE}: Por favor póngase en contacto con su EPS lo antes posible. Reporte la situación a su jefe inmediato.`;
-            break;
-          }
-        }
-      }
-    }
-
-    return response;
-  }
-
-  private async scoreLogic(scoreHealthConditionDto: ScoreHealthConditionDto) {
-    const scores = await this.surveyRepository.getScoreHealthCondition(
-      scoreHealthConditionDto
-    );
-    const response: any[] = [];
-
-    for (const score of scores) {
-      if (score.COD_EC == 10) {
-        const companyMessage = scoreHealthConditionDto.company
-          ? scoreHealthConditionDto.company
-          : "1";
-
-        const messages = await this.surveyRepository.getMessage(
-          companyMessage,
-          score.COD_EC
-        );
-
-        for (const message of messages) {
-          if (score.PUNTAJE == 1.0) {
-            response[0] = "(37, 179, 64)";
-            response[1] = "(255,255,255)";
-            response[2] = `${score.EC_NOMBRE}: ' . ${message.TIP_ATRIBUTO3}`;
-            break;
-          } else if (score.PUNTAJE == 2.0) {
-            response[0] = "(229, 178, 33)";
-            response[1] = "(0,0,0)";
-            response[2] = `${score.EC_NOMBRE}: Por favor póngase en contacto con su EPS lo antes posible. Reporte la situación a su jefe inmediato.`;
-            break;
-          } else if (score.PUNTAJE == 3.0) {
-            response[0] = "(206, 12, 16)";
             response[1] = "(255,255,255)";
             response[2] = `${score.EC_NOMBRE}: Por favor póngase en contacto con su EPS lo antes posible. Reporte la situación a su jefe inmediato.`;
             break;
