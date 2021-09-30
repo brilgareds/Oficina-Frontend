@@ -36,7 +36,7 @@ import { EducacionService } from "./educacion.service";
       const consultarNivelEstudio = await this.educacionService.consultarNivelEstudio();
 
       res.status(200).json(consultarNivelEstudio);
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -61,7 +61,7 @@ import { EducacionService } from "./educacion.service";
        const consultarEstadoEstudio = await this.educacionService.consultarEstadoEstudio();
        res.status(200).json(consultarEstadoEstudio); 
         
-     } catch (e) {
+     } catch (e: any) {
       res.status(401).json({ message: e.message });  
      }  
    }
@@ -87,7 +87,7 @@ import { EducacionService } from "./educacion.service";
       const consultarModalidadEstudio = await this.educacionService.consultarModalidadEstudio();
       res.status(200).json(consultarModalidadEstudio); 
        
-    } catch (e) {
+    } catch (e: any) {
      res.status(401).json({ message: e.message });  
     }  
   }
@@ -123,7 +123,7 @@ import { EducacionService } from "./educacion.service";
      try {
        const consultarDatosEstudio = await this.educacionService.consultarDatosEstudios(req.body);
        res.status(200).json(consultarDatosEstudio);
-     } catch (error) {
+     } catch (error: any) {
       res.status(401).json({ message: error.message });  
      } 
    }
@@ -218,7 +218,7 @@ import { EducacionService } from "./educacion.service";
       const buscarMenu = await this.educacionService.crearRegistro(req.body, url);
       res.status(200).json(buscarMenu);
       //res.status(200).json({ data: { message: "ok" } });  
-     } catch (e) {
+     } catch (e: any) {
       res.status(401).json({ message: e.message });  
      }
    }
@@ -308,7 +308,7 @@ import { EducacionService } from "./educacion.service";
       
       const buscarMenu = await this.educacionService.actualizarRegistro(req.body, url);
       res.status(200).json(buscarMenu);  
-     } catch (e) {
+     } catch (e: any) {
       res.status(401).json({ message: e.message });  
      }
    }
@@ -343,7 +343,7 @@ import { EducacionService } from "./educacion.service";
      try {
       const eliminarRegistro = await this.educacionService.eliminarRegistro(req.body);
       res.status(200).json(eliminarRegistro);  
-     } catch (e) {
+     } catch (e: any) {
       res.status(401).json({ message: e.message });  
      }
    }

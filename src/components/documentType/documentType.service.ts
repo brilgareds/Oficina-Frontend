@@ -6,7 +6,7 @@ export class DocumentTypeService {
   public async getDocumentType() {
     try {
       return await this.documentTypeRepository.getDocumentType();
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }

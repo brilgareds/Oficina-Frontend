@@ -49,7 +49,7 @@ export class CategoryController {
       const response = await this.myWalletService.getConsultarDatosUsuarioBilletera(req.body.cedula);
 
       res.status(200).json(response);
-    } catch (e) {
+    } catch (e: any) {
       res.status(400).json({ message: e.message });
     }
   }
@@ -93,7 +93,7 @@ export class CategoryController {
       const response = await this.myWalletService.deleteGastoBilletera(req.body.gastoId, req.body.billCod);
 
       res.status(200).json(response);
-    } catch (e) {
+    } catch (e: any) {
       res.status(400).json({ message: e.message });
     }
   }
@@ -160,7 +160,7 @@ export class CategoryController {
       const response = await this.myWalletService.saveGastoBilletera(req.body);
 
       res.status(200).json(response);
-    } catch (e) {
+    } catch (e: any) {
       res.status(400).json({ message: e.message });
     }
   }

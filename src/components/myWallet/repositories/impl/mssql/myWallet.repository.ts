@@ -99,7 +99,7 @@ export class MyWalletMSSQLRepository implements MyWalletRepository {
 
       throw new Error("Error en la consulta");
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 
@@ -131,7 +131,7 @@ export class MyWalletMSSQLRepository implements MyWalletRepository {
 
       throw new Error("Error en la consulta");
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 
@@ -169,7 +169,7 @@ export class MyWalletMSSQLRepository implements MyWalletRepository {
 
       throw new Error("Error en la consulta");
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 
@@ -197,7 +197,7 @@ export class MyWalletMSSQLRepository implements MyWalletRepository {
 
       throw new Error("Error en la consulta");
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 
@@ -223,7 +223,7 @@ export class MyWalletMSSQLRepository implements MyWalletRepository {
 
       throw new Error("Error en la consulta");
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 
@@ -261,7 +261,7 @@ export class MyWalletMSSQLRepository implements MyWalletRepository {
 
       throw new Error("Error en la consulta");
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 
@@ -290,7 +290,7 @@ export class MyWalletMSSQLRepository implements MyWalletRepository {
 
       throw new Error("Error en la consulta");
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 
@@ -314,7 +314,7 @@ export class MyWalletMSSQLRepository implements MyWalletRepository {
         return result.recordset[0].BILL_CODIGO;
       }
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 
@@ -348,7 +348,7 @@ export class MyWalletMSSQLRepository implements MyWalletRepository {
         return true;
       }
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 

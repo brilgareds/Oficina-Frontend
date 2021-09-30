@@ -48,7 +48,7 @@ export class AuthController {
       const login = await this.authService.login(req.body);
 
       res.status(200).json(login);
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -125,7 +125,7 @@ export class AuthController {
       const login = await this.authService.loginContratista(req.body);
 
       res.status(200).json(login);
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -152,7 +152,7 @@ export class AuthController {
       const login = await this.authService.refreshToken(req.user!);
 
       res.status(200).json(login);
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -179,7 +179,7 @@ export class AuthController {
       const userInformation = await this.authService.userInformation(req.user!);
 
       res.status(200).json(userInformation);
-    } catch (e) {
+    } catch (e: any) {
       res.status(400).json({ message: e.message });
     }
   }

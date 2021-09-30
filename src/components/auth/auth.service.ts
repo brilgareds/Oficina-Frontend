@@ -32,7 +32,7 @@ export class AuthService {
         access_token: accessToken,
         refresh_token: refreshToken,
       };
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -66,7 +66,7 @@ export class AuthService {
         access_token: accessToken,
         refresh_token: refreshToken,
       };
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -95,7 +95,7 @@ export class AuthService {
         access_token: accessToken,
         refresh_token: refreshToken,
       };
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -110,7 +110,7 @@ export class AuthService {
         return data;
       }
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }

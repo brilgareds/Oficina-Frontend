@@ -373,7 +373,7 @@ export class PresentationCardMSSQLRepository implements PresentationCardReposito
 
       return response.rowsAffected;
 
-    } catch (e) { console.log('Error: ', e) }
+    } catch (e: any) { console.log('Error: ', e) }
   }
 
 

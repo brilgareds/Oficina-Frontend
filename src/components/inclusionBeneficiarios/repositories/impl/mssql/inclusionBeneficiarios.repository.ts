@@ -39,7 +39,7 @@ export class InclusionBeneficiariosMSSQLRepository implements InclusionBeneficia
 
       throw new Error("Error en la consulta");
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 
@@ -71,7 +71,7 @@ export class InclusionBeneficiariosMSSQLRepository implements InclusionBeneficia
 
       throw new Error("Error en la consulta");
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 
@@ -113,7 +113,7 @@ export class InclusionBeneficiariosMSSQLRepository implements InclusionBeneficia
 
       throw new Error("Error en la consulta");
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 
@@ -144,7 +144,7 @@ export class InclusionBeneficiariosMSSQLRepository implements InclusionBeneficia
 
       throw new Error("Error en la consulta");
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 
@@ -181,7 +181,7 @@ export class InclusionBeneficiariosMSSQLRepository implements InclusionBeneficia
 
       throw new Error("Error en la consulta");
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 
@@ -232,7 +232,7 @@ export class InclusionBeneficiariosMSSQLRepository implements InclusionBeneficia
 
       throw new Error("Error en la consulta");
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 
@@ -259,7 +259,7 @@ export class InclusionBeneficiariosMSSQLRepository implements InclusionBeneficia
 
       throw new Error("Error en la consulta");
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 
@@ -317,7 +317,7 @@ export class InclusionBeneficiariosMSSQLRepository implements InclusionBeneficia
 
       throw new Error("Error en la consulta");
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 
@@ -344,7 +344,7 @@ export class InclusionBeneficiariosMSSQLRepository implements InclusionBeneficia
 
       throw new Error("Error en la consulta");
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 
@@ -392,7 +392,7 @@ export class InclusionBeneficiariosMSSQLRepository implements InclusionBeneficia
 
       throw new Error("Error en la consulta");
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 
@@ -470,7 +470,7 @@ export class InclusionBeneficiariosMSSQLRepository implements InclusionBeneficia
 
       throw new Error("Error en la consulta");
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 
@@ -520,7 +520,7 @@ export class InclusionBeneficiariosMSSQLRepository implements InclusionBeneficia
 
       throw new Error("Error en la consulta");
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 
@@ -554,7 +554,7 @@ export class InclusionBeneficiariosMSSQLRepository implements InclusionBeneficia
 
       throw new Error("Error en la consulta");
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 
@@ -582,7 +582,7 @@ export class InclusionBeneficiariosMSSQLRepository implements InclusionBeneficia
 
       throw new Error("Error en la consulta");
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 

@@ -8,7 +8,7 @@ export class MyWalletService {
   public async getConsultarDatosUsuarioBilletera(cedula: number) {
     try {
       return await this.myWalletRepository.getConsultarDatosUsuarioBilletera(cedula);
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -32,7 +32,7 @@ export class MyWalletService {
         }
       }
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -58,7 +58,7 @@ export class MyWalletService {
       }
 
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }

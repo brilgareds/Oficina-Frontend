@@ -26,7 +26,7 @@ export class SurveyController {
       // });
 
       res.status(200).json({ data: { message: "ok" } });
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }

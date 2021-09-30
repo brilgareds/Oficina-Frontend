@@ -44,7 +44,7 @@ export class SalePointController {
       );
 
       res.status(200).json(salePoints);
-    } catch (e) {
+    } catch (e: any) {
       res.status(400).json({ message: e.message });
     }
   }

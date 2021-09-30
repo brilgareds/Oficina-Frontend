@@ -33,7 +33,7 @@ import { FamiliarService } from "./familiar.service";
       const consultarDiscapacidad = await this.familiarService.consultarDiscapacidad();
 
       res.status(200).json(consultarDiscapacidad);
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -58,7 +58,7 @@ import { FamiliarService } from "./familiar.service";
       const consultarTipoRelacion = await this.familiarService.consultarTipoRelacion();
 
       res.status(200).json(consultarTipoRelacion);
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -170,7 +170,7 @@ import { FamiliarService } from "./familiar.service";
     try {
       const crearFamiliar = await this.familiarService.crearFamiliar(req.body);
       res.status(200).json(crearFamiliar);
-    } catch (error) {
+    } catch (error: any) {
       res.status(401).json({ message: error.message });  
     }
 
@@ -211,7 +211,7 @@ import { FamiliarService } from "./familiar.service";
     try {
       const consultarFamiliares = await this.familiarService.consultarFamiliares(req.body);
       res.status(200).json(consultarFamiliares);    
-    } catch (error) {
+    } catch (error: any) {
       res.status(401).json({ message: error.message });  
     }
   }
@@ -234,7 +234,7 @@ import { FamiliarService } from "./familiar.service";
     try {
       const consultarActividad = await this.familiarService.consultarActividad();
       res.status(200).json(consultarActividad);
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -269,7 +269,7 @@ import { FamiliarService } from "./familiar.service";
     try {
       const actualizarFamiliar = await this.familiarService.actualizarFamiliar(req.body);
       res.status(200).json(actualizarFamiliar);
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -304,7 +304,7 @@ import { FamiliarService } from "./familiar.service";
      try {
        const eliminarFamiliares = await this.familiarService.eliminarFamiliaresIndividual(req.body);
        res.status(200).json(eliminarFamiliares);    
-     } catch (error) {
+     } catch (error: any) {
        res.status(401).json({ message: error.message });  
      }
    }

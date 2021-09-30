@@ -13,7 +13,7 @@ export class InclusionBeneficiariosService {
   public async getBeneficiariesByUser(cedula: number) {
     try {
       return await this.inclusionBeneficiariosRepository.getBeneficiariesByUser(cedula);
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -21,7 +21,7 @@ export class InclusionBeneficiariosService {
   public async getTipoDocumentoBeneficiario() {
     try {
       return await this.inclusionBeneficiariosRepository.getTipoDocumentoBeneficiario();
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -29,7 +29,7 @@ export class InclusionBeneficiariosService {
   public async getCajasBeneficiario(cedula: number) {
     try {
       return await this.inclusionBeneficiariosRepository.getCajasBeneficiario(cedula);
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -40,7 +40,7 @@ export class InclusionBeneficiariosService {
       let condicionDinamica = (beneficioPara === "eps") ? " AND TIP_ATRIBUTO1 = 1" : " AND TIP_ATRIBUTO2 = 1";
 
       return await this.inclusionBeneficiariosRepository.consultarParentesco(condicionDinamica);
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -51,7 +51,7 @@ export class InclusionBeneficiariosService {
       let condicionDinamica = (beneficioPara === "eps") ? " AND TIP_ATRIBUTO1 = 1" : " AND TIP_ATRIBUTO2 = 1";
 
       return await this.inclusionBeneficiariosRepository.consultarArchivosBeneficiarios(condicionDinamica, tipParentesco);
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -127,7 +127,7 @@ export class InclusionBeneficiariosService {
 
       return false;
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -136,7 +136,7 @@ export class InclusionBeneficiariosService {
   public async consultarBeneficiarios(cedula: number) {
     try {
       return await this.inclusionBeneficiariosRepository.consultarBeneficiarios(cedula);
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -144,7 +144,7 @@ export class InclusionBeneficiariosService {
   public async consultarArchivosBenefactor(codigoBenefactor: number) {
     try {
       return await this.inclusionBeneficiariosRepository.consultarArchivosBenefactor(codigoBenefactor);
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -188,7 +188,7 @@ export class InclusionBeneficiariosService {
         return false;
       }
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }

@@ -34,7 +34,7 @@ export class BranchController {
       const userInformation = await this.branchService.getAllBranches();
 
       res.status(200).json(userInformation);
-    } catch (e) {
+    } catch (e: any) {
       res.status(400).json({ message: e.message });
     }
   }

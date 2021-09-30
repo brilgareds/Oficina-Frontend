@@ -51,7 +51,7 @@ export class CategoryController {
       const response = await this.inclusionBeneficiariosService.getBeneficiariesByUser(req.body.cedula);
 
       res.status(200).json(response);
-    } catch (e) {
+    } catch (e: any) {
       res.status(400).json({ message: e.message });
     }
   }
@@ -80,7 +80,7 @@ export class CategoryController {
       const response = await this.inclusionBeneficiariosService.getTipoDocumentoBeneficiario();
 
       res.status(200).json(response);
-    } catch (e) {
+    } catch (e: any) {
       res.status(400).json({ message: e.message });
     }
   }
@@ -123,7 +123,7 @@ export class CategoryController {
       const response = await this.inclusionBeneficiariosService.getCajasBeneficiario(req.body.cedula);
 
       res.status(200).json(response);
-    } catch (e) {
+    } catch (e: any) {
       res.status(400).json({ message: e.message });
     }
   }
@@ -166,7 +166,7 @@ export class CategoryController {
       const response = await this.inclusionBeneficiariosService.consultarParentesco(req.body.beneficioPara);
 
       res.status(200).json(response);
-    } catch (e) {
+    } catch (e: any) {
       res.status(400).json({ message: e.message });
     }
   }
@@ -216,7 +216,7 @@ export class CategoryController {
       const response = await this.inclusionBeneficiariosService.consultarArchivosBeneficiarios(beneficioPara, tipParentesco);
 
       res.status(200).json(response);
-    } catch (e) {
+    } catch (e: any) {
       res.status(400).json({ message: e.message });
     }
   }
@@ -314,7 +314,7 @@ export class CategoryController {
 
       res.status(200).json(response);
 
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -355,7 +355,7 @@ export class CategoryController {
       const response = await this.inclusionBeneficiariosService.consultarBeneficiarios(req.body.cedula);
 
       res.status(200).json(response);
-    } catch (e) {
+    } catch (e: any) {
       res.status(400).json({ message: e.message });
     }
   }
@@ -396,7 +396,7 @@ export class CategoryController {
       const response = await this.inclusionBeneficiariosService.consultarArchivosBenefactor(Number(req.body.codigoBenefactor));
 
       res.status(200).json(response);
-    } catch (e) {
+    } catch (e: any) {
       res.status(400).json({ message: e.message });
     }
   }
@@ -451,7 +451,7 @@ export class CategoryController {
 
       res.status(200).json(response);
 
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }

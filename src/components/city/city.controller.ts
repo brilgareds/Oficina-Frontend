@@ -37,7 +37,7 @@ export class BranchController {
       );
 
       res.status(200).json(cities);
-    } catch (e) {
+    } catch (e: any) {
       res.status(400).json({ message: e.message });
     }
   }

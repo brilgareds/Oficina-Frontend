@@ -34,7 +34,7 @@ export class HelpController {
       const categories = await this.helpService.requestsHelpCategory();
 
       res.status(200).json({ data: categories });
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -127,7 +127,7 @@ export class HelpController {
       const login = await this.helpService.saveFormHelp(req.body);
 
       res.status(200).json(login);
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
