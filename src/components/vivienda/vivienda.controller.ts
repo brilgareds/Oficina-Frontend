@@ -50,7 +50,7 @@ export class ViviendaController {
       const buscarDatos = await this.viviendaService.consultarDatosVivienda(req.body);
 
       res.status(200).json(buscarDatos);
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -74,7 +74,7 @@ export class ViviendaController {
        const buscarDatosTipVivienda = await this.viviendaService.consultarDatosTipVivienda();
  
        res.status(200).json(buscarDatosTipVivienda);
-     } catch (e) {
+     } catch (e: any) {
        res.status(401).json({ message: e.message });
      }
    }
@@ -98,7 +98,7 @@ export class ViviendaController {
        const buscarDatosPerimetro = await this.viviendaService.consultarDatosPerimetro();
   
        res.status(200).json(buscarDatosPerimetro);
-     } catch (e) {
+     } catch (e: any) {
        res.status(401).json({ message: e.message });
      }
    }
@@ -122,7 +122,7 @@ export class ViviendaController {
        const buscarDatosEstrato = await this.viviendaService.consultarDatosEstrato();
    
        res.status(200).json(buscarDatosEstrato);
-     } catch (e) {
+     } catch (e: any) {
        res.status(401).json({ message: e.message });
      }
    }
@@ -146,7 +146,7 @@ export class ViviendaController {
        const buscarDatosEstrato = await this.viviendaService.consultarDatosServicios();
    
        res.status(200).json(buscarDatosEstrato);
-     } catch (e) {
+     } catch (e: any) {
        res.status(401).json({ message: e.message });
      }
    }
@@ -214,7 +214,7 @@ export class ViviendaController {
        const buscarDatosServicio = await this.viviendaService.crearRegistroVivienda(req.body);
    
        res.status(200).json(buscarDatosServicio);
-     } catch (e) {
+     } catch (e: any) {
        res.status(401).json({ message: e.message });
      }
    }

@@ -13,7 +13,7 @@ export class NavigatorController {
       const menu = await this.navigatorService.navigator();
 
       res.status(200).json(menu);
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }

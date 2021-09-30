@@ -6,7 +6,7 @@ export class EpsService {
   public async getEps() {
     try {
       return await this.epsRepository.getEps();
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }

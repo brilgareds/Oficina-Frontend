@@ -50,7 +50,7 @@ export class CategoryController {
       const response = await this.incapacityService.getEpsIncapacidad(req.body.codigoEmpresaUsuario);
 
       res.status(200).json(response);
-    } catch (e) {
+    } catch (e: any) {
       res.status(400).json({ message: e.message });
     }
   }
@@ -91,7 +91,7 @@ export class CategoryController {
       const response = await this.incapacityService.getTypesIncapacity(req.body.empresa);
 
       res.status(200).json(response);
-    } catch (e) {
+    } catch (e: any) {
       res.status(400).json({ message: e.message });
     }
   }
@@ -136,7 +136,7 @@ export class CategoryController {
       const response = await this.incapacityService.getDocumentsIncapacity(req.body.empresa, req.body.tipoIncapacidad);
 
       res.status(200).json(response);
-    } catch (e) {
+    } catch (e: any) {
       res.status(400).json({ message: e.message });
     }
   }
@@ -229,7 +229,7 @@ export class CategoryController {
 
       res.status(200).json(response);
 
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -284,7 +284,7 @@ export class CategoryController {
 
       res.status(200).json(response);
 
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -326,7 +326,7 @@ export class CategoryController {
       const response = await this.incapacityService.getUserIncapacities(req.body.cedula);
 
       res.status(200).json(response);
-    } catch (e) {
+    } catch (e: any) {
       res.status(400).json({ message: e.message });
     }
   }
@@ -367,7 +367,7 @@ export class CategoryController {
       const response = await this.incapacityService.getUserIncapacitiesFiles(req.body.numeroIncapacidad);
 
       res.status(200).json(response);
-    } catch (e) {
+    } catch (e: any) {
       res.status(400).json({ message: e.message });
     }
   }
@@ -408,7 +408,7 @@ export class CategoryController {
       const response = await this.incapacityService.getUserDataIncapacity(req.body.numeroIncapacidad);
 
       res.status(200).json(response);
-    } catch (e) {
+    } catch (e: any) {
       res.status(400).json({ message: e.message });
     }
   }

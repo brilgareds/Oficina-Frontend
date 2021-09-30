@@ -14,7 +14,7 @@ export class HelpService {
       const categories = await this.categoryRepository.findHelpCategory();
 
       return categories;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -47,7 +47,7 @@ export class HelpService {
         return true;
       }
       throw new Error("Error en el procedimiento");
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
 
     }

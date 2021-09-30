@@ -17,7 +17,7 @@ export class IncapacityService {
   public async getEpsIncapacidad(codigoEmpresaUsuario: number) {
     try {
       return await this.epsRepository.getEpsIncapacidad(codigoEmpresaUsuario);
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -25,7 +25,7 @@ export class IncapacityService {
   public async getTypesIncapacity(empresa: number) {
     try {
       return await this.incapacityRepository.getTypesIncapacity(empresa);
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -33,7 +33,7 @@ export class IncapacityService {
   public async getDocumentsIncapacity(empresa: number, tipoIncapacidad: number) {
     try {
       return await this.incapacityRepository.getDocumentsIncapacity(empresa, tipoIncapacidad);
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -105,7 +105,7 @@ export class IncapacityService {
 
       throw new Error("Error en la insercion");
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -163,7 +163,7 @@ export class IncapacityService {
 
       return false;
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -199,7 +199,7 @@ export class IncapacityService {
   public async getUserIncapacities(cedula: number) {
     try {
       return await this.incapacityRepository.getUserIncapacities(cedula);
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -208,7 +208,7 @@ export class IncapacityService {
   public async getUserIncapacitiesFiles(numeroIncapacidad: number) {
     try {
       return await this.incapacityRepository.getUserIncapacitiesFiles(numeroIncapacidad);
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -216,7 +216,7 @@ export class IncapacityService {
   public async getUserDataIncapacity(numeroIncapacidad: number) {
     try {
       return await this.incapacityRepository.getUserDataIncapacity(numeroIncapacidad);
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }

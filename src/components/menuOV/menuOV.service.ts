@@ -12,7 +12,7 @@ export class MenuOVService {
       }
       return menu;
 
-    } catch (error) {
+    } catch (error: any) {
       console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");
     }
@@ -29,7 +29,7 @@ export class MenuOVService {
       }
       return menu;
 
-    } catch (error) {
+    } catch (error: any) {
       console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");
     }

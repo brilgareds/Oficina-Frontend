@@ -32,7 +32,7 @@ export class DocumentTypeController {
       const response = await this.documentTypeService.getDocumentType();
 
       res.status(200).json(response);
-    } catch (e) {
+    } catch (e: any) {
       res.status(400).json({ message: e.message });
     }
   }

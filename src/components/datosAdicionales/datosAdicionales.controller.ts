@@ -50,7 +50,7 @@ export class DatosAdicionalesController {
       const buscarDatos = await this.datosAdicionalesService.buscarDatos(req.body);
 
       res.status(200).json(buscarDatos);
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -74,7 +74,7 @@ export class DatosAdicionalesController {
       const buscarDatos = await this.datosAdicionalesService.buscarDatosFrecuencia();
 
       res.status(200).json(buscarDatos);
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -98,7 +98,7 @@ export class DatosAdicionalesController {
       const buscarDatos = await this.datosAdicionalesService.buscarDatosVehiculos();
 
       res.status(200).json(buscarDatos);
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -122,7 +122,7 @@ export class DatosAdicionalesController {
       const buscarDatos = await this.datosAdicionalesService.buscarDatosLicenciaConduccion();
 
       res.status(200).json(buscarDatos);
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -146,7 +146,7 @@ export class DatosAdicionalesController {
       const buscarDatos = await this.datosAdicionalesService.buscarDatosCondicionEspecial();
 
       res.status(200).json(buscarDatos);
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -170,7 +170,7 @@ export class DatosAdicionalesController {
       const buscarDatos = await this.datosAdicionalesService.buscarDatosBienesServicios();
 
       res.status(200).json(buscarDatos);
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -194,7 +194,7 @@ export class DatosAdicionalesController {
       const buscarDatos = await this.datosAdicionalesService.buscarDatosTemasInteres();
 
       res.status(200).json(buscarDatos);
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -336,7 +336,7 @@ export class DatosAdicionalesController {
       const buscarDatos = await this.datosAdicionalesService.actualizarRegistroDatosAdicionales(req.body);
 
       res.status(200).json(buscarDatos);
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }

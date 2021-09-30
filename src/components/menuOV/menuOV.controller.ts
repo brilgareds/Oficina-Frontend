@@ -32,7 +32,7 @@ export class MenuOVController {
       const buscarMenu = await this.menuOVService.buscarMenu();
 
       res.status(200).json(buscarMenu);
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -72,7 +72,7 @@ export class MenuOVController {
        const buscarMenu = await this.menuOVService.formulariosCompletados(req.body);
  
        res.status(200).json(buscarMenu);
-     } catch (e) {
+     } catch (e: any) {
        res.status(401).json({ message: e.message });
      }
    }

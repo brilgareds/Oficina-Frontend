@@ -18,7 +18,7 @@ export class RrhhService {
       );
 
       return categories;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -30,7 +30,7 @@ export class RrhhService {
       );
 
       return categories;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -62,7 +62,7 @@ export class RrhhService {
       }
 
       throw new Error("error en el procedimiento");
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }

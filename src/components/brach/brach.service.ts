@@ -7,7 +7,7 @@ export class BranchService {
   public async getAllBranches() {
     try {
       return await this.branchRepository.getAllBranches();
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }

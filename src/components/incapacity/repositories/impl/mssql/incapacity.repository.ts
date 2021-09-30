@@ -115,7 +115,7 @@ export class IncapacityMSSQLRepository implements IncapacityhRepository {
 
       throw new Error("Error en la consulta");
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 
@@ -191,7 +191,7 @@ export class IncapacityMSSQLRepository implements IncapacityhRepository {
 
       throw new Error("Error en la consulta");
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 
@@ -301,7 +301,7 @@ export class IncapacityMSSQLRepository implements IncapacityhRepository {
 
       throw new Error("Error en la consulta");
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 
@@ -330,7 +330,7 @@ export class IncapacityMSSQLRepository implements IncapacityhRepository {
 
       throw new Error("Error en la consulta");
 
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
 

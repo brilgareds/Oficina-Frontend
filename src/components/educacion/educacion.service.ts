@@ -13,7 +13,7 @@ export class EducacionService {
         consultarNivelEstudio = {"error":"No se encontraron datos"};
       }
       return consultarNivelEstudio;
-    } catch (error) {
+    } catch (error: any) {
       console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");    }
   }
@@ -25,7 +25,7 @@ export class EducacionService {
         consultarEstadoEstudio = {"error":"No se encontraron datos"};
       }
       return consultarEstadoEstudio;  
-    } catch (error) {
+    } catch (error: any) {
       console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");    }
   }
@@ -37,7 +37,7 @@ export class EducacionService {
         consultarModalidadEstudio = {"error":"No se encontraron datos"};
       }
       return consultarModalidadEstudio;  
-    } catch (error) {
+    } catch (error: any) {
       console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");    }
   }
@@ -49,7 +49,7 @@ export class EducacionService {
         consultarDatosEstudio = {"error":"No se encontraron datos"};
       }
       return consultarDatosEstudio;
-    } catch (error) {
+    } catch (error: any) {
       console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");    }
   }

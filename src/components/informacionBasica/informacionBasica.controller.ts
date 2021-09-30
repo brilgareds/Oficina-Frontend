@@ -53,7 +53,7 @@ export class InformacionBasicaController {
       const buscarMenu = await this.informacionBasicaService.buscarMenu(req.body);
 
       res.status(200).json(buscarMenu);
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -77,7 +77,7 @@ export class InformacionBasicaController {
        const paises = await this.informacionBasicaService.consultarTipDocumento();
  
        res.status(200).json(paises);
-     } catch (e) {
+     } catch (e: any) {
        res.status(401).json({ message: e.message });
      }
    }
@@ -101,7 +101,7 @@ export class InformacionBasicaController {
         const paises = await this.informacionBasicaService.consultarEstadoCivil();
   
         res.status(200).json(paises);
-      } catch (e) {
+      } catch (e: any) {
         res.status(401).json({ message: e.message });
       }
     }
@@ -125,7 +125,7 @@ export class InformacionBasicaController {
        const paises = await this.informacionBasicaService.consultarPaises();
  
        res.status(200).json(paises);
-     } catch (e) {
+     } catch (e: any) {
        res.status(401).json({ message: e.message });
      }
    }
@@ -162,7 +162,7 @@ export class InformacionBasicaController {
        const buscarLabels = await this.informacionBasicaService.consultarLabelsNivel(req.body);
  
        res.status(200).json(buscarLabels);
-     } catch (e) {
+     } catch (e: any) {
        res.status(401).json({ message: e.message });
      }
    }
@@ -199,7 +199,7 @@ export class InformacionBasicaController {
       const departamentos = await this.informacionBasicaService.consultarDepartamentos(req.body);
 
       res.status(200).json(departamentos);
-    } catch (e) {
+    } catch (e: any) {
       res.status(401).json({ message: e.message });
     }
   }
@@ -239,7 +239,7 @@ export class InformacionBasicaController {
        const departamentos = await this.informacionBasicaService.consultarMunicipios(req.body);
  
        res.status(200).json(departamentos);
-     } catch (e) {
+     } catch (e: any) {
        res.status(401).json({ message: e.message });
      }
    }
@@ -263,7 +263,7 @@ export class InformacionBasicaController {
        const paises = await this.informacionBasicaService.consultarNomenclatura();
  
        res.status(200).json(paises);
-     } catch (e) {
+     } catch (e: any) {
        res.status(401).json({ message: e.message });
      }
    }
@@ -287,7 +287,7 @@ export class InformacionBasicaController {
        const paises = await this.informacionBasicaService.consultarAntiguedad();
 
        res.status(200).json(paises);
-     } catch (e) {
+     } catch (e: any) {
        res.status(401).json({ message: e.message });
      }
    }
@@ -311,7 +311,7 @@ export class InformacionBasicaController {
         const paises = await this.informacionBasicaService.consultarTalla();
  
         res.status(200).json(paises);
-      } catch (e) {
+      } catch (e: any) {
         res.status(401).json({ message: e.message });
       }
     }
@@ -432,7 +432,7 @@ export class InformacionBasicaController {
        const departamentos = await this.informacionBasicaService.actualizacionDatos(req.body);
  
        res.status(200).json(departamentos);
-     } catch (e) {
+     } catch (e: any) {
        res.status(401).json({ message: e.message });
      }
    }
