@@ -7,10 +7,8 @@ export class CrearRegistroSaludDto {
   @Max(9999999999)
   OVT_CEDULA: number;
 
-  @IsNotEmpty()
   input_add: any;
 
-  @IsNotEmpty()
   sendNotification: any;
 
   @IsNotEmpty()

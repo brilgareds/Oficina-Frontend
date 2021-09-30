@@ -48,7 +48,6 @@ export class QualificationService {
     return {ok: "Se ha registrado exitosamente la calificación"};
 
     } catch (error: any) {
-      console.log("error: ",error.message);
       throw new Error("No se pudo realizar el proceso");
     }
   }
