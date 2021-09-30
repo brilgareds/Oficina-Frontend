@@ -30,7 +30,6 @@
     "morgan": "^1.10.0",
     "mssql": "^7.2.1",
     "multer": "^1.4.3",
-    "pdf-to-base64": "^1.0.3",
     "qrcode": "^1.4.4",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.1.6",
