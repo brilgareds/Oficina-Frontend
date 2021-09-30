@@ -500,7 +500,6 @@ export class SaludMSSQLRepository implements SaludRepository {
         LEFT JOIN dbo.ESMAD_REPORTE_EMBARAZO
           ON nm_contr.cod_empr = ESMAD_REPORTE_EMBARAZO.CODIGO_EMPRESA
              AND nm_contr.cod_empl = ESMAD_REPORTE_EMBARAZO.NRO_DOCUMENTO
-             AND ESMAD_REPORTE_EMBARAZO.ESTADO = 1
     WHERE
         nm_contr.cod_empr = ${empresa}
         AND nm_contr.cod_empl = ${cedula}
