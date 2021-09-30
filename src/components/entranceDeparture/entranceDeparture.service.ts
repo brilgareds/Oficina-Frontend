@@ -1,6 +1,7 @@
 import moment from "moment";
 import { AuthRepository } from "../auth/repositories/auth.repository";
 import { JwtUserPayload } from "../common/interfaces/jwtUserPayload";
+import { JwtUserPayloadExternal } from "../common/interfaces/jwtUserPayloadExternal";
 import { SaveDepartureDto } from "./dto/saveDeparture.dto";
 import { SaveEntranceDto } from "./dto/saveEntrance.dto";
 import { UserDataDto } from "./dto/userData.dto";
@@ -10,11 +11,11 @@ export class EntranceDepartureService {
   constructor(
     private readonly entranceDepartureRepository: EntranceDepartureRepository,
     private readonly authRepository: AuthRepository
-  ) {}
+  ) { }
 
   public async saveEntrance(
     entranceData: SaveEntranceDto,
-    user: JwtUserPayload
+    user: JwtUserPayloadExternal
   ) {
     try {
       let userData: UserDataDto;
@@ -42,10 +43,11 @@ export class EntranceDepartureService {
           chief: userDataRepo.Jefe,
         };
       } else {
+
         userData = {
-          identification: "",
-          name: "",
-          lastname: "",
+          identification: String(user.identification),
+          name: String(user.name),
+          lastname: String(user.last_name),
           title: "",
           area: "",
           chief: "",
@@ -58,7 +60,7 @@ export class EntranceDepartureService {
       );
 
       return entrance;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -72,14 +74,14 @@ export class EntranceDepartureService {
       );
 
       return existEntrence[0];
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
 
   public async saveDeparture(
     departureData: SaveDepartureDto,
-    user: JwtUserPayload
+    user: JwtUserPayloadExternal
   ) {
     try {
       let userData: UserDataDto;
@@ -106,9 +108,9 @@ export class EntranceDepartureService {
         };
       } else {
         userData = {
-          identification: "",
-          name: "",
-          lastname: "",
+          identification: String(user.identification),
+          name: String(user.name),
+          lastname: String(user.last_name),
           title: "",
           area: "",
           chief: "",
@@ -122,7 +124,7 @@ export class EntranceDepartureService {
       );
 
       return departure[0];
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
