@@ -41,8 +41,7 @@ export class QualificationController {
    *                description: numero del documento
    *            required:
    *              - OVT_CEDULA
-   *              - input_add
-   *              - NRO_DOCUMENTO
+   *              - CALIFICACION
    *    responses:
    *      200:
    *        description: Datos de los departamentos
