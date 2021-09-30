@@ -26,7 +26,7 @@ export class SalePointController {
    *      402:
    *        description: Token invalido
    */
-  @route("/api/v1/cities/:cityId/salePoints")
+  @route("/api/v1/cities/:cityId/salePoints/:all?")
   @GET()
   @before([verifyJwt])
   public async getAllSalePoints(req: Request, res: Response) {
@@ -34,11 +34,13 @@ export class SalePointController {
       const cityId = parseInt(req.params.cityId);
       if (!cityId) {
         throw new Error("El id de la ciudad es requerida");
-      }
+      }      
+      const all = ((req?.params?.all || '') === 'true');
 
       const salePoints = await this.salePointService.getAllSalePoints(
         cityId,
-        req.user as JwtUserPayload
+        req.user as JwtUserPayload,
+        all
       );
 
       res.status(200).json(salePoints);

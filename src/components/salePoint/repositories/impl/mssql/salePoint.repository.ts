@@ -6,7 +6,7 @@ export class SalePointMSSQLRepository implements SalePointRepository {
     const pool = await mssqlVum;
     const query = `SELECT DISTINCT
       dbo.SIM_PUNTO_VENTA.PDV_CODIGO,
-      dbo.SIM_PUNTO_VENTA_CLIENTE.PVC_NOMBRE_PDV,
+      RTRIM(LTRIM(dbo.SIM_PUNTO_VENTA_CLIENTE.PVC_NOMBRE_PDV)) as PVC_NOMBRE_PDV,
       SIM_CIUDAD.CIU_CODIGO
     FROM dbo.SIM_PUNTO_VENTA
     INNER JOIN dbo.SIM_CIUDAD ON (SIM_PUNTO_VENTA.CIU_CODIGO = SIM_CIUDAD.CIU_CODIGO)
@@ -16,7 +16,10 @@ export class SalePointMSSQLRepository implements SalePointRepository {
     AND dbo.SIM_PUNTO_VENTA.ESTADO=1
     AND SIM_PUNTO_VENTA_CLIENTE.FECHA_INACTIVACION >= GETDATE ( )
     AND SIM_PUNTO_VENTA_CLIENTE.ESTADO = 1
-    ORDER BY dbo.SIM_PUNTO_VENTA_CLIENTE.PVC_NOMBRE_PDV`;
+    AND PVC_NOMBRE_PDV != ''
+    ORDER BY PVC_NOMBRE_PDV`;
+
+    console.log('SQL is: ', query)
 
     const result = await pool.query(query);
 
