@@ -8,7 +8,6 @@ import htmlPdf from 'html-pdf';
 import axios from 'axios';
 import { v4 } from "uuid";
 import { uploadFileBlob } from "../../services/azure-blob";
-import pdfToBase64 from 'pdf-to-base64';
 
 import { PresentationCardMSSQLRepository } from "./repositories/impl/mssql/presentationCard.repository";
 import { PresentationCardRepository } from "./repositories/presentationCard.repository";
@@ -274,15 +273,16 @@ public async acceptCard(data: any) {
     const result = await this.presentationCardRepository.consultarEstadoAprobacion({SOLICITUD_CARTA_IDS: data.solicitudCarta});
     const correoJefe = data.Mail;   //  data.Mail   // andres.sanchez@visionymarketing.com.co
     const celularJefe = data.Numero.trim(); //  data.Numero.trim()  // 3156165648
-    const pdfFile = (await pdfToBase64(cardAccept?.[0]) || false);
-    const urlbase64 = (pdfFile) ? `data:application/pdf;base64,${pdfFile}` : '';
+    const pdf = await axios.get(await cardAccept?.[0], { responseType: 'arraybuffer' });
+    const pdfFile = ((await pdf.data) || '').toString('base64');
+
     const textWhatsapp = `Señor(a) ${data.name} ${data.lastName}, se le informa que la ${data.typeCard} para el punto de venta ${data.salesPointsInCityText} ha sido aprobada.`;
     const descripcionPdf = 'Creación de carta';
 
     if (result?.length) {
         const estadoCambiado  = await this.presentationCardRepository.cambiarEstadoAprobacion(data);
         const responseMessage = await this.alertaMensajeWhatsApp(textWhatsapp, `+57${celularJefe}`);
-        const responseFile    = await this.alertaArchivoWhatsApp(urlbase64, `+57${celularJefe}`, cardAccept?.[0], descripcionPdf);
+        const responseFile    = await this.alertaArchivoWhatsApp(`data:application/pdf;base64,${pdfFile}`, `+57${celularJefe}`, cardAccept?.[0], descripcionPdf);
     }
 
     const mensajeAprobacion = ((!result?.length) ?
@@ -521,7 +521,9 @@ public async rejectCard(data: any) {
       const existPdf = (response && await this.existWebFile(response));
       if (!existPdf) throw new Error('Pdf no existe!');
 
-      const pdfFile = await pdfToBase64(response);
+      const pdf = await axios.get(response, { responseType: 'arraybuffer' });
+      const pdfFile = ((await pdf.data) || '').toString('base64');
+
       const celularJefe = response2; // response2    //   3156165648
       const nombre_archivo = response.split('/')?.[response.split('/').length-1];
 
