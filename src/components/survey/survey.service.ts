@@ -368,8 +368,8 @@ export class SurveyService {
   }
 
   public async saveHealthConditionSurveyAnswers(
-    data:any,
-    user:any
+    data: any,
+    user: any
   ) {
     const externalLogin = "";
     let userData = {};
@@ -390,7 +390,7 @@ export class SurveyService {
       );
     }
 
-    data.answers.map((answer) => {
+    data.answers.map((answer: any) => {
       if (!answer.codeER) {
         throw new Error(
           "El arreglo de respuestas debe contener el código de la respuesta"
@@ -407,7 +407,7 @@ export class SurveyService {
 
       console.log('id encuestaaa====', survey.ENC_CODIGO);
 
-      const modifiedAnswers = data.answers.map((answer) => {
+      const modifiedAnswers = data.answers.map((answer: any) => {
         return `('${answer.codeER}','${user.identification}',getDate(),1,${(answer.value) ? `'${answer.value}'` : 'NULL'},NULL,'${survey.ENC_CODIGO}')`;
       });
 
