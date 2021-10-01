@@ -314,9 +314,6 @@ export class SurveyMSSQLRepository implements SurveyRepository {
         SELECT *, convert(varchar, FECHA_CREACION, 120) as formated_date from dbo.ESMAD_OV_ENCUESTA_COVID WHERE ENC_CODIGO = SCOPE_IDENTITY();
     `;
 
-    console.log("query.-......>", query);
-
-
     const result = await pool.query(query);
 
     if (result.rowsAffected) {

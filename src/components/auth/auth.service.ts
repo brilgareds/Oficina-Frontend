@@ -39,8 +39,6 @@ export class AuthService {
 
   public async loginContratista(dataExterno: any) {
 
-    console.log("dataExterno--------->", dataExterno.params.nombres);
-
 
     try {
 

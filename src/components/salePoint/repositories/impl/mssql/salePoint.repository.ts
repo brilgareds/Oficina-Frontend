@@ -19,8 +19,6 @@ export class SalePointMSSQLRepository implements SalePointRepository {
     AND PVC_NOMBRE_PDV != ''
     ORDER BY PVC_NOMBRE_PDV`;
 
-    console.log('SQL is: ', query)
-
     const result = await pool.query(query);
 
     if (result.rowsAffected) {

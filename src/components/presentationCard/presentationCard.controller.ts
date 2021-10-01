@@ -66,7 +66,6 @@ import { DateInText } from "../common/helpers/global";
    try {
      const backendUrl = `${req.protocol}://${req.get('host')}${req.path.split('/', 4).join('/')}/`;
      const data = { ...req.user, ...req.body, backendUrl };
-     console.log('\nUrl is : ', data.backendUrl);
 
      const response = await this.presentationCardService.ResquestApproval(data);
 

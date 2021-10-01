@@ -57,8 +57,6 @@ export class CheckInAndCheckOutMSSQLRepository implements CheckInAndCheckOutRepo
     try {
       const result = await pool.query(query);
 
-      console.log('\nCheckIn Sql: ', query);
-
       if (result.rowsAffected) {
         return result?.recordset?.[0] || {};
       }
@@ -92,8 +90,6 @@ export class CheckInAndCheckOutMSSQLRepository implements CheckInAndCheckOutRepo
 
     try {
       const result = await pool.query(query);
-
-      console.log('\n\nCheckOut Sql: ', query);
 
       if (result.rowsAffected) {
         return result?.recordset?.[0] || {};
