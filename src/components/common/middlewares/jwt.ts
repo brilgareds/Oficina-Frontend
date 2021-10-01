@@ -44,8 +44,6 @@ export const verifyJwtExternal = (req: Request, res: Response, next: NextFunctio
       access_token_secret
     ) as JwtUserPayloadExternal;
 
-    console.log("user token", user);
-
     req.user = {
       name: user.name,
       last_name: user.last_name,

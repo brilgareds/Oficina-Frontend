@@ -544,10 +544,9 @@ export class SaludMSSQLRepository implements SaludRepository {
       1
     )
     `;
-    
-    console.log(sql);
+
     const result = await pool.query(sql);
-    
+
     return result.recordset;
   }
 

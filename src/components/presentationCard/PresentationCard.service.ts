@@ -19,7 +19,6 @@ export class PresentationCardService {
   ) { }
 
   public async ResquestApprovalWithMaterials(data: any) {
-    console.log('In function "ResquestApprovalWithMaterials"');
 
     const { checkInTime, checkOutTime, salesPoints, identification, company } = data;
 

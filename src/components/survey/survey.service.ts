@@ -405,8 +405,6 @@ export class SurveyService {
       await transaction.begin();
       const survey = await this.surveyRepository.saveHealthConditionSurveyAnswers(userData);
 
-      console.log('id encuestaaa====', survey.ENC_CODIGO);
-
       const modifiedAnswers = data.answers.map((answer: any) => {
         return `('${answer.codeER}','${user.identification}',getDate(),1,${(answer.value) ? `'${answer.value}'` : 'NULL'},NULL,'${survey.ENC_CODIGO}')`;
       });

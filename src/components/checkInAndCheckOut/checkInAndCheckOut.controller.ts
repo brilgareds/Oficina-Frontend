@@ -34,7 +34,6 @@ export class CheckInAndCheckOutController {
    public async getMainInfo(req: Request, res: Response) {
     try {
 
-      console.log('req.user: ', req.user);
       const data = { ...req.user, ...req.body };
 
       const response = await this.checkInAndCheckOutService.getMainInfo(data);
