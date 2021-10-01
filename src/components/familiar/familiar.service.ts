@@ -72,7 +72,7 @@ export class FamiliarService {
           //console.log(consultarFamiliares.length);
           //console.log(consultarFamiliares[0]['NOM_FAMI']);
           let tamano = parseInt(consultarFamiliares.length);
-          console.log(tamano);
+
           for (let i = 0; i < tamano; i++) {
             
             let TIP_IDEN = consultarFamiliares[i]['TIP_IDEN'];
@@ -110,7 +110,7 @@ export class FamiliarService {
           }
 
           consultarFamiliares = await this.familiarRepository.consultarFamiliares(COD_EMPL, COD_EMPR);
-          console.log(consultarFamiliares)
+
           return consultarFamiliares;
         }
         
